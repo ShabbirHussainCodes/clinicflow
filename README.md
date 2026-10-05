@@ -98,6 +98,19 @@ when the full stack is running.
 > `SUPABASE_INTERNAL_IMAGE_REGISTRY=docker.io` for the CLI commands (this is how the project was built
 > and verified in a sandbox). On a normal machine you do not need it.
 
+### Troubleshooting local setup
+
+- **`Bind for 0.0.0.0:54322 failed: port is already allocated`**: another local Supabase project (or an old
+  container) already uses ClinicFlow's ports (API 54321, database 54322, Studio 54323). Find it with
+  `docker ps --format 'table {{.Names}}\t{{.Ports}}'`, then stop it (`npx supabase stop --all` stops every local
+  Supabase project on the machine) and run `npm run db:start` again. To keep the other project running instead,
+  change the ports in `supabase/config.toml` (`[api]`, `[db]` `port`/`shadow_port`, `[studio]`, ...), then run
+  `npm run db:start` and `npm run env:local -- --force`. Database tests assume port 54322; set
+  `TEST_DATABASE_URL` if you change it.
+- **`SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY must be set`** when running `admin:create`: the stack was not
+  running when `npm run env:local` ran, so `.env.local` does not exist yet. Start the stack first, then run
+  `npm run env:local`, then `admin:create`.
+
 ## Environment variables
 
 Copy `.env.example` to `.env.local` (or run `npm run env:local`). All are read on the server at runtime;
