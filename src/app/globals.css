@@ -1,0 +1,197 @@
+@import "tailwindcss";
+
+/*
+ * ClinicFlow design tokens.
+ * Warm paper background, deep teal primary, soft sage support, restrained clay accent.
+ * Every text/background pairing used by components has been checked for WCAG AA contrast
+ * (see docs/DESIGN.md).
+ */
+@theme {
+  --font-sans: var(--font-figtree), ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-display: var(--font-fraunces), ui-serif, Georgia, "Times New Roman", serif;
+
+  --color-paper: #fbf9f5;
+  --color-surface: #ffffff;
+
+  --color-sand-50: #f5f1ea;
+  --color-sand-100: #ede7dc;
+  --color-sand-200: #e1d9cb;
+  --color-sand-300: #cfc5b3;
+
+  --color-ink-900: #10302e;
+  --color-ink-700: #2f4a47;
+  --color-ink-500: #566e6b;
+  --color-ink-400: #70847f;
+
+  --color-teal-50: #eaf4f2;
+  --color-teal-100: #d3e8e4;
+  --color-teal-200: #a9d0c9;
+  --color-teal-400: #4a9d95;
+  --color-teal-500: #1f7f78;
+  --color-teal-600: #0f6b66;
+  --color-teal-700: #0b5753;
+  --color-teal-800: #094643;
+  --color-teal-900: #07322f;
+
+  --color-sage-50: #eef5ec;
+  --color-sage-100: #dcebd7;
+  --color-sage-300: #a6cda0;
+  --color-sage-500: #5e9a6a;
+  --color-sage-700: #2f6b3f;
+
+  --color-clay-50: #fbefe6;
+  --color-clay-100: #f6ddca;
+  --color-clay-500: #c8743a;
+  --color-clay-700: #9a4a1c;
+
+  --color-amber-50: #fdf1d6;
+  --color-amber-700: #7a4f00;
+
+  --color-danger-50: #fcebea;
+  --color-danger-600: #b3261e;
+  --color-danger-700: #8f1d17;
+
+  --color-slate-50: #e6eef3;
+  --color-slate-700: #2e4a5c;
+
+  --color-violet-50: #eeebf3;
+  --color-violet-700: #4a4558;
+
+  --radius-xs: 6px;
+  --radius-sm: 10px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+
+  --shadow-card: 0 1px 2px rgb(16 48 46 / 0.05), 0 6px 20px -8px rgb(16 48 46 / 0.1);
+  --shadow-raised: 0 2px 4px rgb(16 48 46 / 0.06), 0 14px 34px -12px rgb(16 48 46 / 0.2);
+
+  --animate-fade-up: fade-up 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+  --animate-fade-in: fade-in 0.25s ease-out both;
+
+  @keyframes fade-up {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+  }
+
+  body {
+    background-color: var(--color-paper);
+    color: var(--color-ink-900);
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-display);
+    font-weight: 600;
+    letter-spacing: -0.015em;
+    line-height: 1.15;
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  :focus-visible {
+    outline: 3px solid var(--color-teal-500);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
+  ::selection {
+    background: var(--color-teal-200);
+    color: var(--color-ink-900);
+  }
+
+  /* Provide a native-feeling tap target without 300ms delays. */
+  a,
+  button,
+  input,
+  select,
+  textarea,
+  summary {
+    touch-action: manipulation;
+  }
+}
+
+@layer components {
+  .container-page {
+    width: 100%;
+    max-width: 72rem;
+    margin-inline: auto;
+    padding-inline: 1rem;
+  }
+  @media (min-width: 640px) {
+    .container-page {
+      padding-inline: 1.5rem;
+    }
+  }
+  @media (min-width: 1024px) {
+    .container-page {
+      padding-inline: 2rem;
+    }
+  }
+
+  .eyebrow {
+    font-size: 0.8125rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-teal-700);
+  }
+}
+
+/* Honour the user's motion preference everywhere. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Windows high-contrast / forced colours: keep focus and borders visible. */
+@media (forced-colors: active) {
+  :focus-visible {
+    outline-color: Highlight;
+  }
+}
+
+@media print {
+  .no-print {
+    display: none !important;
+  }
+  body {
+    background: #fff;
+  }
+}
