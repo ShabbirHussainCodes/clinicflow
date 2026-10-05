@@ -1,6 +1,6 @@
 import { expect, test, type Page } from "@playwright/test";
 
-import { serviceClient, uniquePhone } from "./support";
+import { bookViaRpc, findFreeSlot, serviceClient, uniquePhone } from "./support";
 
 async function chooseFirstAvailableSlot(page: Page) {
   const firstDate = page.locator('button[data-date]:not([aria-disabled="true"])').first();
@@ -81,6 +81,48 @@ test.describe("patient booking flow", () => {
       .select("event_type, status")
       .eq("payload->data->appointment->>reference", reference);
     expect(events).toEqual([{ event_type: "appointment.created", status: "pending" }]);
+  });
+
+  test("the home page's next-available times are real links that start a booking with that time selected", async ({
+    page,
+  }) => {
+    await page.goto("/");
+    await page.waitForLoadState("networkidle");
+    const firstTime = page.getByRole("link", { name: /^Book .* with Dr\./ }).first();
+    await expect(firstTime).toBeVisible();
+    const href = (await firstTime.getAttribute("href")) ?? "";
+    const wanted = new URL(href, "http://localhost").searchParams.get("time") ?? "";
+    expect(wanted).not.toBe("");
+
+    await firstTime.click();
+    await expect(page).toHaveURL(/\/book\?/);
+    await expect(page.getByTestId("step-heading")).toHaveText("Pick a date and time");
+
+    // The chosen time is already selected and the patient can continue straight away.
+    const selected = page.locator('input[name="slot"]:checked');
+    await expect(selected).toHaveCount(1);
+    expect(new Date(await selected.inputValue()).getTime()).toBe(new Date(wanted).getTime());
+    await expect(page.getByTestId("step-next")).toBeEnabled();
+    await expect(page.getByTestId("booking-summary")).toContainText("General Consultation");
+    await page.getByTestId("step-next").click();
+    await expect(page.getByTestId("step-heading")).toHaveText("Your details");
+  });
+
+  test("a time from a shared link that has since been taken is explained, not silently dropped", async ({
+    page,
+  }) => {
+    const slot = await findFreeSlot("dr-meera-iyer", "general-consultation", 16);
+    await bookViaRpc(slot, "Taken Before Link");
+    const params = new URLSearchParams({
+      service: "general-consultation",
+      doctor: "dr-meera-iyer",
+      date: slot.date,
+      time: slot.start,
+    });
+    await page.goto(`/book?${params.toString()}`);
+    await expect(page.getByTestId("slot-taken-alert")).toContainText("no longer available");
+    await expect(page.locator('input[name="slot"]:checked')).toHaveCount(0);
+    await expect(page.getByTestId("step-next")).toBeDisabled();
   });
 
   test("deep links skip answered steps", async ({ page }) => {

@@ -10,11 +10,12 @@ import { TESTIMONIALS } from "@/components/public/testimonials";
 import { ButtonLink } from "@/components/ui/button";
 import { SectionHeading } from "@/components/ui/card";
 import { getCatalog } from "@/lib/data/catalog";
+import { getNextAvailable } from "@/lib/data/next-slots";
 
 export const dynamic = "force-dynamic";
 
 export default async function HomePage() {
-  const catalog = await getCatalog();
+  const [catalog, nextAvailable] = await Promise.all([getCatalog(), getNextAvailable()]);
   const { clinic, services, doctors, openDaysPerWeek } = catalog;
 
   const combinedYears = doctors.reduce((total, doctor) => total + doctor.experience_years, 0);
@@ -69,7 +70,7 @@ export default async function HomePage() {
           </div>
 
           <div className="animate-fade-up [animation-delay:120ms]">
-            <HeroArt />
+            <HeroArt next={nextAvailable} />
           </div>
         </div>
 

@@ -1,16 +1,23 @@
 import { CircleCheck, Clock } from "lucide-react";
+import Link from "next/link";
 
 import { DoctorFigure } from "@/components/illustrations/doctor-avatar";
+import type { NextAvailable } from "@/lib/data/next-slots";
 
 /**
  * Hero artwork: three overlapping arches (the clinic's architectural motif) holding a doctor, a
  * plant and the morning sun. Drawn entirely in SVG so it never depends on a remote image. The
  * floating cards are decorative illustrations of the booking experience.
  */
-export function HeroArt() {
+export function HeroArt({ next }: { next: NextAvailable | null }) {
   return (
-    <div className="relative mx-auto w-full max-w-[30rem]" aria-hidden="true">
-      <svg viewBox="0 0 480 540" className="block h-auto w-full" focusable="false">
+    <div className="relative mx-auto w-full max-w-[30rem]">
+      <svg
+        viewBox="0 0 480 540"
+        className="block h-auto w-full"
+        focusable="false"
+        aria-hidden="true"
+      >
         {/* left arch with plant */}
         <path d="M6 540V210a82 82 0 0 1 164 0v330Z" fill="#dcebd7" />
         <path d="M22 540V214a66 66 0 0 1 132 0v326Z" fill="#a6cda0" opacity="0.4" />
@@ -47,19 +54,47 @@ export function HeroArt() {
       </svg>
 
       {/* floating cards */}
-      <div className="absolute -left-2 top-10 w-44 rounded-md border border-sand-200 bg-surface p-3 shadow-raised sm:-left-6">
+      <div className="absolute -left-2 top-10 w-48 rounded-md border border-sand-200 bg-surface p-3 shadow-raised sm:-left-6">
         <p className="flex items-center gap-1.5 text-xs font-semibold text-ink-500">
-          <Clock className="size-3.5" aria-hidden="true" /> Pick a time
+          <Clock className="size-3.5" aria-hidden="true" />
+          {next ? `Next available · ${next.dayLabel}` : "Pick a time"}
         </p>
-        <div className="mt-2 grid grid-cols-2 gap-1.5 text-center text-xs font-semibold">
-          <span className="rounded-xs bg-teal-50 py-1.5 text-teal-700">9:20 AM</span>
-          <span className="rounded-xs bg-teal-700 py-1.5 text-white">10:00 AM</span>
-          <span className="rounded-xs bg-teal-50 py-1.5 text-teal-700">5:20 PM</span>
-          <span className="rounded-xs bg-sand-100 py-1.5 text-ink-700 line-through">5:40 PM</span>
-        </div>
+        {next ? (
+          <>
+            <p className="mt-0.5 truncate text-xs text-ink-500">{next.doctorName}</p>
+            <ul className="mt-2 grid grid-cols-2 gap-1.5 text-center text-xs font-semibold">
+              {next.slots.map((slot) => (
+                <li key={slot.start}>
+                  <Link
+                    href={`/book?${new URLSearchParams({
+                      service: next.serviceSlug,
+                      doctor: next.doctorSlug,
+                      date: next.date,
+                      time: slot.start,
+                    }).toString()}`}
+                    className="block min-h-10 rounded-xs bg-teal-50 py-2 text-teal-700 transition-colors hover:bg-teal-700 hover:text-white"
+                    aria-label={`Book ${slot.label} ${next.dayLabel} with ${next.doctorName}`}
+                  >
+                    {slot.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </>
+        ) : (
+          <Link
+            href="/book"
+            className="mt-2 block rounded-xs bg-teal-700 py-2 text-center text-xs font-semibold text-white hover:bg-teal-800"
+          >
+            Book an appointment
+          </Link>
+        )}
       </div>
 
-      <div className="absolute -right-1 bottom-24 rounded-md border border-sand-200 bg-surface p-3 pr-4 shadow-raised sm:-right-4">
+      <div
+        aria-hidden="true"
+        className="absolute -right-1 bottom-24 rounded-md border border-sand-200 bg-surface p-3 pr-4 shadow-raised sm:-right-4"
+      >
         <p className="flex items-center gap-1.5 text-xs font-semibold text-sage-700">
           <CircleCheck className="size-4" aria-hidden="true" /> Booking confirmed
         </p>
