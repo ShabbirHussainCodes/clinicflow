@@ -45,6 +45,9 @@ interface Props {
   doctors: WizardDoctor[];
   initialServiceId: string | null;
   initialDoctorId: string | null;
+  /** A date and time chosen on the home page; applied only when service and doctor are also known. */
+  initialDate?: string | null;
+  initialSlotStart?: string | null;
 }
 
 export function BookingWizard({
@@ -53,6 +56,8 @@ export function BookingWizard({
   doctors,
   initialServiceId,
   initialDoctorId,
+  initialDate = null,
+  initialSlotStart = null,
 }: Props) {
   const router = useRouter();
 
@@ -62,8 +67,15 @@ export function BookingWizard({
     let serviceId = services.find((item) => item.id === initialServiceId)?.id ?? null;
     if (doctor && serviceId && !doctor.serviceIds.includes(serviceId)) serviceId = null;
     const step: WizardStep = serviceId ? (doctor ? "datetime" : "doctor") : "service";
-    return { doctorId: doctor?.id ?? null, serviceId, step };
-  }, [doctors, services, initialDoctorId, initialServiceId]);
+    const preselect = step === "datetime" && initialDate !== null;
+    return {
+      doctorId: doctor?.id ?? null,
+      serviceId,
+      step,
+      date: preselect ? initialDate : null,
+      slotStart: preselect ? initialSlotStart : null,
+    };
+  }, [doctors, services, initialDoctorId, initialServiceId, initialDate, initialSlotStart]);
 
   const [step, setStep] = useState<WizardStep>(initial.step);
   const [furthest, setFurthest] = useState(STEP_ORDER.indexOf(initial.step));
@@ -74,9 +86,9 @@ export function BookingWizard({
     initial.step === "datetime" ? "loading" : "idle",
   );
   const [availability, setAvailability] = useState<ReadonlyMap<string, number>>(new Map());
-  const [date, setDate] = useState<string | null>(null);
+  const [date, setDate] = useState<string | null>(initial.date);
   const [slots, setSlots] = useState<SlotDto[]>([]);
-  const [slotsStatus, setSlotsStatus] = useState<LoadStatus>("idle");
+  const [slotsStatus, setSlotsStatus] = useState<LoadStatus>(initial.date ? "loading" : "idle");
   const [slotStart, setSlotStart] = useState<string | null>(null);
   const [notice, setNotice] = useState<string | null>(null);
 
@@ -149,22 +161,46 @@ export function BookingWizard({
     }
   }
 
-  // Initial load when arriving via a deep link that already fixed service and doctor. The state is
-  // only set after the awaited request, never synchronously inside the effect.
+  // Initial load when arriving via a deep link that already fixed service and doctor (and maybe a
+  // date and time). State is only set after the awaited requests, never synchronously in the effect.
   useEffect(() => {
     if (initial.step !== "datetime" || !initial.doctorId || !initial.serviceId) return;
+    const doctorId = initial.doctorId;
+    const serviceId = initial.serviceId;
+    const wantedDate = initial.date;
+    const wantedSlot = initial.slotStart;
     const request = ++datesRequest.current;
+    const slotRequest = wantedDate ? ++slotsRequest.current : 0;
+
     void (async () => {
-      const result = await loadAvailableDates({
-        doctorId: initial.doctorId as string,
-        serviceId: initial.serviceId as string,
-      });
-      if (request !== datesRequest.current) return; // superseded by a newer request
-      if (result.ok) {
-        setAvailability(new Map(result.dates.map((item) => [item.date, item.count])));
-        setDatesStatus("ready");
-      } else {
-        setDatesStatus("error");
+      const [datesResult, slotsResult] = await Promise.all([
+        loadAvailableDates({ doctorId, serviceId }),
+        wantedDate ? loadSlots({ doctorId, serviceId, date: wantedDate }) : Promise.resolve(null),
+      ]);
+
+      if (request === datesRequest.current) {
+        if (datesResult.ok) {
+          setAvailability(new Map(datesResult.dates.map((item) => [item.date, item.count])));
+          setDatesStatus("ready");
+        } else {
+          setDatesStatus("error");
+        }
+      }
+
+      if (slotsResult && slotRequest === slotsRequest.current) {
+        if (!slotsResult.ok) {
+          setSlotsStatus("error");
+          return;
+        }
+        setSlots(slotsResult.slots);
+        setSlotsStatus("ready");
+        if (wantedSlot) {
+          const match = slotsResult.slots.find(
+            (slot) => Date.parse(slot.start) === Date.parse(wantedSlot),
+          );
+          if (match) setSlotStart(match.start);
+          else setNotice("That time is no longer available. Please choose another time.");
+        }
       }
     })();
   }, [initial]);

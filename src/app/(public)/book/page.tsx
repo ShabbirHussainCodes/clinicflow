@@ -4,7 +4,7 @@ import { ShieldCheck } from "lucide-react";
 import { BookingWizard } from "@/components/booking/booking-wizard";
 import type { WizardClinic, WizardDoctor, WizardService } from "@/components/booking/types";
 import { getCatalog } from "@/lib/data/catalog";
-import { addDays, timeZoneLabel, todayInZone } from "@/lib/datetime";
+import { addDays, isIsoDate, timeZoneLabel, todayInZone } from "@/lib/datetime";
 
 export const dynamic = "force-dynamic";
 
@@ -61,6 +61,16 @@ export default async function BookPage({
   const initialServiceId = services.find((item) => item.slug === serviceSlug)?.id ?? null;
   const initialDoctorId = doctors.find((item) => item.slug === doctorSlug)?.id ?? null;
 
+  // Optional deep link from the home page: /book?service=...&doctor=...&date=YYYY-MM-DD&time=<ISO instant>
+  const dateParam = firstParam(params.date);
+  const timeParam = firstParam(params.time);
+  const initialDate =
+    isIsoDate(dateParam) && dateParam >= today && dateParam <= wizardClinic.lastDate
+      ? dateParam
+      : null;
+  const initialSlotStart =
+    initialDate && !Number.isNaN(Date.parse(timeParam)) ? new Date(timeParam).toISOString() : null;
+
   return (
     <div className="container-page py-10 sm:py-14">
       <header className="mb-8 max-w-2xl">
@@ -78,6 +88,8 @@ export default async function BookPage({
         doctors={wizardDoctors}
         initialServiceId={initialServiceId}
         initialDoctorId={initialDoctorId}
+        initialDate={initialDate}
+        initialSlotStart={initialSlotStart}
       />
     </div>
   );
