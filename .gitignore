@@ -1,0 +1,29 @@
+# dependencies
+node_modules/
+.pnp.*
+
+# next.js
+.next/
+out/
+next-env.d.ts
+
+# secrets: never commit these
+.env
+.env.*
+!.env.example
+
+# testing
+coverage/
+playwright-report/
+test-results/
+.e2e-state.json
+
+# supabase CLI local state
+supabase/.temp/
+supabase/.branches/
+
+# misc
+*.tsbuildinfo
+.DS_Store
+npm-debug.log*
+.vercel
