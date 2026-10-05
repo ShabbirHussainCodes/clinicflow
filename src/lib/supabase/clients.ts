@@ -4,6 +4,7 @@ import { createClient, type SupabaseClient } from "@supabase/supabase-js";
 import { cookies } from "next/headers";
 
 import { ConfigError, getEnv } from "@/lib/env";
+import { hardenCookie } from "@/lib/supabase/cookies";
 import type { Database } from "@/lib/supabase/database.types";
 
 export type AppSupabaseClient = SupabaseClient<Database>;
@@ -35,7 +36,7 @@ export async function createSessionClient(): Promise<AppSupabaseClient> {
       setAll(cookiesToSet) {
         try {
           for (const { name, value, options } of cookiesToSet) {
-            cookieStore.set(name, value, options);
+            cookieStore.set(name, value, hardenCookie(value, options));
           }
         } catch {
           // Called from a Server Component, where cookies are read-only. The proxy

@@ -72,8 +72,18 @@ export function resetEnvCache(): void {
   cached = undefined;
 }
 
+/**
+ * The public site URL. Deliberately independent of getEnv(): it is needed while building static
+ * pages (for example the 404 page) when Supabase credentials may not exist yet.
+ */
 export function getSiteUrl(): string {
-  return getEnv().SITE_URL ?? "http://localhost:3000";
+  const raw = process.env.SITE_URL;
+  if (!raw) return "http://localhost:3000";
+  try {
+    return new URL(raw).origin;
+  } catch {
+    return "http://localhost:3000";
+  }
 }
 
 export function isDispatcherConfigured(): boolean {

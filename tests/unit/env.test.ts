@@ -1,6 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 
-import { ConfigError, getEnv, isDispatcherConfigured, resetEnvCache } from "@/lib/env";
+import { ConfigError, getEnv, getSiteUrl, isDispatcherConfigured, resetEnvCache } from "@/lib/env";
 
 const KEYS = [
   "SUPABASE_URL",
@@ -76,5 +76,16 @@ describe("getEnv", () => {
     process.env.SUPABASE_ANON_KEY = "a".repeat(30);
     process.env.SHOW_DEMO_NOTICE = "false";
     expect(getEnv().SHOW_DEMO_NOTICE).toBe(false);
+  });
+});
+
+describe("getSiteUrl", () => {
+  it("works without any Supabase configuration (needed to build static pages)", () => {
+    delete process.env.SITE_URL;
+    expect(getSiteUrl()).toBe("http://localhost:3000");
+    process.env.SITE_URL = "https://clinic.example.com/some/path";
+    expect(getSiteUrl()).toBe("https://clinic.example.com");
+    process.env.SITE_URL = "not a url";
+    expect(getSiteUrl()).toBe("http://localhost:3000");
   });
 });

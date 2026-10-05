@@ -1,6 +1,8 @@
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 
+import { hardenCookie } from "@/lib/supabase/cookies";
+
 /**
  * Runs before every page request (see `matcher`).
  *
@@ -58,7 +60,7 @@ export async function proxy(request: NextRequest) {
             for (const { name, value } of cookiesToSet) request.cookies.set(name, value);
             response = NextResponse.next({ request: { headers: requestHeaders } });
             for (const { name, value, options } of cookiesToSet) {
-              response.cookies.set(name, value, options);
+              response.cookies.set(name, value, hardenCookie(value, options));
             }
             for (const [header, value] of Object.entries(headers))
               response.headers.set(header, value);

@@ -80,7 +80,7 @@ export default async function ConfirmationPage({
         <p className="mx-auto mt-3 max-w-xl text-lg text-ink-700">
           {cancelled
             ? "If this is unexpected, please call the clinic."
-            : `Thank you, ${patient.display_name}. Keep your booking reference handy.`}
+            : `Thank you, ${patient.display_name.replace(/\.$/, "")}. Keep your booking reference handy.`}
         </p>
       </div>
 
