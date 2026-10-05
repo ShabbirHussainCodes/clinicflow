@@ -16,7 +16,9 @@ export interface WizardDoctor {
   qualification: string;
   specialization: string;
   experienceYears: number;
-  avatarTheme: string;
+  /** Colour name for the initials tile when the doctor has no photo. */
+  tone: string;
+  photoUrl: string | null;
   serviceIds: string[];
   availability: SummaryLine[];
 }

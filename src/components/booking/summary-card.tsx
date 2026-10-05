@@ -48,7 +48,7 @@ export function SummaryCard({
         {rows.map((row) => (
           <div key={row.label}>
             <dt className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-ink-500">
-              <row.icon className="size-4 shrink-0 text-teal-600" aria-hidden="true" />
+              <row.icon className="size-4 shrink-0 text-brand-600" aria-hidden="true" />
               {row.label}
             </dt>
             <dd

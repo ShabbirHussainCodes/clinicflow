@@ -47,7 +47,7 @@ export function AppointmentsTable({
                 <td className="px-3 py-3.5">
                   <Link
                     href={`/admin/appointments/${row.id}`}
-                    className="font-semibold text-teal-800 underline-offset-2 hover:underline"
+                    className="font-semibold text-brand-800 underline-offset-2 hover:underline"
                   >
                     {row.patient_name}
                     <span className="sr-only">

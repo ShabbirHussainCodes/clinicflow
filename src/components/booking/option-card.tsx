@@ -27,9 +27,9 @@ export function OptionCard({
       data-testid={testId}
       className={cn(
         "relative flex cursor-pointer gap-4 rounded-md border bg-surface p-4 transition-[border-color,box-shadow,background-color] duration-150 sm:p-5",
-        "has-[:focus-visible]:outline-3 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-teal-500",
+        "has-[:focus-visible]:outline-3 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-brand-500",
         checked
-          ? "border-teal-600 bg-teal-50/60 shadow-[0_0_0_1px_var(--color-teal-600)]"
+          ? "border-brand-600 bg-brand-50/60 shadow-[0_0_0_1px_var(--color-brand-600)]"
           : "border-sand-300 hover:border-ink-400 hover:shadow-card",
       )}
     >
@@ -46,7 +46,7 @@ export function OptionCard({
         aria-hidden="true"
         className={cn(
           "mt-0.5 flex size-6 shrink-0 items-center justify-center rounded-full border-2 transition-colors",
-          checked ? "border-teal-700 bg-teal-700 text-white" : "border-ink-400 bg-surface",
+          checked ? "border-brand-700 bg-brand-700 text-white" : "border-ink-400 bg-surface",
         )}
       >
         {checked ? <Check className="size-3.5" strokeWidth={3} /> : null}

@@ -4,7 +4,16 @@ import { LoaderCircle } from "lucide-react";
 
 import { cn } from "@/lib/cn";
 
-export type ButtonVariant = "primary" | "secondary" | "ghost" | "danger" | "danger-outline";
+export type ButtonVariant =
+  | "primary"
+  | "secondary"
+  | "ghost"
+  | "danger"
+  | "danger-outline"
+  /** Solid light button for dark backgrounds. */
+  | "light"
+  /** Outlined button for dark backgrounds. */
+  | "outline-light";
 export type ButtonSize = "sm" | "md" | "lg";
 
 const base =
@@ -13,14 +22,14 @@ const base =
   "active:translate-y-px disabled:pointer-events-none disabled:opacity-55 aria-disabled:pointer-events-none aria-disabled:opacity-55";
 
 const variants: Record<ButtonVariant, string> = {
-  primary:
-    "bg-teal-700 text-white shadow-[0_1px_0_rgb(255_255_255/0.12)_inset,0_1px_2px_rgb(16_48_46/0.25)] hover:bg-teal-800",
-  secondary:
-    "border border-sand-300 bg-surface text-ink-900 shadow-[0_1px_2px_rgb(16_48_46/0.05)] hover:border-ink-400 hover:bg-sand-50",
-  ghost: "text-teal-700 hover:bg-teal-50",
+  primary: "bg-brand-700 text-white hover:bg-brand-800",
+  secondary: "border border-sand-300 bg-surface text-ink-900 hover:border-ink-400 hover:bg-sand-50",
+  ghost: "text-brand-700 hover:bg-brand-50",
   danger: "bg-danger-600 text-white hover:bg-danger-700",
   "danger-outline":
     "border border-danger-600/40 bg-surface text-danger-700 hover:border-danger-600 hover:bg-danger-50",
+  light: "bg-paper text-brand-900 hover:bg-white",
+  "outline-light": "border border-white/45 text-white hover:border-white hover:bg-white/10",
 };
 
 const sizes: Record<ButtonSize, string> = {

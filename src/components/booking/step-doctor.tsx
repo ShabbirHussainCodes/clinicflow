@@ -1,4 +1,4 @@
-import { DoctorAvatar } from "@/components/illustrations/doctor-avatar";
+import { DoctorPortrait } from "@/components/public/doctor-portrait";
 import { Alert } from "@/components/ui/feedback";
 
 import { OptionCard } from "./option-card";
@@ -34,12 +34,19 @@ export function StepDoctor({
             testId={`doctor-${doctor.slug}`}
           >
             <div className="flex items-start gap-4">
-              <div className="w-16 shrink-0 overflow-hidden rounded-t-full">
-                <DoctorAvatar theme={doctor.avatarTheme} />
+              <div className="w-16 shrink-0">
+                <DoctorPortrait
+                  name={doctor.name}
+                  photoUrl={doctor.photoUrl}
+                  tone={doctor.tone}
+                  sizes="64px"
+                  className="rounded-sm"
+                  initialsClassName="text-2xl"
+                />
               </div>
               <div className="min-w-0">
                 <p className="font-semibold leading-snug text-ink-900">{doctor.name}</p>
-                <p className="text-sm font-semibold text-teal-700">{doctor.specialization}</p>
+                <p className="text-sm font-semibold text-brand-700">{doctor.specialization}</p>
                 <p className="text-sm text-ink-500">
                   {doctor.qualification} · {doctor.experienceYears} yrs
                 </p>

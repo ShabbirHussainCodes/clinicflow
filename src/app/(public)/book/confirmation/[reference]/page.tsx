@@ -5,12 +5,13 @@ import { CalendarPlus, CalendarX2, CircleCheck, Clock, MapPin, Phone } from "luc
 
 import { CopyReference } from "@/components/booking/copy-reference";
 import { PrintButton } from "@/components/booking/print-button";
-import { DoctorAvatar } from "@/components/illustrations/doctor-avatar";
+import { DoctorPortrait } from "@/components/public/doctor-portrait";
 import { ButtonLink } from "@/components/ui/button";
 import { Alert } from "@/components/ui/feedback";
 import { StatusBadge } from "@/components/ui/status-badge";
 import { fetchConfirmation } from "@/lib/data/booking";
 import { formatDateLong, formatTimeRange } from "@/lib/datetime";
+import { doctorPhoto } from "@/lib/public-images";
 import { clientIpFrom, rateLimit } from "@/lib/rate-limit";
 import { normalizeReference } from "@/lib/validation/booking";
 
@@ -84,10 +85,10 @@ export default async function ConfirmationPage({
         </p>
       </div>
 
-      <div className="mt-10 rounded-lg border border-teal-200 bg-teal-50 p-6 text-center sm:p-8">
+      <div className="mt-10 rounded-lg border border-brand-200 bg-brand-50 p-6 text-center sm:p-8">
         <p className="eyebrow">Booking reference</p>
         <p
-          className="mt-2 break-all font-mono text-3xl font-bold tracking-wider text-teal-900 sm:text-4xl"
+          className="mt-2 break-all font-mono text-3xl font-bold tracking-wider text-brand-900 sm:text-4xl"
           data-testid="booking-reference"
         >
           {confirmation.reference}
@@ -110,12 +111,19 @@ export default async function ConfirmationPage({
           </div>
 
           <div className="mt-5 flex items-center gap-4 rounded-md bg-sand-50 p-4">
-            <div className="w-14 shrink-0 overflow-hidden rounded-t-full">
-              <DoctorAvatar theme={doctor.avatar_theme} />
+            <div className="w-14 shrink-0">
+              <DoctorPortrait
+                name={doctor.name}
+                photoUrl={doctorPhoto(doctor.slug)}
+                tone={doctor.avatar_theme}
+                sizes="56px"
+                className="rounded-sm"
+                initialsClassName="text-xl"
+              />
             </div>
             <div>
               <p className="font-semibold text-ink-900">{doctor.name}</p>
-              <p className="text-sm text-teal-700">{doctor.specialization}</p>
+              <p className="text-sm text-brand-700">{doctor.specialization}</p>
               <p className="text-sm text-ink-500">{doctor.qualification}</p>
             </div>
           </div>
@@ -138,7 +146,7 @@ export default async function ConfirmationPage({
               </dt>
               <dd className="mt-0.5 font-semibold" data-testid="confirmation-datetime">
                 {formatDateLong(confirmation.start_at, tz)}
-                <span className="mt-0.5 flex items-center gap-1.5 text-teal-800">
+                <span className="mt-0.5 flex items-center gap-1.5 text-brand-800">
                   <Clock className="size-4" aria-hidden="true" />
                   {formatTimeRange(confirmation.start_at, confirmation.end_at, tz)}
                 </span>
@@ -179,16 +187,16 @@ export default async function ConfirmationPage({
             </h2>
             <address className="mt-3 space-y-3 text-[0.9375rem] not-italic">
               <p className="flex gap-2.5">
-                <MapPin className="mt-0.5 size-4 shrink-0 text-teal-600" aria-hidden="true" />
+                <MapPin className="mt-0.5 size-4 shrink-0 text-brand-600" aria-hidden="true" />
                 <span>
                   <span className="block font-semibold">{clinic.name}</span>
                   {address}
                 </span>
               </p>
               <p className="flex gap-2.5">
-                <Phone className="mt-0.5 size-4 shrink-0 text-teal-600" aria-hidden="true" />
+                <Phone className="mt-0.5 size-4 shrink-0 text-brand-600" aria-hidden="true" />
                 <a
-                  className="font-semibold text-teal-700 underline-offset-2 hover:underline"
+                  className="font-semibold text-brand-700 underline-offset-2 hover:underline"
                   href={`tel:${clinic.phone.replace(/\s/g, "")}`}
                 >
                   {clinic.phone}
@@ -207,7 +215,7 @@ export default async function ConfirmationPage({
             <ol className="mt-3 space-y-3 text-[0.9375rem] text-ink-700">
               {nextSteps.map((text, index) => (
                 <li key={text} className="flex gap-3">
-                  <span className="flex size-6 shrink-0 items-center justify-center rounded-full bg-teal-100 text-xs font-bold text-teal-800">
+                  <span className="flex size-6 shrink-0 items-center justify-center rounded-full bg-brand-100 text-xs font-bold text-brand-800">
                     {index + 1}
                   </span>
                   <span>{text}</span>

@@ -1,8 +1,8 @@
 import { cn } from "@/lib/cn";
 
 /**
- * ClinicFlow mark: a rounded tile holding an open "C" ring whose end flows into a small cross,
- * the cross being the "flow" of a patient through the clinic. Pure SVG, no external assets.
+ * ClinicFlow mark, used only in the staff area (the public site carries the clinic's own identity,
+ * see ClinicBrand): a tile holding an open "C" ring whose end flows into a small cross. Pure SVG.
  */
 export function LogoMark({ className }: { className?: string }) {
   return (
@@ -13,7 +13,7 @@ export function LogoMark({ className }: { className?: string }) {
       aria-label="ClinicFlow"
       focusable="false"
     >
-      <rect width="40" height="40" rx="11" fill="#0b5753" />
+      <rect width="40" height="40" rx="8" fill="#0b5753" />
       <path
         d="M27.2 13.1A9.6 9.6 0 1 0 27.2 26.9"
         fill="none"
@@ -43,7 +43,7 @@ export function Wordmark({
           tone === "dark" ? "text-ink-900" : "text-paper",
         )}
       >
-        Clinic<span className={tone === "dark" ? "text-teal-600" : "text-sage-300"}>Flow</span>
+        Clinic<span className={tone === "dark" ? "text-brand-600" : "text-sage-300"}>Flow</span>
       </span>
     </span>
   );

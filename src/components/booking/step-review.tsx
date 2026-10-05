@@ -26,7 +26,7 @@ function Row({
           <button
             type="button"
             onClick={onEdit}
-            className="inline-flex shrink-0 items-center gap-1.5 rounded-xs px-1 py-1 text-sm font-semibold text-teal-700 hover:text-teal-800"
+            className="inline-flex shrink-0 items-center gap-1.5 rounded-xs px-1 py-1 text-sm font-semibold text-brand-700 hover:text-brand-800"
           >
             <Pencil className="size-3.5" aria-hidden="true" />
             Change<span className="sr-only"> {editLabel ?? label}</span>

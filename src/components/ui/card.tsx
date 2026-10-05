@@ -30,11 +30,13 @@ export function SectionHeading({
 }) {
   return (
     <div className={cn("max-w-2xl", align === "center" && "mx-auto text-center", className)}>
-      {eyebrow ? <p className="eyebrow mb-3">{eyebrow}</p> : null}
-      <Heading id={id} className="text-3xl sm:text-4xl">
+      {eyebrow ? <p className="eyebrow eyebrow-rule mb-4">{eyebrow}</p> : null}
+      <Heading id={id} className="text-[1.75rem] sm:text-[2.25rem]">
         {title}
       </Heading>
-      {description ? <p className="mt-4 text-lg text-ink-700">{description}</p> : null}
+      {description ? (
+        <p className="mt-4 max-w-prose text-[1.0625rem] text-ink-700">{description}</p>
+      ) : null}
     </div>
   );
 }

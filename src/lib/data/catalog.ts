@@ -5,11 +5,13 @@ import {
   computeClinicHours,
   summarizeClinicHours,
   summarizeDoctorAvailability,
+  type ClinicHoursRow,
   type SummaryLine,
   type WeeklyWindow,
 } from "@/lib/availability-summary";
 import { todayInZone } from "@/lib/datetime";
 import { logger } from "@/lib/logger";
+import { doctorPhoto } from "@/lib/public-images";
 import { createPublicClient } from "@/lib/supabase/clients";
 import type { Tables } from "@/lib/supabase/database.types";
 
@@ -20,6 +22,8 @@ export type DoctorRow = Tables<"doctors">;
 export interface Doctor extends DoctorRow {
   serviceIds: string[];
   availability: SummaryLine[];
+  /** Portrait found in `public/doctors/<slug>.*`, or null (the page then shows initials). */
+  photoUrl: string | null;
 }
 
 export interface Holiday {
@@ -33,7 +37,10 @@ export interface Catalog {
   clinic: Clinic;
   services: Service[];
   doctors: Doctor[];
+  /** Clinic hours grouped into runs of identical days, for compact displays. */
   clinicHours: SummaryLine[];
+  /** The clinic's hours day by day (Monday first): merged ranges in which any doctor is in. */
+  hoursByDay: ClinicHoursRow[];
   /** Number of weekdays on which at least one doctor is in clinic. */
   openDaysPerWeek: number;
   holidays: Holiday[];
@@ -101,6 +108,7 @@ export const getCatalog = cache(async (): Promise<Catalog> => {
       .filter((link) => link.doctor_id === doctor.id && activeServiceIds.has(link.service_id))
       .map((link) => link.service_id),
     availability: summarizeDoctorAvailability(windowsByDoctor.get(doctor.id) ?? []),
+    photoUrl: doctorPhoto(doctor.slug),
   }));
 
   const activeDoctorIds = new Set(doctors.map((doctor) => doctor.id));
@@ -125,7 +133,8 @@ export const getCatalog = cache(async (): Promise<Catalog> => {
     services,
     doctors,
     clinicHours: summarizeClinicHours(hoursRows),
-    openDaysPerWeek: hoursRows.filter((row) => row.open !== null).length,
+    hoursByDay: hoursRows,
+    openDaysPerWeek: hoursRows.filter((row) => row.ranges.length > 0).length,
     holidays,
     doctorsForService: (serviceId: string) =>
       doctors.filter((doctor) => doctor.serviceIds.includes(serviceId)),

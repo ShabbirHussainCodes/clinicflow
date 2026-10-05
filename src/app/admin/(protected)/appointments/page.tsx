@@ -83,7 +83,7 @@ export default async function AppointmentsPage({
             filtered ? (
               <Link
                 href="/admin/appointments"
-                className="font-semibold text-teal-700 underline underline-offset-2"
+                className="font-semibold text-brand-700 underline underline-offset-2"
               >
                 Clear all filters
               </Link>

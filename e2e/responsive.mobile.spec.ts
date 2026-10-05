@@ -30,6 +30,21 @@ test.describe("mobile layouts", () => {
     await expect(page.getByRole("navigation", { name: "Mobile" })).toBeHidden();
   });
 
+  test("call and book buttons stay within reach on phones, except during booking", async ({
+    page,
+  }) => {
+    await gotoHydrated(page, "/");
+    const call = page.getByRole("link", { name: "Call", exact: true });
+    await expect(call).toBeVisible();
+    const box = await call.boundingBox();
+    const viewport = page.viewportSize();
+    expect(box && viewport && box.y + box.height <= viewport.height).toBe(true);
+    expect(box?.height ?? 0).toBeGreaterThanOrEqual(44);
+
+    await gotoHydrated(page, "/book");
+    await expect(page.getByRole("link", { name: "Call", exact: true })).toHaveCount(0);
+  });
+
   test("touch targets on the booking flow are at least 44px", async ({ page }) => {
     await gotoHydrated(page, "/book?service=general-consultation&doctor=dr-meera-iyer");
     const dateButton = page.locator('button[data-date]:not([aria-disabled="true"])').first();

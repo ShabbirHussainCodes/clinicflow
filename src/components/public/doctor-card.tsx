@@ -1,65 +1,97 @@
-import { Award, CalendarDays, Languages } from "lucide-react";
+import Link from "next/link";
+import { ArrowRight } from "lucide-react";
 
-import { DoctorAvatar } from "@/components/illustrations/doctor-avatar";
-import { ButtonLink } from "@/components/ui/button";
+import { DoctorPortrait } from "@/components/public/doctor-portrait";
+import { cn } from "@/lib/cn";
 import type { Doctor } from "@/lib/data/catalog";
 
-export function DoctorCard({ doctor, detailed = false }: { doctor: Doctor; detailed?: boolean }) {
-  return (
-    <article className="group flex h-full flex-col overflow-hidden rounded-lg border border-sand-200 bg-surface shadow-card transition-shadow duration-200 hover:shadow-raised">
-      <div className="bg-sand-50 px-8 pt-8">
-        <div className="mx-auto w-full max-w-[11rem]">
-          <DoctorAvatar theme={doctor.avatar_theme} />
-        </div>
-      </div>
-      <div className="flex flex-1 flex-col p-6">
-        <h3 className="text-2xl">{doctor.full_name}</h3>
-        <p className="mt-1 font-semibold text-teal-700">{doctor.specialization}</p>
-        <p className="mt-0.5 text-sm text-ink-500">{doctor.qualification}</p>
+function shortName(fullName: string): string {
+  return fullName.split(" ").slice(0, 2).join(" ");
+}
 
-        <ul className="mt-4 space-y-2 text-sm text-ink-700">
-          <li className="flex items-center gap-2.5">
-            <Award className="size-4 shrink-0 text-teal-600" aria-hidden="true" />
-            {doctor.experience_years} years of experience
-          </li>
+/**
+ * `portrait` gives every doctor a large 4:5 photo (or initials tile). Without any photographs, use
+ * `portrait={false}`: a ruled column headed by a small initials badge, which looks finished
+ * instead of showing a row of empty picture frames.
+ */
+export function DoctorCard({
+  doctor,
+  detailed = false,
+  portrait = true,
+}: {
+  doctor: Doctor;
+  detailed?: boolean;
+  portrait?: boolean;
+}) {
+  return (
+    <article
+      className={cn("group flex h-full flex-col", !portrait && "border-t border-ink-900 pt-6")}
+    >
+      {portrait ? (
+        <DoctorPortrait
+          name={doctor.full_name}
+          photoUrl={doctor.photoUrl}
+          tone={doctor.avatar_theme}
+          sizes="(min-width: 1024px) 22vw, (min-width: 640px) 44vw, 92vw"
+          initialsClassName="text-7xl"
+        />
+      ) : (
+        <DoctorPortrait
+          name={doctor.full_name}
+          photoUrl={null}
+          tone={doctor.avatar_theme}
+          sizes="56px"
+          shape="square"
+          className="size-14 rounded-sm"
+          initialsClassName="text-xl"
+        />
+      )}
+      <div className={cn("flex flex-1 flex-col", portrait ? "mt-5" : "mt-4")}>
+        <h3 className="font-display text-[1.5rem] font-medium leading-tight">{doctor.full_name}</h3>
+        <p className="mt-1.5 font-semibold text-brand-700">{doctor.specialization}</p>
+        <p className="text-sm text-ink-500">{doctor.qualification}</p>
+
+        <dl className="mt-4 space-y-2 border-t border-sand-200 pt-4 text-sm">
+          <div className="flex gap-3">
+            <dt className="w-[4.75rem] shrink-0 text-ink-500">Experience</dt>
+            <dd className="text-ink-900">{doctor.experience_years} years</dd>
+          </div>
           {doctor.languages.length > 0 ? (
-            <li className="flex items-center gap-2.5">
-              <Languages className="size-4 shrink-0 text-teal-600" aria-hidden="true" />
-              {doctor.languages.join(", ")}
-            </li>
+            <div className="flex gap-3">
+              <dt className="w-[4.75rem] shrink-0 text-ink-500">Speaks</dt>
+              <dd className="text-ink-900">{doctor.languages.join(", ")}</dd>
+            </div>
           ) : null}
-          <li className="flex gap-2.5">
-            <CalendarDays className="mt-0.5 size-4 shrink-0 text-teal-600" aria-hidden="true" />
-            <span>
+          <div className="flex gap-3">
+            <dt className="w-[4.75rem] shrink-0 text-ink-500">In clinic</dt>
+            <dd className="text-ink-900">
               {doctor.availability.length === 0
-                ? "Availability coming soon"
+                ? "Timings coming soon"
                 : doctor.availability.map((line) => (
                     <span key={`${line.days}-${line.hours}`} className="block">
-                      <span className="font-semibold text-ink-900">{line.days}</span>{" "}
-                      <span className="whitespace-nowrap">{line.hours}</span>
+                      <span className="font-semibold">{line.days}</span>{" "}
+                      <span className="whitespace-nowrap tabular-nums">{line.hours}</span>
                     </span>
                   ))}
-            </span>
-          </li>
-        </ul>
+            </dd>
+          </div>
+        </dl>
 
         {detailed && doctor.bio ? (
           <p className="mt-4 text-[0.9375rem] text-ink-700">{doctor.bio}</p>
         ) : null}
 
-        <div className="mt-auto pt-6">
-          <ButtonLink
+        <div className="mt-auto pt-5">
+          <Link
             href={`/book?doctor=${doctor.slug}`}
-            variant="secondary"
-            className="w-full group-hover:border-teal-600"
+            className="inline-flex min-h-10 items-center gap-1.5 rounded-xs font-semibold text-brand-700 hover:text-brand-800"
           >
-            Book with{" "}
-            {doctor.full_name
-              .replace(/^Dr\.\s*/, "Dr. ")
-              .split(" ")
-              .slice(0, 2)
-              .join(" ")}
-          </ButtonLink>
+            Book with {shortName(doctor.full_name)}
+            <ArrowRight
+              className="size-4 transition-transform group-hover:translate-x-0.5"
+              aria-hidden="true"
+            />
+          </Link>
         </div>
       </div>
     </article>

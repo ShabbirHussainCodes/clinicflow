@@ -31,7 +31,8 @@ CSP says `connect-src 'self'`, and configuration is read at runtime (no rebuild 
 | `src/lib/validation`  | Zod schemas shared by client and server                                                                 |
 | `src/lib/events`      | Webhook signing and the dispatcher (pure, injectable, unit-tested)                                      |
 | `src/lib/supabase`    | The three clients, cookie hardening, generated types                                                    |
-| `src/components`      | `ui` kit, `booking` wizard, `admin`, `illustrations` (local SVG art)                                    |
+| `src/components`      | `ui` kit, `public` page sections, `layout` (header, footer), `brand`, `booking` wizard, `admin`         |
+| `src/config/site.ts`  | The clinic's website wording (not in the database); see `docs/CUSTOMIZE.md`                             |
 | `supabase/migrations` | The database: schema, functions, RLS, grants                                                            |
 
 ## Booking: single source of truth

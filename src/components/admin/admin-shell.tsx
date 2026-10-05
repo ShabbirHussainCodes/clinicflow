@@ -39,8 +39,8 @@ function NavList({ pathname, onNavigate }: { pathname: string; onNavigate?: () =
             className={cn(
               "flex items-center gap-3 rounded-sm px-3.5 py-2.5 text-[0.9375rem] font-semibold transition-colors",
               active
-                ? "bg-teal-700 text-white"
-                : "text-teal-100 hover:bg-teal-800 hover:text-white",
+                ? "bg-brand-700 text-white"
+                : "text-brand-100 hover:bg-brand-800 hover:text-white",
             )}
           >
             <item.icon className="size-5" aria-hidden="true" />
@@ -54,22 +54,22 @@ function NavList({ pathname, onNavigate }: { pathname: string; onNavigate?: () =
 
 function AccountBlock({ name, email }: { name: string; email: string }) {
   return (
-    <div className="space-y-3 border-t border-teal-800 pt-4">
+    <div className="space-y-3 border-t border-brand-800 pt-4">
       <div className="px-1">
         <p className="truncate text-sm font-semibold text-paper">{name}</p>
-        <p className="truncate text-xs text-teal-100/75">{email}</p>
+        <p className="truncate text-xs text-brand-100/75">{email}</p>
       </div>
       <Link
         href="/"
         target="_blank"
-        className="flex items-center gap-2 rounded-sm px-3 py-2 text-sm text-teal-100 hover:bg-teal-800 hover:text-white"
+        className="flex items-center gap-2 rounded-sm px-3 py-2 text-sm text-brand-100 hover:bg-brand-800 hover:text-white"
       >
         <ExternalLink className="size-4" aria-hidden="true" /> View public site
       </Link>
       <form action={signOutAction}>
         <button
           type="submit"
-          className="flex w-full items-center gap-2 rounded-sm px-3 py-2 text-sm font-semibold text-teal-100 hover:bg-teal-800 hover:text-white"
+          className="flex w-full items-center gap-2 rounded-sm px-3 py-2 text-sm font-semibold text-brand-100 hover:bg-brand-800 hover:text-white"
         >
           <LogOut className="size-4" aria-hidden="true" /> Sign out
         </button>
@@ -103,13 +103,13 @@ export function AdminShell({
     <div className="min-h-dvh lg:grid lg:grid-cols-[16.5rem_1fr]">
       <a
         href="#admin-main"
-        className="sr-only z-50 rounded-sm bg-teal-700 px-4 py-2 font-semibold text-white focus:not-sr-only focus:fixed focus:left-4 focus:top-4"
+        className="sr-only z-50 rounded-sm bg-brand-700 px-4 py-2 font-semibold text-white focus:not-sr-only focus:fixed focus:left-4 focus:top-4"
       >
         Skip to main content
       </a>
 
       {/* Desktop rail */}
-      <aside className="hidden bg-teal-900 lg:block">
+      <aside className="hidden bg-brand-900 lg:block">
         <div className="sticky top-0 flex h-dvh flex-col justify-between p-5">
           <div className="space-y-8">
             <Link
@@ -147,7 +147,7 @@ export function AdminShell({
         onClick={(event) => {
           if (event.target === drawerRef.current) setOpenFor(null);
         }}
-        className="m-0 h-dvh max-h-none w-72 max-w-[85vw] bg-teal-900 p-0 text-teal-50 backdrop:bg-ink-900/50 open:animate-fade-in lg:hidden"
+        className="m-0 h-dvh max-h-none w-72 max-w-[85vw] bg-brand-900 p-0 text-brand-50 backdrop:bg-ink-900/50 open:animate-fade-in lg:hidden"
       >
         <div className="flex h-full flex-col justify-between p-5">
           <div className="space-y-8">
@@ -156,7 +156,7 @@ export function AdminShell({
               <button
                 type="button"
                 aria-label="Close navigation menu"
-                className="flex size-10 items-center justify-center rounded-full text-teal-100 hover:bg-teal-800"
+                className="flex size-10 items-center justify-center rounded-full text-brand-100 hover:bg-brand-800"
                 onClick={() => setOpenFor(null)}
               >
                 <X className="size-5" aria-hidden="true" />

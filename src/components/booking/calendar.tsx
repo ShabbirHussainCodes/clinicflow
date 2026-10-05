@@ -201,8 +201,8 @@ export function Calendar({
                       }}
                       className={cn(
                         "relative mx-auto flex size-10 items-center justify-center rounded-full text-[0.9375rem] font-medium transition-colors sm:size-11",
-                        available && !isSelected && "bg-teal-50 text-teal-800 hover:bg-teal-100",
-                        available && isSelected && "bg-teal-700 text-white shadow-sm",
+                        available && !isSelected && "bg-brand-50 text-brand-800 hover:bg-brand-100",
+                        available && isSelected && "bg-brand-700 text-white shadow-sm",
                         !available && "cursor-default text-ink-500",
                         date === today && !isSelected && "ring-1 ring-inset ring-ink-400",
                       )}
@@ -210,7 +210,7 @@ export function Calendar({
                       {Number(date.slice(8))}
                       {available && !isSelected ? (
                         <span
-                          className="absolute bottom-1 size-1 rounded-full bg-teal-500"
+                          className="absolute bottom-1 size-1 rounded-full bg-brand-500"
                           aria-hidden="true"
                         />
                       ) : null}
@@ -225,7 +225,7 @@ export function Calendar({
 
       <p className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-ink-500">
         <span className="inline-flex items-center gap-1.5">
-          <span className="size-3 rounded-full bg-teal-100" aria-hidden="true" /> Times available
+          <span className="size-3 rounded-full bg-brand-100" aria-hidden="true" /> Times available
         </span>
         <span className="inline-flex items-center gap-1.5">
           <span

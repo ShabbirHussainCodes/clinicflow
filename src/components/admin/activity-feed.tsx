@@ -16,7 +16,11 @@ type Item = DashboardSummary["recent_activity"][number];
 
 function describe(item: Item): { text: string; icon: LucideIcon; tone: string } {
   if (item.event === "created") {
-    return { text: "booked an appointment", icon: CalendarPlus, tone: "bg-teal-50 text-teal-700" };
+    return {
+      text: "booked an appointment",
+      icon: CalendarPlus,
+      tone: "bg-brand-50 text-brand-700",
+    };
   }
   if (item.event === "rescheduled") {
     return {
