@@ -297,7 +297,7 @@ export function BookingWizard({ clinic, services, doctors, initialServiceId, ini
       <div className="mt-8 grid items-start gap-6 lg:grid-cols-[minmax(0,1fr)_19rem]">
         <section
           aria-labelledby="step-heading"
-          className="rounded-lg border border-sand-200 bg-paper p-0 sm:bg-surface sm:p-8 sm:shadow-card"
+          className="rounded-lg bg-paper p-0 sm:border sm:border-sand-200 sm:bg-surface sm:p-8 sm:shadow-card"
         >
           <h2
             id="step-heading"

@@ -31,6 +31,30 @@ export default async function globalSetup() {
     .upsert({ id: userId, full_name: "E2E Administrator", is_active: true });
   if (profileError) throw profileError;
 
-  const state: E2eState = { adminEmail: email, adminPassword: password };
+  // A real Supabase account without an admin profile: it must never reach the dashboard.
+  const outsiderEmail = "e2e-outsider@clinicflow.test";
+  const outsiderPassword = `Pw-${randomBytes(12).toString("hex")}`;
+  const outsider = existing?.users.find((user) => user.email === outsiderEmail);
+  if (outsider) {
+    const { error } = await supabase.auth.admin.updateUserById(outsider.id, {
+      password: outsiderPassword,
+      email_confirm: true,
+    });
+    if (error) throw error;
+  } else {
+    const { error } = await supabase.auth.admin.createUser({
+      email: outsiderEmail,
+      password: outsiderPassword,
+      email_confirm: true,
+    });
+    if (error) throw error;
+  }
+
+  const state: E2eState = {
+    adminEmail: email,
+    adminPassword: password,
+    outsiderEmail,
+    outsiderPassword,
+  };
   writeFileSync(STATE_FILE, JSON.stringify(state), { mode: 0o600 });
 }

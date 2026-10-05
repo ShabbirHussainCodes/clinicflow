@@ -50,6 +50,7 @@ export default defineConfig({
     env: {
       // Generous limit so repeated test bookings are not throttled.
       BOOKING_RATE_LIMIT_PER_HOUR: "1000",
+      LOGIN_ATTEMPTS_PER_15_MIN: "1000",
       SHOW_DEMO_NOTICE: "true",
     },
   },

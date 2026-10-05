@@ -27,6 +27,8 @@ const envSchema = z.object({
   N8N_WEBHOOK_SECRET: optionalString(z.string().min(16)),
   EVENT_REMINDER_LEAD_HOURS: z.coerce.number().int().min(1).max(168).default(24),
   BOOKING_RATE_LIMIT_PER_HOUR: z.coerce.number().int().min(1).max(10000).default(8),
+  /** Failed-or-successful sign-in attempts allowed per e-mail address per 15 minutes. */
+  LOGIN_ATTEMPTS_PER_15_MIN: z.coerce.number().int().min(1).max(10000).default(6),
   /** Shows the "demonstration site" strip. Set to "false" for a real clinic deployment. */
   SHOW_DEMO_NOTICE: z.preprocess(
     (value) => (value === "" ? undefined : value),

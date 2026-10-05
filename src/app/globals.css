@@ -91,6 +91,9 @@
 @layer base {
   html {
     scroll-behavior: smooth;
+    /* Keep focused fields and anchors clear of the sticky header. */
+    scroll-padding-top: 7rem;
+    scroll-padding-bottom: 6rem;
     -webkit-text-size-adjust: 100%;
     text-size-adjust: 100%;
   }
