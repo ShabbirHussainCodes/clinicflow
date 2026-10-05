@@ -19,6 +19,9 @@ More: [services](docs/screenshots/services-desktop.png) · [doctors](docs/screen
 [admin login](docs/screenshots/admin-login.png) · [appointment detail](docs/screenshots/admin-appointment-detail.png) ·
 [automation events](docs/screenshots/admin-events.png).
 
+> **New to the project, or handing it to a client?** Read [docs/HANDOVER.md](docs/HANDOVER.md): a one-page guide for
+> starting everything locally, working with Git, and handing over admin access.
+
 ## Features
 
 **Patients**
@@ -201,7 +204,7 @@ docs/                  architecture, database, deployment, n8n, security, testin
 
 ## Documentation index
 
-[ARCHITECTURE](docs/ARCHITECTURE.md) · [DATABASE](docs/DATABASE.md) · [DEPLOYMENT](docs/DEPLOYMENT.md) ·
+**[HANDOVER (start here)](docs/HANDOVER.md)** · [ARCHITECTURE](docs/ARCHITECTURE.md) · [DATABASE](docs/DATABASE.md) · [DEPLOYMENT](docs/DEPLOYMENT.md) ·
 [N8N_INTEGRATION](docs/N8N_INTEGRATION.md) · [SECURITY](docs/SECURITY.md) · [TESTING](docs/TESTING.md) ·
 [ACCESSIBILITY](docs/ACCESSIBILITY.md) · [DESIGN](docs/DESIGN.md) · [DECISIONS](docs/DECISIONS.md) ·
 [BUILD_REPORT](docs/BUILD_REPORT.md) · [NEXT_STEPS](docs/NEXT_STEPS.md) · [PROJECT_BRIEF](docs/PROJECT_BRIEF.md)
