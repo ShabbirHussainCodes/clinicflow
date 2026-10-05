@@ -17,3 +17,7 @@
 15. **`agentRules: false`**: `next dev` otherwise rewrites the owner's `CLAUDE.md`.
 16. **Tests use real Postgres, not mocks**; Playwright runs against a production build so CSP/caching are real.
 17. **Cloud-sandbox only**: Docker Hub mirror via `SUPABASE_INTERNAL_IMAGE_REGISTRY=docker.io` because `ghcr.io` blobs were blocked by egress policy. Not needed on normal machines.
+
+## Hosted auth settings are not pushed from `config.toml`
+
+`supabase/config.toml` describes the local stack (localhost `site_url`). For a hosted project, disable public sign-up and set the Site URL in the Supabase dashboard rather than with `supabase config push`, which would overwrite the hosted Site URL. Documented in `docs/DEPLOYMENT.md` and in a comment in `config.toml`.
