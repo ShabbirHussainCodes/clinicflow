@@ -376,3 +376,35 @@ The project is complete only when:
 - Meaningful issues discovered during review have been fixed.
 - Completed work is committed and pushed to a separate branch.
 - A pull request is created for the repository owner.
+
+## Deployment portability
+
+ClinicFlow must be deployable to a fresh Supabase project without manually recreating database objects.
+
+The repository must include:
+
+- Complete ordered database migrations
+- Row Level Security policies
+- Database functions and triggers
+- Fictional seed data
+- `.env.example`
+- Local Supabase instructions
+- Fresh hosted Supabase setup instructions
+- Commands for linking a hosted project and applying migrations
+- Admin user creation instructions
+- Render environment variable instructions
+- A post-deployment verification checklist
+
+Deployment documentation should cover this flow:
+
+1. Create or select a Supabase project.
+2. Obtain the project URL and required keys.
+3. Configure local and Render environment variables.
+4. Link Supabase CLI to the selected project.
+5. Apply versioned migrations.
+6. Add fictional seed data if this is a demo environment.
+7. Create the first administrator.
+8. Deploy the application.
+9. Verify booking, authentication and dashboard flows.
+
+No step should depend on the original developer’s Supabase account.
