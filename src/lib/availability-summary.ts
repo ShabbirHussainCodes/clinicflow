@@ -24,7 +24,8 @@ export function describeWeekdays(weekdays: readonly number[]): string {
   for (const day of ordered) {
     const run = runs[runs.length - 1];
     const previous = run?.[run.length - 1];
-    if (run && previous !== undefined && indexInWeek(day) === indexInWeek(previous) + 1) run.push(day);
+    if (run && previous !== undefined && indexInWeek(day) === indexInWeek(previous) + 1)
+      run.push(day);
     else runs.push([day]);
   }
 
@@ -77,7 +78,11 @@ export function computeClinicHours(windows: readonly WeeklyWindow[]): ClinicHour
     const today = windows.filter((window) => window.weekday === weekday);
     if (today.length === 0) return { weekday, open: null, close: null };
     const open = today.map((w) => w.start_time).sort()[0] ?? null;
-    const close = today.map((w) => w.end_time).sort().reverse()[0] ?? null;
+    const close =
+      today
+        .map((w) => w.end_time)
+        .sort()
+        .reverse()[0] ?? null;
     return { weekday, open, close };
   });
 }

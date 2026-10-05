@@ -18,10 +18,23 @@ export function SummaryCard({
   slotStart: string | null;
 }) {
   const rows = [
-    { icon: Stethoscope, label: "Service", value: service?.name, extra: service ? `${service.durationMinutes} min` : undefined },
+    {
+      icon: Stethoscope,
+      label: "Service",
+      value: service?.name,
+      extra: service ? `${service.durationMinutes} min` : undefined,
+    },
     { icon: UserRound, label: "Doctor", value: doctor?.name, extra: doctor?.specialization },
-    { icon: CalendarDays, label: "Date", value: date ? formatCalendarDate(date, "long") : undefined },
-    { icon: Clock, label: "Time", value: slotStart ? formatTime(slotStart, clinic.timezone) : undefined },
+    {
+      icon: CalendarDays,
+      label: "Date",
+      value: date ? formatCalendarDate(date, "long") : undefined,
+    },
+    {
+      icon: Clock,
+      label: "Time",
+      value: slotStart ? formatTime(slotStart, clinic.timezone) : undefined,
+    },
   ];
   return (
     <aside
@@ -33,15 +46,21 @@ export function SummaryCard({
       <p className="text-sm text-ink-500">{clinic.name}</p>
       <dl className="mt-4 space-y-3.5">
         {rows.map((row) => (
-          <div key={row.label} className="flex items-start gap-3">
-            <row.icon className="mt-0.5 size-4 shrink-0 text-teal-600" aria-hidden="true" />
-            <div className="min-w-0">
-              <dt className="text-xs font-semibold uppercase tracking-wider text-ink-500">{row.label}</dt>
-              <dd className={row.value ? "font-semibold text-ink-900" : "text-ink-400"}>
-                {row.value ?? "Not chosen yet"}
-                {row.value && row.extra ? <span className="block text-sm font-normal text-ink-500">{row.extra}</span> : null}
-              </dd>
-            </div>
+          <div key={row.label}>
+            <dt className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-ink-500">
+              <row.icon className="size-4 shrink-0 text-teal-600" aria-hidden="true" />
+              {row.label}
+            </dt>
+            <dd
+              className={
+                row.value ? "mt-0.5 pl-6 font-semibold text-ink-900" : "mt-0.5 pl-6 text-ink-500"
+              }
+            >
+              {row.value ?? "Not chosen yet"}
+              {row.value && row.extra ? (
+                <span className="block text-sm font-normal text-ink-500">{row.extra}</span>
+              ) : null}
+            </dd>
           </div>
         ))}
       </dl>

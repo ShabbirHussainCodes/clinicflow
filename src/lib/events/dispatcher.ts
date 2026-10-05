@@ -23,6 +23,8 @@ export interface EventStore {
   claim(limit: number): Promise<ClaimedEvent[]>;
   complete(id: string): Promise<void>;
   fail(id: string, error: string, maxAttempts: number): Promise<void>;
+  /** Deletes delivered events older than the retention period; returns how many were removed. */
+  purgeDelivered(olderThanDays: number): Promise<number>;
 }
 
 export type SendResult = { ok: true } | { ok: false; error: string };
@@ -33,16 +35,25 @@ export interface DispatchSummary {
   claimed: number;
   delivered: number;
   failed: number;
+  purged: number;
 }
 
 export async function dispatchBatch(options: {
   store: EventStore;
   send: Sender;
   reminderLeadHours: number;
+  retentionDays?: number;
   batchSize?: number;
   maxAttempts?: number;
 }): Promise<DispatchSummary> {
-  const { store, send, reminderLeadHours, batchSize = 25, maxAttempts = 8 } = options;
+  const {
+    store,
+    send,
+    reminderLeadHours,
+    retentionDays = 30,
+    batchSize = 25,
+    maxAttempts = 8,
+  } = options;
 
   const remindersQueued = await store.enqueueReminders(reminderLeadHours);
   const events = await store.claim(batchSize);
@@ -66,17 +77,22 @@ export async function dispatchBatch(options: {
     }
   }
 
-  return { remindersQueued, claimed: events.length, delivered, failed };
+  // Delivered events contain patient contact details, so they are not kept forever.
+  const purged = await store.purgeDelivered(retentionDays);
+
+  return { remindersQueued, claimed: events.length, delivered, failed, purged };
 }
 
 export function createWebhookSender(config: {
   url: string;
   secret: string;
+  /** Optional static token sent as X-ClinicFlow-Token (for receivers that only support header auth). */
+  authToken?: string;
   timeoutMs?: number;
   fetchImpl?: typeof fetch;
   now?: () => number;
 }): Sender {
-  const { url, secret, timeoutMs = 10_000, fetchImpl = fetch, now = Date.now } = config;
+  const { url, secret, authToken, timeoutMs = 10_000, fetchImpl = fetch, now = Date.now } = config;
 
   return async (event) => {
     const body = JSON.stringify(event.payload);
@@ -97,6 +113,7 @@ export function createWebhookSender(config: {
           "X-ClinicFlow-Timestamp": timestamp,
           "X-ClinicFlow-Delivery-Attempt": String(event.attempts),
           "X-ClinicFlow-Signature": signPayload(secret, timestamp, body),
+          ...(authToken ? { "X-ClinicFlow-Token": authToken } : {}),
         },
         body,
       });

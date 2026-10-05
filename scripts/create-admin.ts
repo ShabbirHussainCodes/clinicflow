@@ -51,7 +51,8 @@ async function askHidden(prompt: string): Promise<string> {
 
 function validatePassword(password: string): string | null {
   if (password.length < 12) return "Password must be at least 12 characters.";
-  if (!/[A-Za-z]/.test(password) || !/\d/.test(password)) return "Password must contain letters and digits.";
+  if (!/[A-Za-z]/.test(password) || !/\d/.test(password))
+    return "Password must contain letters and digits.";
   return null;
 }
 
@@ -67,7 +68,9 @@ async function main() {
     fail("SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY must be set (see .env.example).");
   }
 
-  const supabase = createClient(url, serviceKey, { auth: { persistSession: false, autoRefreshToken: false } });
+  const supabase = createClient(url, serviceKey, {
+    auth: { persistSession: false, autoRefreshToken: false },
+  });
 
   // Find an existing account first (listUsers is paginated; clinics have a handful of users).
   let existingId: string | undefined;
@@ -80,7 +83,10 @@ async function main() {
 
   if (hasFlag("deactivate")) {
     if (!existingId) fail("No such user.");
-    const { error } = await supabase.from("admin_profiles").update({ is_active: false }).eq("id", existingId);
+    const { error } = await supabase
+      .from("admin_profiles")
+      .update({ is_active: false })
+      .eq("id", existingId);
     if (error) fail(error.message);
     console.log(`Deactivated dashboard access for ${email}.`);
     return;
@@ -91,7 +97,9 @@ async function main() {
       .from("admin_profiles")
       .upsert({ id: existingId, full_name: name, is_active: true });
     if (error) fail(error.message);
-    console.log(`${email} already exists; ensured they are an active administrator. (Use --reset-password to change the password.)`);
+    console.log(
+      `${email} already exists; ensured they are an active administrator. (Use --reset-password to change the password.)`,
+    );
     return;
   }
 
@@ -110,11 +118,19 @@ async function main() {
 
   let userId = existingId;
   if (existingId) {
-    const { error } = await supabase.auth.admin.updateUserById(existingId, { password, email_confirm: true });
+    const { error } = await supabase.auth.admin.updateUserById(existingId, {
+      password,
+      email_confirm: true,
+    });
     if (error) fail(`Could not update the password: ${error.message}`);
   } else {
-    const { data, error } = await supabase.auth.admin.createUser({ email, password, email_confirm: true });
-    if (error || !data.user) fail(`Could not create the user: ${error?.message ?? "unknown error"}`);
+    const { data, error } = await supabase.auth.admin.createUser({
+      email,
+      password,
+      email_confirm: true,
+    });
+    if (error || !data.user)
+      fail(`Could not create the user: ${error?.message ?? "unknown error"}`);
     userId = data.user.id;
   }
 

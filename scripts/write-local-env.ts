@@ -43,7 +43,9 @@ const url = values.get("API_URL");
 const anon = values.get("ANON_KEY");
 const service = values.get("SERVICE_ROLE_KEY");
 if (!url || !anon || !service) {
-  console.error("Unexpected `supabase status` output; could not find API_URL / ANON_KEY / SERVICE_ROLE_KEY.");
+  console.error(
+    "Unexpected `supabase status` output; could not find API_URL / ANON_KEY / SERVICE_ROLE_KEY.",
+  );
   process.exit(1);
 }
 

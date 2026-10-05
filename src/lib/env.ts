@@ -25,6 +25,8 @@ const envSchema = z.object({
   CRON_SECRET: optionalString(z.string().min(16)),
   N8N_WEBHOOK_URL: optionalUrl,
   N8N_WEBHOOK_SECRET: optionalString(z.string().min(16)),
+  N8N_WEBHOOK_AUTH_TOKEN: optionalString(z.string().min(16)),
+  EVENT_RETENTION_DAYS: z.coerce.number().int().min(1).max(3650).default(30),
   EVENT_REMINDER_LEAD_HOURS: z.coerce.number().int().min(1).max(168).default(24),
   BOOKING_RATE_LIMIT_PER_HOUR: z.coerce.number().int().min(1).max(10000).default(8),
   /** Failed-or-successful sign-in attempts allowed per e-mail address per 15 minutes. */

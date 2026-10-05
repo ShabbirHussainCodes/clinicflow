@@ -85,11 +85,17 @@ export function BlockedPanel({
       {upcoming.length === 0 ? (
         <p className="rounded-md bg-sand-50 p-4 text-ink-500">No upcoming blocked dates.</p>
       ) : (
-        <ul className="divide-y divide-sand-100 rounded-md border border-sand-200" data-testid="blocked-list">
+        <ul
+          className="divide-y divide-sand-100 rounded-md border border-sand-200"
+          data-testid="blocked-list"
+        >
           {upcoming.map((block) => (
             <li key={block.id} className="flex items-center justify-between gap-3 px-4 py-3">
               <div className="flex min-w-0 items-start gap-3">
-                <CalendarOff className="mt-0.5 size-4 shrink-0 text-danger-600" aria-hidden="true" />
+                <CalendarOff
+                  className="mt-0.5 size-4 shrink-0 text-danger-600"
+                  aria-hidden="true"
+                />
                 <p className="min-w-0 text-[0.9375rem]">
                   <span className="font-semibold">{range(block)}</span>
                   <span className="block text-sm text-ink-500">
@@ -129,8 +135,24 @@ export function BlockedPanel({
           <option value="doctor">{doctorName} only (leave, conference, unwell)</option>
           <option value="clinic">Whole clinic (public holiday, closure)</option>
         </SelectField>
-        <TextField label="First day" type="date" min={today} value={startDate} onChange={(event) => setStartDate(event.target.value)} error={errors.startDate} required />
-        <TextField label="Last day" type="date" min={startDate || today} value={endDate} onChange={(event) => setEndDate(event.target.value)} hint="Leave blank for a single day." error={errors.endDate} />
+        <TextField
+          label="First day"
+          type="date"
+          min={today}
+          value={startDate}
+          onChange={(event) => setStartDate(event.target.value)}
+          error={errors.startDate}
+          required
+        />
+        <TextField
+          label="Last day"
+          type="date"
+          min={startDate || today}
+          value={endDate}
+          onChange={(event) => setEndDate(event.target.value)}
+          hint="Leave blank for a single day."
+          error={errors.endDate}
+        />
         <TextField
           label="Reason"
           optional
@@ -143,14 +165,22 @@ export function BlockedPanel({
           error={errors.reason}
         />
         <div className="sm:col-span-2">
-          <Button type="submit" variant="secondary" loading={pending} icon={<Plus className="size-4" aria-hidden="true" />} data-testid="add-block">
+          <Button
+            type="submit"
+            variant="secondary"
+            loading={pending}
+            icon={<Plus className="size-4" aria-hidden="true" />}
+            data-testid="add-block"
+          >
             Block these dates
           </Button>
         </div>
       </form>
 
       <div aria-live="polite" className="mt-4 empty:hidden" data-testid="block-feedback">
-        {feedback ? <Alert tone={feedback.ok ? "success" : "danger"}>{feedback.message}</Alert> : null}
+        {feedback ? (
+          <Alert tone={feedback.ok ? "success" : "danger"}>{feedback.message}</Alert>
+        ) : null}
       </div>
     </div>
   );

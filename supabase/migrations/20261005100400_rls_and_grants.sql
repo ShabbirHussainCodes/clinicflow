@@ -30,6 +30,11 @@ revoke all on all functions in schema app_private from public, anon, authenticat
 grant usage on schema app_private to authenticated;
 grant execute on function app_private.is_admin() to authenticated;
 
+-- The trusted service role may insert appointments directly (for example from a maintenance
+-- script); the booking reference column default needs this one helper. It exposes nothing.
+grant usage on schema app_private to service_role;
+grant execute on function app_private.generate_booking_reference() to service_role;
+
 -- ---------------------------------------------------------------------------
 -- 2. Enable RLS everywhere
 -- ---------------------------------------------------------------------------

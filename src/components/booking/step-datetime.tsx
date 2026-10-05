@@ -14,7 +14,12 @@ export type LoadStatus = "idle" | "loading" | "ready" | "error";
 
 const PERIODS = [
   { key: "morning", label: "Morning", icon: Sunrise, test: (hour: number) => hour < 12 },
-  { key: "afternoon", label: "Afternoon", icon: SunMedium, test: (hour: number) => hour >= 12 && hour < 17 },
+  {
+    key: "afternoon",
+    label: "Afternoon",
+    icon: SunMedium,
+    test: (hour: number) => hour >= 12 && hour < 17,
+  },
   { key: "evening", label: "Evening", icon: Sunset, test: (hour: number) => hour >= 17 },
 ] as const;
 
@@ -61,7 +66,12 @@ export function StepDateTime({
   return (
     <div className="space-y-5">
       {notice ? (
-        <Alert tone="warning" title="Please choose another time" live="assertive" data-testid="slot-taken-alert">
+        <Alert
+          tone="warning"
+          title="Please choose another time"
+          live="assertive"
+          data-testid="slot-taken-alert"
+        >
           {notice}
         </Alert>
       ) : null}
@@ -121,12 +131,15 @@ export function StepDateTime({
                 </legend>
                 <div className="space-y-5">
                   {PERIODS.map((period) => {
-                    const periodSlots = slots.filter((slot) => period.test(hourInZone(slot.start, clinic.timezone)));
+                    const periodSlots = slots.filter((slot) =>
+                      period.test(hourInZone(slot.start, clinic.timezone)),
+                    );
                     if (periodSlots.length === 0) return null;
                     return (
                       <div key={period.key}>
                         <p className="mb-2 flex items-center gap-2 text-sm font-semibold text-ink-700">
-                          <period.icon className="size-4 text-clay-700" aria-hidden="true" /> {period.label}
+                          <period.icon className="size-4 text-clay-700" aria-hidden="true" />{" "}
+                          {period.label}
                         </p>
                         <div className="grid grid-cols-3 gap-2 sm:grid-cols-4">
                           {periodSlots.map((slot) => {

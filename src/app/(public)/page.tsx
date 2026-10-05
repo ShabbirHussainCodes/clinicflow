@@ -40,7 +40,10 @@ export default async function HomePage() {
               <ShieldCheck className="size-4" aria-hidden="true" />
               {clinic.name} · {clinic.city}
             </p>
-            <h1 id="hero-heading" className="text-[2.6rem] leading-[1.05] sm:text-6xl lg:text-[4.25rem]">
+            <h1
+              id="hero-heading"
+              className="text-[2.6rem] leading-[1.05] sm:text-6xl lg:text-[4.25rem]"
+            >
               Care that listens,
               <span className="block text-teal-600">close to home.</span>
             </h1>
@@ -49,7 +52,11 @@ export default async function HomePage() {
               suits you, and get your booking reference straight away. No phone call needed.
             </p>
             <div className="mt-9 flex flex-col gap-3 sm:flex-row">
-              <ButtonLink href="/book" size="lg" icon={<CalendarCheck className="size-5" aria-hidden="true" />}>
+              <ButtonLink
+                href="/book"
+                size="lg"
+                icon={<CalendarCheck className="size-5" aria-hidden="true" />}
+              >
                 Book an appointment
               </ButtonLink>
               <ButtonLink href="/services" variant="secondary" size="lg">
@@ -68,20 +75,24 @@ export default async function HomePage() {
 
         {/* Trust indicators */}
         <div className="container-page relative pb-4">
-          <dl className="grid grid-cols-2 gap-px overflow-hidden rounded-lg border border-sand-200 bg-sand-200 shadow-card lg:grid-cols-4">
+          <ul
+            aria-label="Clinic highlights"
+            className="grid grid-cols-2 gap-px overflow-hidden rounded-lg border border-sand-200 bg-sand-200 shadow-card lg:grid-cols-4"
+          >
             {trust.map((item) => (
-              <div key={item.label} className="flex items-center gap-4 bg-surface p-5 sm:p-6">
+              <li key={item.label} className="flex items-center gap-4 bg-surface p-5 sm:p-6">
                 <span className="hidden size-11 shrink-0 items-center justify-center rounded-md bg-teal-50 text-teal-700 sm:flex">
                   <item.icon className="size-5" aria-hidden="true" />
                 </span>
                 <div>
-                  <dt className="sr-only">{item.label}</dt>
-                  <dd className="font-display text-3xl font-semibold leading-none text-ink-900">{item.value}</dd>
-                  <p className="mt-1.5 text-sm leading-snug text-ink-500" aria-hidden="true">{item.label}</p>
+                  <p className="font-display text-3xl font-semibold leading-none text-ink-900">
+                    {item.value}
+                  </p>
+                  <p className="mt-1.5 text-sm leading-snug text-ink-500">{item.label}</p>
                 </div>
-              </div>
+              </li>
             ))}
-          </dl>
+          </ul>
         </div>
       </section>
 
@@ -103,7 +114,11 @@ export default async function HomePage() {
         </div>
         <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {services.slice(0, 6).map((service) => (
-            <ServiceCard key={service.id} service={service} doctors={catalog.doctorsForService(service.id)} />
+            <ServiceCard
+              key={service.id}
+              service={service}
+              doctors={catalog.doctorsForService(service.id)}
+            />
           ))}
         </div>
       </section>
@@ -146,8 +161,16 @@ export default async function HomePage() {
           />
           <div className="mt-12 grid gap-5 md:grid-cols-3">
             {TESTIMONIALS.map((item) => (
-              <figure key={item.name} className="flex flex-col rounded-lg border border-sand-200 bg-surface p-7 shadow-card">
-                <span aria-hidden="true" className="font-display text-6xl leading-none text-clay-500">“</span>
+              <figure
+                key={item.name}
+                className="flex flex-col rounded-lg border border-sand-200 bg-surface p-7 shadow-card"
+              >
+                <span
+                  aria-hidden="true"
+                  className="font-display text-6xl leading-none text-clay-500"
+                >
+                  “
+                </span>
                 <blockquote className="-mt-3 flex-1 text-[1.0625rem] leading-relaxed text-ink-900">
                   {item.quote}
                 </blockquote>
@@ -166,8 +189,14 @@ export default async function HomePage() {
       {/* Closing call to action */}
       <section aria-labelledby="cta-heading" className="container-page -mb-8 pt-20">
         <div className="relative overflow-hidden rounded-lg bg-teal-700 px-6 py-12 text-center sm:px-12 sm:py-16">
-          <div aria-hidden="true" className="absolute -left-10 -top-10 size-48 rounded-full bg-teal-600/50" />
-          <div aria-hidden="true" className="absolute -bottom-16 -right-8 size-56 rounded-full bg-teal-800/60" />
+          <div
+            aria-hidden="true"
+            className="absolute -left-10 -top-10 size-48 rounded-full bg-teal-600/50"
+          />
+          <div
+            aria-hidden="true"
+            className="absolute -bottom-16 -right-8 size-56 rounded-full bg-teal-800/60"
+          />
           <div className="relative">
             <h2 id="cta-heading" className="text-3xl text-paper sm:text-4xl">
               Ready when you are.

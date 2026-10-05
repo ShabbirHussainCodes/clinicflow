@@ -78,16 +78,16 @@ export function SiteHeader({ clinicName, phone }: { clinicName: string; phone: s
             aria-label={open ? "Close menu" : "Open menu"}
             onClick={() => setOpenFor(open ? null : pathname)}
           >
-            {open ? <X className="size-6" aria-hidden="true" /> : <Menu className="size-6" aria-hidden="true" />}
+            {open ? (
+              <X className="size-6" aria-hidden="true" />
+            ) : (
+              <Menu className="size-6" aria-hidden="true" />
+            )}
           </button>
         </div>
       </div>
 
-      <div
-        id="mobile-menu"
-        hidden={!open}
-        className="border-t border-sand-200 bg-paper lg:hidden"
-      >
+      <div id="mobile-menu" hidden={!open} className="border-t border-sand-200 bg-paper lg:hidden">
         <nav aria-label="Mobile" className="container-page flex flex-col gap-1 py-4">
           {NAV.map((item) => (
             <Link

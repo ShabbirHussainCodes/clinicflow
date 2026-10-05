@@ -30,8 +30,7 @@ import {
  */
 
 export type LoadDatesResult =
-  | { ok: true; dates: DateAvailabilityDto[] }
-  | { ok: false; message: string };
+  { ok: true; dates: DateAvailabilityDto[] } | { ok: false; message: string };
 
 export async function loadAvailableDates(input: {
   doctorId: string;
@@ -50,16 +49,15 @@ export async function loadAvailableDates(input: {
   while (from <= last) {
     const to = addDays(from, 61) < last ? addDays(from, 61) : last;
     const result = await fetchAvailableDates(parsed.data.doctorId, parsed.data.serviceId, from, to);
-    if (!result.ok) return { ok: false, message: "We couldn't load available dates. Please try again." };
+    if (!result.ok)
+      return { ok: false, message: "We couldn't load available dates. Please try again." };
     dates.push(...result.dates);
     from = addDays(to, 1);
   }
   return { ok: true, dates };
 }
 
-export type LoadSlotsResult =
-  | { ok: true; slots: SlotDto[] }
-  | { ok: false; message: string };
+export type LoadSlotsResult = { ok: true; slots: SlotDto[] } | { ok: false; message: string };
 
 export async function loadSlots(input: {
   doctorId: string;
@@ -70,7 +68,8 @@ export async function loadSlots(input: {
   if (!parsed.success) return { ok: false, message: "Invalid selection." };
 
   const result = await fetchSlots(parsed.data.doctorId, parsed.data.serviceId, parsed.data.date);
-  if (!result.ok) return { ok: false, message: "We couldn't load times for that day. Please try again." };
+  if (!result.ok)
+    return { ok: false, message: "We couldn't load times for that day. Please try again." };
   return { ok: true, slots: result.slots };
 }
 

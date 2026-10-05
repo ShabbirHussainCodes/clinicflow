@@ -36,7 +36,10 @@ export function HowItWorks() {
       />
       <ol className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
         {STEPS.map((step, index) => (
-          <li key={step.title} className="relative rounded-lg border border-sand-200 bg-surface p-6 shadow-card">
+          <li
+            key={step.title}
+            className="relative rounded-lg border border-sand-200 bg-surface p-6 shadow-card"
+          >
             <span className="font-display text-5xl font-semibold leading-none text-teal-100">
               {index + 1}
             </span>

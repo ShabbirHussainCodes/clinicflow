@@ -56,7 +56,9 @@ export function BreaksPanel({ doctorId, breaks }: { doctorId: string; breaks: Br
   return (
     <div>
       {breaks.length === 0 ? (
-        <p className="rounded-md bg-sand-50 p-4 text-ink-500">No breaks set. Patients can book any time inside working hours.</p>
+        <p className="rounded-md bg-sand-50 p-4 text-ink-500">
+          No breaks set. Patients can book any time inside working hours.
+        </p>
       ) : (
         <ul className="divide-y divide-sand-100 rounded-md border border-sand-200">
           {breaks.map((item) => (
@@ -66,8 +68,11 @@ export function BreaksPanel({ doctorId, breaks }: { doctorId: string; breaks: Br
                 <p className="min-w-0 text-[0.9375rem]">
                   <span className="font-semibold">{item.label}</span>
                   <span className="text-ink-700">
-                    {" "}· {formatClockTime(item.start_time)} – {formatClockTime(item.end_time)} ·{" "}
-                    {item.weekday === null ? "every working day" : `${WEEKDAY_NAMES[item.weekday]}s`}
+                    {" "}
+                    · {formatClockTime(item.start_time)} – {formatClockTime(item.end_time)} ·{" "}
+                    {item.weekday === null
+                      ? "every working day"
+                      : `${WEEKDAY_NAMES[item.weekday]}s`}
                   </span>
                 </p>
               </div>
@@ -92,24 +97,60 @@ export function BreaksPanel({ doctorId, breaks }: { doctorId: string; breaks: Br
           add();
         }}
       >
-        <SelectField label="Day" wrapperClassName="sm:col-span-2" value={weekday} onChange={(event) => setWeekday(event.target.value)}>
+        <SelectField
+          label="Day"
+          wrapperClassName="sm:col-span-2"
+          value={weekday}
+          onChange={(event) => setWeekday(event.target.value)}
+        >
           <option value="all">Every working day</option>
           {WEEKDAY_DISPLAY_ORDER.map((day) => (
-            <option key={day} value={day}>{WEEKDAY_NAMES[day]}</option>
+            <option key={day} value={day}>
+              {WEEKDAY_NAMES[day]}
+            </option>
           ))}
         </SelectField>
-        <TextField label="From" type="time" step={300} value={start} onChange={(event) => setStart(event.target.value)} error={errors.start} />
-        <TextField label="To" type="time" step={300} value={end} onChange={(event) => setEnd(event.target.value)} error={errors.end} />
-        <TextField label="Name" wrapperClassName="sm:col-span-2" value={label} onChange={(event) => setLabel(event.target.value)} placeholder="Lunch" maxLength={80} error={errors.label} />
+        <TextField
+          label="From"
+          type="time"
+          step={300}
+          value={start}
+          onChange={(event) => setStart(event.target.value)}
+          error={errors.start}
+        />
+        <TextField
+          label="To"
+          type="time"
+          step={300}
+          value={end}
+          onChange={(event) => setEnd(event.target.value)}
+          error={errors.end}
+        />
+        <TextField
+          label="Name"
+          wrapperClassName="sm:col-span-2"
+          value={label}
+          onChange={(event) => setLabel(event.target.value)}
+          placeholder="Lunch"
+          maxLength={80}
+          error={errors.label}
+        />
         <div className="sm:col-span-2">
-          <Button type="submit" variant="secondary" loading={pending} icon={<Plus className="size-4" aria-hidden="true" />}>
+          <Button
+            type="submit"
+            variant="secondary"
+            loading={pending}
+            icon={<Plus className="size-4" aria-hidden="true" />}
+          >
             Add break
           </Button>
         </div>
       </form>
 
       <div aria-live="polite" className="mt-4 empty:hidden">
-        {feedback ? <Alert tone={feedback.ok ? "success" : "danger"}>{feedback.message}</Alert> : null}
+        {feedback ? (
+          <Alert tone={feedback.ok ? "success" : "danger"}>{feedback.message}</Alert>
+        ) : null}
       </div>
     </div>
   );

@@ -4,11 +4,7 @@ import { z } from "zod";
 
 import { createSessionClient } from "@/lib/supabase/clients";
 import { logger } from "@/lib/logger";
-import {
-  APPOINTMENT_STATUSES,
-  PAGE_SIZE,
-  type AppointmentFilters,
-} from "@/lib/validation/admin";
+import { APPOINTMENT_STATUSES, PAGE_SIZE, type AppointmentFilters } from "@/lib/validation/admin";
 
 export class AdminDataError extends Error {
   constructor(message: string, options?: { cause?: unknown }) {
@@ -235,7 +231,10 @@ export interface AdminService {
 export const getFilterOptions = cache(async () => {
   const supabase = await createSessionClient();
   const [doctors, services] = await Promise.all([
-    supabase.from("doctors").select("id, full_name, specialization, slot_minutes, is_active").order("display_order"),
+    supabase
+      .from("doctors")
+      .select("id, full_name, specialization, slot_minutes, is_active")
+      .order("display_order"),
     supabase.from("services").select("id, name, duration_minutes").order("display_order"),
   ]);
   if (doctors.error || services.error) {
@@ -259,7 +258,13 @@ export const getClinicSettings = cache(async () => {
 export interface ScheduleData {
   doctor: AdminDoctor;
   windows: { id: string; weekday: number; start_time: string; end_time: string }[];
-  breaks: { id: string; weekday: number | null; start_time: string; end_time: string; label: string }[];
+  breaks: {
+    id: string;
+    weekday: number | null;
+    start_time: string;
+    end_time: string;
+    label: string;
+  }[];
   blocked: {
     id: string;
     doctor_id: string | null;
@@ -335,7 +340,9 @@ export async function getAutomationEvents(): Promise<{
   const [rowsRes, countsRes] = await Promise.all([
     supabase
       .from("automation_events")
-      .select("id, event_type, status, attempts, last_error, created_at, next_attempt_at, delivered_at, payload")
+      .select(
+        "id, event_type, status, attempts, last_error, created_at, next_attempt_at, delivered_at, payload",
+      )
       .order("created_at", { ascending: false })
       .limit(50),
     supabase.from("automation_events").select("status"),

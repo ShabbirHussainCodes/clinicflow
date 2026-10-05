@@ -48,7 +48,11 @@ export default async function ConfirmationPage({
   const { doctor, service, clinic, patient } = confirmation;
   const tz = confirmation.timezone;
   const cancelled = confirmation.status === "cancelled";
-  const address = [clinic.address_line1, clinic.address_line2, `${clinic.city}, ${clinic.state} ${clinic.postal_code}`]
+  const address = [
+    clinic.address_line1,
+    clinic.address_line2,
+    `${clinic.city}, ${clinic.state} ${clinic.postal_code}`,
+  ]
     .filter(Boolean)
     .join(", ");
 
@@ -64,7 +68,11 @@ export default async function ConfirmationPage({
         <span
           className={`mx-auto flex size-16 items-center justify-center rounded-full ${cancelled ? "bg-danger-50 text-danger-600" : "bg-sage-100 text-sage-700"}`}
         >
-          {cancelled ? <CalendarX2 className="size-8" aria-hidden="true" /> : <CircleCheck className="size-8" aria-hidden="true" />}
+          {cancelled ? (
+            <CalendarX2 className="size-8" aria-hidden="true" />
+          ) : (
+            <CircleCheck className="size-8" aria-hidden="true" />
+          )}
         </span>
         <h1 className="mt-5 text-4xl sm:text-5xl" data-testid="confirmation-heading">
           {cancelled ? "This appointment was cancelled" : "Your appointment is booked"}
@@ -90,7 +98,10 @@ export default async function ConfirmationPage({
       </div>
 
       <div className="mt-6 grid gap-6 md:grid-cols-[1.2fr_1fr]">
-        <section aria-labelledby="details-heading" className="rounded-lg border border-sand-200 bg-surface p-6 shadow-card sm:p-7">
+        <section
+          aria-labelledby="details-heading"
+          className="rounded-lg border border-sand-200 bg-surface p-6 shadow-card sm:p-7"
+        >
           <div className="flex items-start justify-between gap-3">
             <h2 id="details-heading" className="font-sans text-xl font-semibold tracking-normal">
               Appointment details
@@ -111,13 +122,20 @@ export default async function ConfirmationPage({
 
           <dl className="mt-5 space-y-4">
             <div>
-              <dt className="text-xs font-semibold uppercase tracking-wider text-ink-500">Service</dt>
+              <dt className="text-xs font-semibold uppercase tracking-wider text-ink-500">
+                Service
+              </dt>
               <dd className="mt-0.5 font-semibold">
-                {service.name} <span className="font-normal text-ink-500">· about {service.duration_minutes} min</span>
+                {service.name}{" "}
+                <span className="font-normal text-ink-500">
+                  · about {service.duration_minutes} min
+                </span>
               </dd>
             </div>
             <div>
-              <dt className="text-xs font-semibold uppercase tracking-wider text-ink-500">Date and time</dt>
+              <dt className="text-xs font-semibold uppercase tracking-wider text-ink-500">
+                Date and time
+              </dt>
               <dd className="mt-0.5 font-semibold" data-testid="confirmation-datetime">
                 {formatDateLong(confirmation.start_at, tz)}
                 <span className="mt-0.5 flex items-center gap-1.5 text-teal-800">
@@ -127,7 +145,9 @@ export default async function ConfirmationPage({
               </dd>
             </div>
             <div>
-              <dt className="text-xs font-semibold uppercase tracking-wider text-ink-500">Patient</dt>
+              <dt className="text-xs font-semibold uppercase tracking-wider text-ink-500">
+                Patient
+              </dt>
               <dd className="mt-0.5 font-semibold">
                 {patient.display_name}
                 <span className="font-normal text-ink-500"> · mobile {patient.phone_hint}</span>
@@ -150,7 +170,10 @@ export default async function ConfirmationPage({
         </section>
 
         <div className="space-y-6">
-          <section aria-labelledby="where-heading" className="rounded-lg border border-sand-200 bg-surface p-6 shadow-card">
+          <section
+            aria-labelledby="where-heading"
+            className="rounded-lg border border-sand-200 bg-surface p-6 shadow-card"
+          >
             <h2 id="where-heading" className="font-sans text-xl font-semibold tracking-normal">
               Where to go
             </h2>
@@ -164,14 +187,20 @@ export default async function ConfirmationPage({
               </p>
               <p className="flex gap-2.5">
                 <Phone className="mt-0.5 size-4 shrink-0 text-teal-600" aria-hidden="true" />
-                <a className="font-semibold text-teal-700 underline-offset-2 hover:underline" href={`tel:${clinic.phone.replace(/\s/g, "")}`}>
+                <a
+                  className="font-semibold text-teal-700 underline-offset-2 hover:underline"
+                  href={`tel:${clinic.phone.replace(/\s/g, "")}`}
+                >
                   {clinic.phone}
                 </a>
               </p>
             </address>
           </section>
 
-          <section aria-labelledby="next-heading" className="rounded-lg border border-sand-200 bg-surface p-6 shadow-card">
+          <section
+            aria-labelledby="next-heading"
+            className="rounded-lg border border-sand-200 bg-surface p-6 shadow-card"
+          >
             <h2 id="next-heading" className="font-sans text-xl font-semibold tracking-normal">
               What happens next
             </h2>

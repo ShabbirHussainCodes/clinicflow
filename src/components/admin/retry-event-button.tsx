@@ -29,7 +29,9 @@ export function RetryEventButton({ id }: { id: string }) {
       >
         Retry
       </Button>
-      <span role="status" className="sr-only">{message}</span>
+      <span role="status" className="sr-only">
+        {message}
+      </span>
     </div>
   );
 }

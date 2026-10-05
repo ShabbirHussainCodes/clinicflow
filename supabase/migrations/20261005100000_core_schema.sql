@@ -257,7 +257,7 @@ $$;
 create table public.appointments (
   id uuid primary key default gen_random_uuid(),
   reference text not null unique default app_private.generate_booking_reference()
-    check (reference ~ '^CF-[A-Z2-9]{5}-[A-Z2-9]{5}$'),
+    check (reference ~ '^CF-[A-HJ-NP-Z2-9]{5}-[A-HJ-NP-Z2-9]{5}$'),
   doctor_id uuid not null references public.doctors (id) on delete restrict,
   service_id uuid not null references public.services (id) on delete restrict,
   start_at timestamptz not null,

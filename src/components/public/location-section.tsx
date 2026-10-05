@@ -40,7 +40,11 @@ export function LocationSection({ catalog }: { catalog: Catalog }) {
   )}`;
 
   return (
-    <section id="contact" aria-labelledby="contact-heading" className="scroll-mt-24 bg-teal-900 py-20 text-teal-50 sm:py-24">
+    <section
+      id="contact"
+      aria-labelledby="contact-heading"
+      className="scroll-mt-24 bg-teal-900 py-20 text-teal-50 sm:py-24"
+    >
       <div className="container-page grid gap-10 lg:grid-cols-2 lg:gap-14">
         <div>
           <p className="eyebrow !text-sage-300">Visit &amp; contact</p>
@@ -57,7 +61,9 @@ export function LocationSection({ catalog }: { catalog: Catalog }) {
                 {clinicHours.map((line) => (
                   <div key={`${line.days}-${line.hours}`} className="flex flex-col">
                     <dt className="font-semibold text-paper">{line.days}</dt>
-                    <dd className={line.hours === "Closed" ? "text-teal-100/70" : "text-teal-50"}>{line.hours}</dd>
+                    <dd className={line.hours === "Closed" ? "text-teal-100/70" : "text-teal-50"}>
+                      {line.hours}
+                    </dd>
                   </div>
                 ))}
               </dl>
@@ -79,13 +85,19 @@ export function LocationSection({ catalog }: { catalog: Catalog }) {
               <ul className="mt-4 space-y-2 text-[0.9375rem]">
                 <li className="flex items-center gap-2.5">
                   <Phone className="size-4 text-sage-300" aria-hidden="true" />
-                  <a className="underline-offset-2 hover:underline" href={`tel:${clinic.phone.replace(/\s/g, "")}`}>
+                  <a
+                    className="underline-offset-2 hover:underline"
+                    href={`tel:${clinic.phone.replace(/\s/g, "")}`}
+                  >
                     {clinic.phone}
                   </a>
                 </li>
                 <li className="flex items-center gap-2.5">
                   <Mail className="size-4 text-sage-300" aria-hidden="true" />
-                  <a className="break-all underline-offset-2 hover:underline" href={`mailto:${clinic.email}`}>
+                  <a
+                    className="break-all underline-offset-2 hover:underline"
+                    href={`mailto:${clinic.email}`}
+                  >
                     {clinic.email}
                   </a>
                 </li>
@@ -96,13 +108,18 @@ export function LocationSection({ catalog }: { catalog: Catalog }) {
           {holidays.length > 0 ? (
             <div className="mt-8 rounded-md border border-teal-700 bg-teal-800/60 p-4">
               <h3 className="flex items-center gap-2 font-sans text-base font-semibold tracking-normal text-paper">
-                <CalendarOff className="size-4 text-sage-300" aria-hidden="true" /> Upcoming closures
+                <CalendarOff className="size-4 text-sage-300" aria-hidden="true" /> Upcoming
+                closures
               </h3>
               <ul className="mt-2 space-y-1 text-sm">
                 {holidays.map((holiday) => (
                   <li key={holiday.id}>
-                    <span className="font-semibold">{describeClosure(holiday.startDate, holiday.endDate)}</span>
-                    {holiday.reason ? <span className="text-teal-100/85"> · {holiday.reason}</span> : null}
+                    <span className="font-semibold">
+                      {describeClosure(holiday.startDate, holiday.endDate)}
+                    </span>
+                    {holiday.reason ? (
+                      <span className="text-teal-100/85"> · {holiday.reason}</span>
+                    ) : null}
                   </li>
                 ))}
               </ul>
@@ -113,7 +130,9 @@ export function LocationSection({ catalog }: { catalog: Catalog }) {
         <div className="self-start overflow-hidden rounded-lg border border-teal-700 bg-teal-800/50 shadow-raised">
           <MapSketch />
           <div className="flex flex-wrap items-center justify-between gap-3 p-5">
-            <p className="text-sm text-teal-100/90">Opens in your maps app. No map data is loaded on this page.</p>
+            <p className="text-sm text-teal-100/90">
+              Opens in your maps app. No map data is loaded on this page.
+            </p>
             <ButtonLink
               href={mapsUrl}
               target="_blank"

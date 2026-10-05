@@ -31,21 +31,21 @@ export function DoctorCard({ doctor, detailed = false }: { doctor: Doctor; detai
           <li className="flex gap-2.5">
             <CalendarDays className="mt-0.5 size-4 shrink-0 text-teal-600" aria-hidden="true" />
             <span>
-              {doctor.availability.length === 0 ? (
-                "Availability coming soon"
-              ) : (
-                doctor.availability.map((line) => (
-                  <span key={`${line.days}-${line.hours}`} className="block">
-                    <span className="font-semibold text-ink-900">{line.days}</span>{" "}
-                    <span className="whitespace-nowrap">{line.hours}</span>
-                  </span>
-                ))
-              )}
+              {doctor.availability.length === 0
+                ? "Availability coming soon"
+                : doctor.availability.map((line) => (
+                    <span key={`${line.days}-${line.hours}`} className="block">
+                      <span className="font-semibold text-ink-900">{line.days}</span>{" "}
+                      <span className="whitespace-nowrap">{line.hours}</span>
+                    </span>
+                  ))}
             </span>
           </li>
         </ul>
 
-        {detailed && doctor.bio ? <p className="mt-4 text-[0.9375rem] text-ink-700">{doctor.bio}</p> : null}
+        {detailed && doctor.bio ? (
+          <p className="mt-4 text-[0.9375rem] text-ink-700">{doctor.bio}</p>
+        ) : null}
 
         <div className="mt-auto pt-6">
           <ButtonLink
@@ -53,7 +53,12 @@ export function DoctorCard({ doctor, detailed = false }: { doctor: Doctor; detai
             variant="secondary"
             className="w-full group-hover:border-teal-600"
           >
-            Book with {doctor.full_name.replace(/^Dr\.\s*/, "Dr. ").split(" ").slice(0, 2).join(" ")}
+            Book with{" "}
+            {doctor.full_name
+              .replace(/^Dr\.\s*/, "Dr. ")
+              .split(" ")
+              .slice(0, 2)
+              .join(" ")}
           </ButtonLink>
         </div>
       </div>

@@ -21,7 +21,10 @@ export default async function AdminLoginPage({
 
   const params = await searchParams;
   const nextParam = Array.isArray(params.next) ? params.next[0] : params.next;
-  const next = nextParam && nextParam.startsWith("/admin") && !nextParam.startsWith("//") ? nextParam : "/admin";
+  const next =
+    nextParam && nextParam.startsWith("/admin") && !nextParam.startsWith("//")
+      ? nextParam
+      : "/admin";
 
   return (
     <div className="grid min-h-dvh lg:grid-cols-[1fr_1.05fr]">

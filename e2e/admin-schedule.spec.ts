@@ -8,7 +8,9 @@ test.describe("schedule management affects bookable slots", () => {
     await loginAsAdmin(page);
   });
 
-  test("blocking a date removes it from availability and unblocking restores it", async ({ page }) => {
+  test("blocking a date removes it from availability and unblocking restores it", async ({
+    page,
+  }) => {
     const slot = await findFreeSlot("dr-meera-iyer", "general-consultation", 8);
     expect(await slotIsOffered(slot)).toBe(true);
 
@@ -21,7 +23,10 @@ test.describe("schedule management affects bookable slots", () => {
 
     expect(await slotIsOffered(slot)).toBe(false);
 
-    await page.getByRole("button", { name: /Remove block for/ }).first().click();
+    await page
+      .getByRole("button", { name: /Remove block for/ })
+      .first()
+      .click();
     await expect(page.getByTestId("block-feedback")).toContainText("bookable again");
     expect(await slotIsOffered(slot)).toBe(true);
   });
@@ -34,14 +39,23 @@ test.describe("schedule management affects bookable slots", () => {
     // Cover the whole working day, every day, for this doctor.
     const { data: created, error } = await supabase
       .from("doctor_breaks")
-      .insert({ doctor_id: slot.doctorId, weekday: null, start_time: "00:00", end_time: "23:59", label: "E2E all-day break" })
+      .insert({
+        doctor_id: slot.doctorId,
+        weekday: null,
+        start_time: "00:00",
+        end_time: "23:59",
+        label: "E2E all-day break",
+      })
       .select("id")
       .single();
     expect(error).toBeNull();
     try {
       expect(await slotIsOffered(slot)).toBe(false);
     } finally {
-      await supabase.from("doctor_breaks").delete().eq("id", created?.id ?? "");
+      await supabase
+        .from("doctor_breaks")
+        .delete()
+        .eq("id", created?.id ?? "");
     }
     expect(await slotIsOffered(slot)).toBe(true);
 
@@ -55,9 +69,15 @@ test.describe("schedule management affects bookable slots", () => {
     await expect(page.getByText("Break removed.")).toBeVisible();
   });
 
-  test("changing weekly hours and slot length is saved and changes the offered slots", async ({ page }) => {
+  test("changing weekly hours and slot length is saved and changes the offered slots", async ({
+    page,
+  }) => {
     const supabase = serviceClient();
-    const { data: doctor } = await supabase.from("doctors").select("id, slot_minutes").eq("slug", "dr-sunita-menon").single();
+    const { data: doctor } = await supabase
+      .from("doctors")
+      .select("id, slot_minutes")
+      .eq("slug", "dr-sunita-menon")
+      .single();
     const { data: before } = await supabase
       .from("doctor_availability")
       .select("weekday, start_time, end_time")
@@ -70,19 +90,31 @@ test.describe("schedule management affects bookable slots", () => {
       await page.getByTestId("save-schedule").click();
       await expect(page.getByTestId("schedule-feedback")).toContainText("Weekly schedule saved");
 
-      const { data: after } = await supabase.from("doctor_availability").select("weekday").eq("doctor_id", doctor!.id);
+      const { data: after } = await supabase
+        .from("doctor_availability")
+        .select("weekday")
+        .eq("doctor_id", doctor!.id);
       expect(after?.some((row) => row.weekday === 5)).toBe(false);
       expect(after?.length).toBe((before?.length ?? 0) - 1);
     } finally {
       // Restore the seeded schedule so other tests and demos are unaffected.
       await supabase.from("doctor_availability").delete().eq("doctor_id", doctor!.id);
-      await supabase.from("doctor_availability").insert((before ?? []).map((row) => ({ ...row, doctor_id: doctor!.id })));
-      await supabase.from("doctors").update({ slot_minutes: doctor!.slot_minutes }).eq("id", doctor!.id);
+      await supabase
+        .from("doctor_availability")
+        .insert((before ?? []).map((row) => ({ ...row, doctor_id: doctor!.id })));
+      await supabase
+        .from("doctors")
+        .update({ slot_minutes: doctor!.slot_minutes })
+        .eq("id", doctor!.id);
     }
   });
 
   test("overlapping working hours are rejected with a clear message", async ({ page }) => {
-    const { data: doctor } = await serviceClient().from("doctors").select("id").eq("slug", "dr-sunita-menon").single();
+    const { data: doctor } = await serviceClient()
+      .from("doctors")
+      .select("id")
+      .eq("slug", "dr-sunita-menon")
+      .single();
     await gotoHydrated(page, `/admin/schedule?doctor=${doctor!.id}`);
     // Monday: make the second window overlap the first.
     await page.getByRole("button", { name: "Add another time window" }).first().click();

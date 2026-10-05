@@ -79,9 +79,7 @@ export const notesSchema = z.object({
   notes: z.string().trim().max(1000, "Please keep notes under 1000 characters."),
 });
 
-const clock = z
-  .string()
-  .regex(/^([01]\d|2[0-3]):[0-5]\d$/, "Use the format HH:MM (24-hour).");
+const clock = z.string().regex(/^([01]\d|2[0-3]):[0-5]\d$/, "Use the format HH:MM (24-hour).");
 
 function minutes(value: string): number {
   const [h = "0", m = "0"] = value.split(":");

@@ -47,7 +47,6 @@ function collapseWhitespace(value: string): string {
   return value.replace(/\s+/g, " ").trim();
 }
 
-// eslint-disable-next-line no-control-regex
 const CONTROL_CHARS = /[\u0000-\u0008\u000b\u000c\u000e-\u001f\u007f]/g;
 
 export const patientNameSchema = z
@@ -98,7 +97,10 @@ export const optionalVisitReasonSchema = z
   .transform((value) => collapseWhitespace(value.replace(CONTROL_CHARS, "")))
   .transform((value) => (value === "" ? undefined : value))
   .pipe(
-    z.string().max(VISIT_REASON_MAX, `Please keep this under ${VISIT_REASON_MAX} characters.`).optional(),
+    z
+      .string()
+      .max(VISIT_REASON_MAX, `Please keep this under ${VISIT_REASON_MAX} characters.`)
+      .optional(),
   );
 
 /** Fields the patient types in on the "Your details" step. */
@@ -161,7 +163,7 @@ export function toFieldErrors(error: z.ZodError, prefix = ""): FieldErrors {
   return errors;
 }
 
-export const BOOKING_REFERENCE_RE = /^CF-[A-Z2-9]{5}-[A-Z2-9]{5}$/;
+export const BOOKING_REFERENCE_RE = /^CF-[A-HJ-NP-Z2-9]{5}-[A-HJ-NP-Z2-9]{5}$/;
 
 export function normalizeReference(input: string): string | null {
   const candidate = input.trim().toUpperCase();

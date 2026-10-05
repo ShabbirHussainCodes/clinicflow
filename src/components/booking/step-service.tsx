@@ -35,7 +35,8 @@ export function StepService({
                 <p className="font-semibold leading-snug text-ink-900">{service.name}</p>
                 <p className="mt-1 text-sm leading-snug text-ink-500">{service.description}</p>
                 <p className="mt-2 inline-flex items-center gap-1.5 text-xs font-semibold text-ink-700">
-                  <Timer className="size-3.5" aria-hidden="true" /> About {service.durationMinutes} minutes
+                  <Timer className="size-3.5" aria-hidden="true" /> About {service.durationMinutes}{" "}
+                  minutes
                 </p>
               </div>
             </div>

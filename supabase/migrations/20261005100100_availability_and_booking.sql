@@ -345,7 +345,7 @@ declare
   v_first text;
   v_last text;
 begin
-  if v_ref !~ '^CF-[A-Z2-9]{5}-[A-Z2-9]{5}$' then
+  if v_ref !~ '^CF-[A-HJ-NP-Z2-9]{5}-[A-HJ-NP-Z2-9]{5}$' then
     return null;
   end if;
 

@@ -20,7 +20,10 @@ export interface LoginState {
 /** Only allow redirects to admin pages on this site (prevents open redirects). */
 function safeAdminPath(value: FormDataEntryValue | null): string {
   const path = typeof value === "string" ? value : "";
-  return path.startsWith("/admin") && !path.startsWith("//") && !path.includes("\\") && !path.startsWith("/admin/login")
+  return path.startsWith("/admin") &&
+    !path.startsWith("//") &&
+    !path.includes("\\") &&
+    !path.startsWith("/admin/login")
     ? path
     : "/admin";
 }

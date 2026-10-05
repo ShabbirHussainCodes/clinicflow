@@ -19,7 +19,12 @@ export function LoginForm({ next }: { next: string }) {
       <input type="hidden" name="next" value={next} />
 
       {state.error ? (
-        <Alert tone="danger" title="Couldn't sign you in" live="assertive" data-testid="login-error">
+        <Alert
+          tone="danger"
+          title="Couldn't sign you in"
+          live="assertive"
+          data-testid="login-error"
+        >
           {state.error}
         </Alert>
       ) : null}
@@ -50,12 +55,22 @@ export function LoginForm({ next }: { next: string }) {
           aria-pressed={visible}
           className="inline-flex items-center gap-1.5 rounded-xs text-sm font-semibold text-teal-700 hover:text-teal-800"
         >
-          {visible ? <EyeOff className="size-4" aria-hidden="true" /> : <Eye className="size-4" aria-hidden="true" />}
+          {visible ? (
+            <EyeOff className="size-4" aria-hidden="true" />
+          ) : (
+            <Eye className="size-4" aria-hidden="true" />
+          )}
           {visible ? "Hide password" : "Show password"}
         </button>
       </div>
 
-      <Button type="submit" size="lg" loading={pending} className="w-full" icon={<LogIn className="size-4" aria-hidden="true" />}>
+      <Button
+        type="submit"
+        size="lg"
+        loading={pending}
+        className="w-full"
+        icon={<LogIn className="size-4" aria-hidden="true" />}
+      >
         {pending ? "Signing in…" : "Sign in"}
       </Button>
     </form>

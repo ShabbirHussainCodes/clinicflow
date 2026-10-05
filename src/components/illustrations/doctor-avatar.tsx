@@ -73,15 +73,26 @@ export function DoctorFigure({ theme }: { theme: string }) {
     <g>
       {/* long hair sits behind the shoulders */}
       {style === "long" ? (
-        <path d="M58 98c0-30 18-44 42-44s42 14 42 44v70c0 8-8 12-14 8l-8-6H80l-8 6c-6 4-14 0-14-8Z" fill={hair} />
+        <path
+          d="M58 98c0-30 18-44 42-44s42 14 42 44v70c0 8-8 12-14 8l-8-6H80l-8 6c-6 4-14 0-14-8Z"
+          fill={hair}
+        />
       ) : null}
       {style === "bob" ? (
-        <path d="M60 96c0-28 17-42 40-42s40 14 40 42v38c0 6-6 9-11 6l-6-4H77l-6 4c-5 3-11 0-11-6Z" fill={hair} />
+        <path
+          d="M60 96c0-28 17-42 40-42s40 14 40 42v38c0 6-6 9-11 6l-6-4H77l-6 4c-5 3-11 0-11-6Z"
+          fill={hair}
+        />
       ) : null}
 
       {/* coat + tunic */}
       <path d="M18 240c0-50 34-70 82-70s82 20 82 70Z" fill="#ffffff" />
-      <path d="M18 240c0-50 34-70 82-70s82 20 82 70Z" fill="none" stroke="#10302e" strokeOpacity="0.08" />
+      <path
+        d="M18 240c0-50 34-70 82-70s82 20 82 70Z"
+        fill="none"
+        stroke="#10302e"
+        strokeOpacity="0.08"
+      />
       <path d="M72 176c6 14 16 22 28 22s22-8 28-22c-8-3-17-5-28-5s-20 2-28 5Z" fill={tunic} />
       <path d="M100 171v69" stroke="#10302e" strokeOpacity="0.1" strokeWidth="1.5" />
       {/* coat lapels */}
@@ -113,12 +124,18 @@ export function DoctorFigure({ theme }: { theme: string }) {
       {style === "bun" ? (
         <>
           <circle cx="100" cy="62" r="17" fill={hair} />
-          <path d="M70 108c-2-30 12-48 30-48s32 18 30 48c-6-16-16-26-30-26s-24 10-30 26Z" fill={hair} />
+          <path
+            d="M70 108c-2-30 12-48 30-48s32 18 30 48c-6-16-16-26-30-26s-24 10-30 26Z"
+            fill={hair}
+          />
         </>
       ) : null}
       {style === "short" ? (
         <>
-          <path d="M70 104c-3-30 11-46 30-46s33 16 30 46c-4-12-8-20-14-24-10 4-26 4-32 0-6 4-10 12-14 24Z" fill={hair} />
+          <path
+            d="M70 104c-3-30 11-46 30-46s33 16 30 46c-4-12-8-20-14-24-10 4-26 4-32 0-6 4-10 12-14 24Z"
+            fill={hair}
+          />
           <g fill="none" stroke="#10302e" strokeWidth="3">
             <circle cx="88" cy="112" r="9" />
             <circle cx="112" cy="112" r="9" />
@@ -127,10 +144,16 @@ export function DoctorFigure({ theme }: { theme: string }) {
         </>
       ) : null}
       {style === "long" ? (
-        <path d="M71 110c-4-32 10-54 29-54s33 22 29 54c-3-18-12-30-29-30s-26 12-29 30Z" fill={hair} />
+        <path
+          d="M71 110c-4-32 10-54 29-54s33 22 29 54c-3-18-12-30-29-30s-26 12-29 30Z"
+          fill={hair}
+        />
       ) : null}
       {style === "bob" ? (
-        <path d="M70 112c-5-34 9-56 30-56s35 22 30 56c-2-20-12-32-30-32s-28 12-30 32Z" fill={hair} />
+        <path
+          d="M70 112c-5-34 9-56 30-56s35 22 30 56c-2-20-12-32-30-32s-28 12-30 32Z"
+          fill={hair}
+        />
       ) : null}
     </g>
   );

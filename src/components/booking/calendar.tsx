@@ -23,9 +23,11 @@ function shiftMonth(key: string, delta: number): string {
 }
 
 function monthTitle(key: string): string {
-  return new Intl.DateTimeFormat("en-IN", { month: "long", year: "numeric", timeZone: "UTC" }).format(
-    new Date(`${firstOfMonth(key)}T00:00:00Z`),
-  );
+  return new Intl.DateTimeFormat("en-IN", {
+    month: "long",
+    year: "numeric",
+    timeZone: "UTC",
+  }).format(new Date(`${firstOfMonth(key)}T00:00:00Z`));
 }
 
 /** Weeks (Monday-first) for the month, as arrays of 7 date strings or null for padding. */
@@ -95,8 +97,16 @@ export function Calendar({
       ArrowDown: () => addDays(focusDate, 7),
       Home: () => addDays(focusDate, -((weekdayOf(focusDate) + 6) % 7)),
       End: () => addDays(focusDate, 6 - ((weekdayOf(focusDate) + 6) % 7)),
-      PageUp: () => addDays(firstOfMonth(shiftMonth(monthKey(focusDate), -1)), Math.min(Number(focusDate.slice(8)) - 1, 27)),
-      PageDown: () => addDays(firstOfMonth(shiftMonth(monthKey(focusDate), 1)), Math.min(Number(focusDate.slice(8)) - 1, 27)),
+      PageUp: () =>
+        addDays(
+          firstOfMonth(shiftMonth(monthKey(focusDate), -1)),
+          Math.min(Number(focusDate.slice(8)) - 1, 27),
+        ),
+      PageDown: () =>
+        addDays(
+          firstOfMonth(shiftMonth(monthKey(focusDate), 1)),
+          Math.min(Number(focusDate.slice(8)) - 1, 27),
+        ),
     };
     const handler = keys[event.key];
     if (!handler) return;
@@ -105,7 +115,10 @@ export function Calendar({
   }
 
   return (
-    <div className="rounded-md border border-sand-200 bg-surface p-4 sm:p-5" aria-busy={loading || undefined}>
+    <div
+      className="rounded-md border border-sand-200 bg-surface p-4 sm:p-5"
+      aria-busy={loading || undefined}
+    >
       <div className="mb-3 flex items-center justify-between">
         <button
           type="button"
@@ -140,8 +153,14 @@ export function Calendar({
         <thead>
           <tr>
             {WEEKDAY_HEADERS.map((day) => (
-              <th key={day} scope="col" className="pb-1 text-center text-xs font-semibold text-ink-500">
-                <abbr title={day} className="no-underline">{day}</abbr>
+              <th
+                key={day}
+                scope="col"
+                className="pb-1 text-center text-xs font-semibold text-ink-500"
+              >
+                <abbr title={day} className="no-underline">
+                  {day}
+                </abbr>
               </th>
             ))}
           </tr>
@@ -157,7 +176,12 @@ export function Calendar({
                 const isSelected = selected === date;
                 const isFocusStop = focusDate === date;
                 return (
-                  <td key={date} role="gridcell" aria-selected={isSelected} className="p-0 text-center">
+                  <td
+                    key={date}
+                    role="gridcell"
+                    aria-selected={isSelected}
+                    className="p-0 text-center"
+                  >
                     <button
                       type="button"
                       data-date={date}
@@ -165,7 +189,11 @@ export function Calendar({
                       aria-disabled={!available}
                       aria-pressed={isSelected}
                       aria-label={`${formatCalendarDate(date, "long")}, ${
-                        available ? `${count} time${count === 1 ? "" : "s"} available` : inWindow ? "no times available" : "not available"
+                        available
+                          ? `${count} time${count === 1 ? "" : "s"} available`
+                          : inWindow
+                            ? "no times available"
+                            : "not available"
                       }`}
                       onClick={() => {
                         setFocusDate(date);
@@ -175,13 +203,16 @@ export function Calendar({
                         "relative mx-auto flex size-10 items-center justify-center rounded-full text-[0.9375rem] font-medium transition-colors sm:size-11",
                         available && !isSelected && "bg-teal-50 text-teal-800 hover:bg-teal-100",
                         available && isSelected && "bg-teal-700 text-white shadow-sm",
-                        !available && "cursor-default text-ink-400/80",
+                        !available && "cursor-default text-ink-500",
                         date === today && !isSelected && "ring-1 ring-inset ring-ink-400",
                       )}
                     >
                       {Number(date.slice(8))}
                       {available && !isSelected ? (
-                        <span className="absolute bottom-1 size-1 rounded-full bg-teal-500" aria-hidden="true" />
+                        <span
+                          className="absolute bottom-1 size-1 rounded-full bg-teal-500"
+                          aria-hidden="true"
+                        />
                       ) : null}
                     </button>
                   </td>
@@ -197,7 +228,11 @@ export function Calendar({
           <span className="size-3 rounded-full bg-teal-100" aria-hidden="true" /> Times available
         </span>
         <span className="inline-flex items-center gap-1.5">
-          <span className="size-3 rounded-full bg-sand-100 ring-1 ring-sand-300" aria-hidden="true" /> Unavailable
+          <span
+            className="size-3 rounded-full bg-sand-100 ring-1 ring-sand-300"
+            aria-hidden="true"
+          />{" "}
+          Unavailable
         </span>
       </p>
     </div>

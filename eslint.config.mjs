@@ -20,6 +20,11 @@ const eslintConfig = defineConfig([
     files: ["scripts/**"],
     rules: { "no-console": "off" },
   },
+  {
+    // Tests assert on loosely typed JSON (RPC results, event payloads), where `any` is the honest type.
+    files: ["tests/**", "e2e/**"],
+    rules: { "@typescript-eslint/no-explicit-any": "off" },
+  },
   globalIgnores([
     ".next/**",
     "out/**",

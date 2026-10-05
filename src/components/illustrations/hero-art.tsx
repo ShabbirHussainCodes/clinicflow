@@ -32,7 +32,15 @@ export function HeroArt() {
         {/* right arch with sun */}
         <path d="M352 540V360a60 60 0 0 1 120 0v180Z" fill="#f6ddca" />
         <circle cx="412" cy="392" r="22" fill="#c8743a" />
-        <circle cx="412" cy="392" r="34" fill="none" stroke="#c8743a" strokeOpacity="0.35" strokeWidth="2" />
+        <circle
+          cx="412"
+          cy="392"
+          r="34"
+          fill="none"
+          stroke="#c8743a"
+          strokeOpacity="0.35"
+          strokeWidth="2"
+        />
 
         {/* ground */}
         <rect x="0" y="526" width="480" height="14" rx="7" fill="#e1d9cb" />
@@ -47,7 +55,7 @@ export function HeroArt() {
           <span className="rounded-xs bg-teal-50 py-1.5 text-teal-700">9:20 AM</span>
           <span className="rounded-xs bg-teal-700 py-1.5 text-white">10:00 AM</span>
           <span className="rounded-xs bg-teal-50 py-1.5 text-teal-700">5:20 PM</span>
-          <span className="rounded-xs bg-sand-100 py-1.5 text-ink-400 line-through">5:40 PM</span>
+          <span className="rounded-xs bg-sand-100 py-1.5 text-ink-700 line-through">5:40 PM</span>
         </div>
       </div>
 

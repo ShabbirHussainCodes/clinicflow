@@ -117,8 +117,11 @@ export function AppointmentActions({
             </Button>
           ) : null}
 
-          {!hasStarted && (canTransition(status, "completed") || canTransition(status, "no_show")) ? (
-            <p className="text-xs text-ink-500">Completed and no-show can be set once the appointment time has started.</p>
+          {!hasStarted &&
+          (canTransition(status, "completed") || canTransition(status, "no_show")) ? (
+            <p className="text-xs text-ink-500">
+              Completed and no-show can be set once the appointment time has started.
+            </p>
           ) : null}
 
           <Button
@@ -264,8 +267,12 @@ function RescheduleDialog({
         />
 
         <div aria-live="polite">
-          {slotsState === "loading" ? <p className="text-sm text-ink-500">Loading available times…</p> : null}
-          {slotsState === "error" ? <Alert tone="danger" title="Couldn't load times for that day" /> : null}
+          {slotsState === "loading" ? (
+            <p className="text-sm text-ink-500">Loading available times…</p>
+          ) : null}
+          {slotsState === "error" ? (
+            <Alert tone="danger" title="Couldn't load times for that day" />
+          ) : null}
           {slotsState === "ready" && slots.length === 0 ? (
             <Alert tone="info" title="No free times on this day">
               Choose another date. The doctor may be off, on a break, or fully booked.
@@ -317,7 +324,12 @@ function RescheduleDialog({
         <Button variant="secondary" onClick={onClose} disabled={pending}>
           Close
         </Button>
-        <Button onClick={save} disabled={!chosen} loading={pending} data-testid="confirm-reschedule">
+        <Button
+          onClick={save}
+          disabled={!chosen}
+          loading={pending}
+          data-testid="confirm-reschedule"
+        >
           Save new time
         </Button>
       </div>

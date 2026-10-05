@@ -14,7 +14,9 @@ async function chooseFirstAvailableSlot(page: Page) {
 test.describe("patient booking flow", () => {
   test("a patient can complete a booking and the appointment is persisted", async ({ page }) => {
     await page.goto("/book");
-    await expect(page.getByRole("heading", { level: 1, name: "Book an appointment" })).toBeVisible();
+    await expect(
+      page.getByRole("heading", { level: 1, name: "Book an appointment" }),
+    ).toBeVisible();
 
     // 1. service
     await page.getByTestId("service-general-consultation").click();
@@ -95,7 +97,9 @@ test.describe("patient booking flow", () => {
     expect(malformed?.status()).toBe(404);
   });
 
-  test("a time taken by someone else is reported clearly and keeps the patient's details", async ({ page }) => {
+  test("a time taken by someone else is reported clearly and keeps the patient's details", async ({
+    page,
+  }) => {
     await page.goto("/book?service=general-consultation&doctor=dr-meera-iyer");
     await chooseFirstAvailableSlot(page);
     const chosen = await page.locator('input[name="slot"]:checked').inputValue();
@@ -109,8 +113,16 @@ test.describe("patient booking flow", () => {
 
     // Someone else books exactly that slot while this patient is reviewing.
     const supabase = serviceClient();
-    const { data: doctor } = await supabase.from("doctors").select("id").eq("slug", "dr-meera-iyer").single();
-    const { data: service } = await supabase.from("services").select("id").eq("slug", "general-consultation").single();
+    const { data: doctor } = await supabase
+      .from("doctors")
+      .select("id")
+      .eq("slug", "dr-meera-iyer")
+      .single();
+    const { data: service } = await supabase
+      .from("services")
+      .select("id")
+      .eq("slug", "general-consultation")
+      .single();
     const rival = await supabase.rpc("book_appointment", {
       p_doctor_id: doctor!.id,
       p_service_id: service!.id,

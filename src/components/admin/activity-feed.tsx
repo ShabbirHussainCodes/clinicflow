@@ -1,5 +1,12 @@
 import Link from "next/link";
-import { CalendarClock, CalendarPlus, CircleCheck, NotebookPen, XCircle, type LucideIcon } from "lucide-react";
+import {
+  CalendarClock,
+  CalendarPlus,
+  CircleCheck,
+  NotebookPen,
+  XCircle,
+  type LucideIcon,
+} from "lucide-react";
 
 import type { DashboardSummary } from "@/lib/admin/queries";
 import { formatDateTime } from "@/lib/datetime";
@@ -12,7 +19,11 @@ function describe(item: Item): { text: string; icon: LucideIcon; tone: string } 
     return { text: "booked an appointment", icon: CalendarPlus, tone: "bg-teal-50 text-teal-700" };
   }
   if (item.event === "rescheduled") {
-    return { text: "had an appointment rescheduled", icon: CalendarClock, tone: "bg-amber-50 text-amber-700" };
+    return {
+      text: "had an appointment rescheduled",
+      icon: CalendarClock,
+      tone: "bg-amber-50 text-amber-700",
+    };
   }
   if (item.event === "note_updated") {
     return { text: "had staff notes updated", icon: NotebookPen, tone: "bg-sand-100 text-ink-700" };
@@ -20,9 +31,17 @@ function describe(item: Item): { text: string; icon: LucideIcon; tone: string } 
   const to = item.to_status as AppointmentStatus | null;
   const label = to ? STATUS_LABELS[to].toLowerCase() : "updated";
   if (to === "cancelled" || to === "no_show") {
-    return { text: `had an appointment marked ${label}`, icon: XCircle, tone: "bg-danger-50 text-danger-700" };
+    return {
+      text: `had an appointment marked ${label}`,
+      icon: XCircle,
+      tone: "bg-danger-50 text-danger-700",
+    };
   }
-  return { text: `had an appointment marked ${label}`, icon: CircleCheck, tone: "bg-sage-50 text-sage-700" };
+  return {
+    text: `had an appointment marked ${label}`,
+    icon: CircleCheck,
+    tone: "bg-sage-50 text-sage-700",
+  };
 }
 
 export function ActivityFeed({ items, timeZone }: { items: Item[]; timeZone: string }) {
@@ -33,12 +52,17 @@ export function ActivityFeed({ items, timeZone }: { items: Item[]; timeZone: str
         const { text, icon: Icon, tone } = describe(item);
         return (
           <li key={item.id} className="flex gap-3">
-            <span className={`mt-0.5 flex size-8 shrink-0 items-center justify-center rounded-full ${tone}`}>
+            <span
+              className={`mt-0.5 flex size-8 shrink-0 items-center justify-center rounded-full ${tone}`}
+            >
               <Icon className="size-4" aria-hidden="true" />
             </span>
             <div className="min-w-0 text-sm">
               <p className="text-ink-900">
-                <Link href={`/admin/appointments/${item.appointment_id}`} className="font-semibold hover:underline">
+                <Link
+                  href={`/admin/appointments/${item.appointment_id}`}
+                  className="font-semibold hover:underline"
+                >
                   {item.patient_name}
                 </Link>{" "}
                 {text}

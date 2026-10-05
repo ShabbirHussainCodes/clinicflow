@@ -5,7 +5,13 @@ import type { AppointmentRow } from "@/lib/admin/queries";
 import { formatDate, formatTime } from "@/lib/datetime";
 import { formatIndianMobile } from "@/lib/validation/booking";
 
-export function AppointmentsTable({ rows, timeZone }: { rows: AppointmentRow[]; timeZone: string }) {
+export function AppointmentsTable({
+  rows,
+  timeZone,
+}: {
+  rows: AppointmentRow[];
+  timeZone: string;
+}) {
   return (
     <>
       {/* Desktop table */}
@@ -14,11 +20,21 @@ export function AppointmentsTable({ rows, timeZone }: { rows: AppointmentRow[]; 
           <caption className="sr-only">Appointments</caption>
           <thead className="bg-sand-50 text-xs font-semibold uppercase tracking-wider text-ink-500">
             <tr>
-              <th scope="col" className="px-5 py-3">When</th>
-              <th scope="col" className="px-3 py-3">Patient</th>
-              <th scope="col" className="px-3 py-3">Doctor &amp; service</th>
-              <th scope="col" className="px-3 py-3">Status</th>
-              <th scope="col" className="px-5 py-3">Reference</th>
+              <th scope="col" className="px-5 py-3">
+                When
+              </th>
+              <th scope="col" className="px-3 py-3">
+                Patient
+              </th>
+              <th scope="col" className="px-3 py-3">
+                Doctor &amp; service
+              </th>
+              <th scope="col" className="px-3 py-3">
+                Status
+              </th>
+              <th scope="col" className="px-5 py-3">
+                Reference
+              </th>
             </tr>
           </thead>
           <tbody className="divide-y divide-sand-100">
@@ -34,7 +50,9 @@ export function AppointmentsTable({ rows, timeZone }: { rows: AppointmentRow[]; 
                     className="font-semibold text-teal-800 underline-offset-2 hover:underline"
                   >
                     {row.patient_name}
-                    <span className="sr-only">, {formatDate(row.start_at, timeZone)} {formatTime(row.start_at, timeZone)}</span>
+                    <span className="sr-only">
+                      , {formatDate(row.start_at, timeZone)} {formatTime(row.start_at, timeZone)}
+                    </span>
                   </Link>
                   <p className="text-sm text-ink-500">{formatIndianMobile(row.patient_phone)}</p>
                 </td>
@@ -42,8 +60,12 @@ export function AppointmentsTable({ rows, timeZone }: { rows: AppointmentRow[]; 
                   <p className="text-ink-900">{row.doctor_name}</p>
                   <p className="text-sm text-ink-500">{row.service_name}</p>
                 </td>
-                <td className="px-3 py-3.5"><StatusBadge status={row.status} /></td>
-                <td className="whitespace-nowrap px-5 py-3.5 font-mono text-sm text-ink-700">{row.reference}</td>
+                <td className="px-3 py-3.5">
+                  <StatusBadge status={row.status} />
+                </td>
+                <td className="whitespace-nowrap px-5 py-3.5 font-mono text-sm text-ink-700">
+                  {row.reference}
+                </td>
               </tr>
             ))}
           </tbody>

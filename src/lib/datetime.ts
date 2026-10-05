@@ -122,14 +122,20 @@ export function formatCalendarDate(
         : style === "month-day"
           ? { day: "numeric", month: "short" }
           : { weekday: "short", day: "numeric", month: "short", year: "numeric" };
-  return normaliseSpaces(new Intl.DateTimeFormat("en-IN", { ...options, timeZone: "UTC" }).format(date));
+  return normaliseSpaces(
+    new Intl.DateTimeFormat("en-IN", { ...options, timeZone: "UTC" }).format(date),
+  );
 }
 
 export function formatDateTime(instant: string | Date, timeZone: string): string {
   return `${formatDate(instant, timeZone)}, ${formatTime(instant, timeZone)}`;
 }
 
-export function formatTimeRange(start: string | Date, end: string | Date, timeZone: string): string {
+export function formatTimeRange(
+  start: string | Date,
+  end: string | Date,
+  timeZone: string,
+): string {
   return `${formatTime(start, timeZone)} – ${formatTime(end, timeZone)}`;
 }
 
@@ -185,7 +191,14 @@ function zoneOffsetMinutes(instant: Date, timeZone: string): number {
     second: "2-digit",
   }).formatToParts(instant);
   const get = (type: string) => Number(parts.find((part) => part.type === type)?.value ?? "0");
-  const asUtc = Date.UTC(get("year"), get("month") - 1, get("day"), get("hour"), get("minute"), get("second"));
+  const asUtc = Date.UTC(
+    get("year"),
+    get("month") - 1,
+    get("day"),
+    get("hour"),
+    get("minute"),
+    get("second"),
+  );
   return Math.round((asUtc - instant.getTime()) / 60_000);
 }
 
@@ -201,6 +214,17 @@ export function hourInZone(instant: string | Date, timeZone: string): number {
 
 /** "India Standard Time" for "Asia/Kolkata". */
 export function timeZoneLabel(timeZone: string, now: Date = new Date()): string {
-  const parts = new Intl.DateTimeFormat("en-IN", { timeZone, timeZoneName: "long" }).formatToParts(now);
+  const parts = new Intl.DateTimeFormat("en-IN", { timeZone, timeZoneName: "long" }).formatToParts(
+    now,
+  );
   return parts.find((part) => part.type === "timeZoneName")?.value ?? timeZone;
+}
+
+/**
+ * Current time in epoch milliseconds. Server Components call this instead of Date.now() directly:
+ * they render once per request, so reading the clock is correct there, and routing it through one
+ * function keeps the intent explicit (and testable).
+ */
+export function nowMs(): number {
+  return Date.now();
 }

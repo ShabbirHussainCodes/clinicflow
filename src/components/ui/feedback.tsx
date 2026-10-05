@@ -44,7 +44,11 @@ export function Alert({
     <div
       role={role}
       aria-live={live && live !== "off" ? live : undefined}
-      className={cn("flex gap-3 rounded-md border p-4 text-[0.9375rem] leading-snug", tones[tone].box, className)}
+      className={cn(
+        "flex gap-3 rounded-md border p-4 text-[0.9375rem] leading-snug",
+        tones[tone].box,
+        className,
+      )}
       {...rest}
     >
       <span className="mt-0.5 shrink-0">{tones[tone].icon}</span>

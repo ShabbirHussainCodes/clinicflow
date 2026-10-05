@@ -36,7 +36,13 @@ export function AppointmentFiltersForm({
   );
 
   return (
-    <form method="get" action="/admin/appointments" className="rounded-lg border border-sand-200 bg-surface p-4 shadow-card sm:p-5" role="search" aria-label="Filter appointments">
+    <form
+      method="get"
+      action="/admin/appointments"
+      className="rounded-lg border border-sand-200 bg-surface p-4 shadow-card sm:p-5"
+      role="search"
+      aria-label="Filter appointments"
+    >
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <TextField
           label="Search"

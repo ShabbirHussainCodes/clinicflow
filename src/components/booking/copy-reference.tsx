@@ -25,7 +25,13 @@ export function CopyReference({ reference }: { reference: string }) {
         variant="secondary"
         size="sm"
         onClick={copy}
-        icon={copied ? <Check className="size-4" aria-hidden="true" /> : <Copy className="size-4" aria-hidden="true" />}
+        icon={
+          copied ? (
+            <Check className="size-4" aria-hidden="true" />
+          ) : (
+            <Copy className="size-4" aria-hidden="true" />
+          )
+        }
       >
         {copied ? "Copied" : "Copy reference"}
       </Button>

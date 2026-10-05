@@ -11,7 +11,8 @@ type Level = "info" | "warn" | "error";
 
 type Context = Record<string, string | number | boolean | null | undefined>;
 
-const SENSITIVE_KEYS = /name|phone|mobile|email|reason|notes|password|token|secret|authorization|cookie/i;
+const SENSITIVE_KEYS =
+  /name|phone|mobile|email|reason|notes|password|token|secret|authorization|cookie/i;
 
 function sanitizeContext(context: Context | undefined): Context {
   if (!context) return {};
@@ -58,5 +59,6 @@ function write(level: Level, event: string, context?: Context, error?: unknown) 
 export const logger = {
   info: (event: string, context?: Context) => write("info", event, context),
   warn: (event: string, context?: Context, error?: unknown) => write("warn", event, context, error),
-  error: (event: string, error: unknown, context?: Context) => write("error", event, context, error),
+  error: (event: string, error: unknown, context?: Context) =>
+    write("error", event, context, error),
 };

@@ -22,7 +22,10 @@ export function DailyBarChart({ days, today }: { days: DayPoint[]; today: string
   const ticks = [0, Math.ceil(maxValue / 2), maxValue];
 
   const summary = days
-    .map((day) => `${formatCalendarDate(day.date, "month-day")}: ${day.active} visits, ${day.cancelled} cancelled or no-show`)
+    .map(
+      (day) =>
+        `${formatCalendarDate(day.date, "month-day")}: ${day.active} visits, ${day.cancelled} cancelled or no-show`,
+    )
     .join("; ");
 
   return (
@@ -38,7 +41,14 @@ export function DailyBarChart({ days, today }: { days: DayPoint[]; today: string
           const y = padding.top + innerHeight - (tick / maxValue) * innerHeight;
           return (
             <g key={tick}>
-              <line x1={padding.left} x2={width - padding.right} y1={y} y2={y} stroke="#e1d9cb" strokeDasharray={tick === 0 ? undefined : "3 4"} />
+              <line
+                x1={padding.left}
+                x2={width - padding.right}
+                y1={y}
+                y2={y}
+                stroke="#e1d9cb"
+                strokeDasharray={tick === 0 ? undefined : "3 4"}
+              />
               <text x={padding.left - 8} y={y + 4} textAnchor="end" fontSize="11" fill="#566e6b">
                 {tick}
               </text>
@@ -94,7 +104,14 @@ export function DailyBarChart({ days, today }: { days: DayPoint[]; today: string
                 {Number(day.date.slice(8))}
               </text>
               {isToday ? (
-                <rect x={x - 3} y={height - 36} width={barWidth + 6} height={2.5} rx="1" fill="#0b5753" />
+                <rect
+                  x={x - 3}
+                  y={height - 36}
+                  width={barWidth + 6}
+                  height={2.5}
+                  rx="1"
+                  fill="#0b5753"
+                />
               ) : null}
             </g>
           );
@@ -108,7 +125,11 @@ export function DailyBarChart({ days, today }: { days: DayPoint[]; today: string
           <span className="size-3 rounded-xs bg-teal-400" aria-hidden="true" /> Booked (upcoming)
         </span>
         <span className="inline-flex items-center gap-1.5">
-          <span className="size-3 rounded-xs bg-clay-100 ring-1 ring-clay-500/40" aria-hidden="true" /> Cancelled / no-show
+          <span
+            className="size-3 rounded-xs bg-clay-100 ring-1 ring-clay-500/40"
+            aria-hidden="true"
+          />{" "}
+          Cancelled / no-show
         </span>
       </figcaption>
       <table className="sr-only">
@@ -134,7 +155,13 @@ export function DailyBarChart({ days, today }: { days: DayPoint[]; today: string
   );
 }
 
-export function HorizontalBars({ items, emptyLabel }: { items: { name: string; total: number }[]; emptyLabel: string }) {
+export function HorizontalBars({
+  items,
+  emptyLabel,
+}: {
+  items: { name: string; total: number }[];
+  emptyLabel: string;
+}) {
   if (items.length === 0) return <p className="text-sm text-ink-500">{emptyLabel}</p>;
   const max = Math.max(...items.map((item) => item.total), 1);
   return (
@@ -146,7 +173,10 @@ export function HorizontalBars({ items, emptyLabel }: { items: { name: string; t
             <span className="shrink-0 font-semibold text-ink-700">{item.total}</span>
           </div>
           <div className="mt-1.5 h-2 overflow-hidden rounded-full bg-sand-100" aria-hidden="true">
-            <div className="h-full rounded-full bg-teal-500" style={{ width: `${(item.total / max) * 100}%` }} />
+            <div
+              className="h-full rounded-full bg-teal-500"
+              style={{ width: `${(item.total / max) * 100}%` }}
+            />
           </div>
         </li>
       ))}

@@ -28,7 +28,11 @@ export function CompactAppointmentList({
               <p className="whitespace-nowrap font-display text-lg font-semibold leading-tight text-ink-900">
                 {formatTime(row.start_at, timeZone)}
               </p>
-              {showDate ? <p className="text-xs text-ink-500">{formatDate(row.start_at, timeZone).replace(/,? \d{4}$/, "")}</p> : null}
+              {showDate ? (
+                <p className="text-xs text-ink-500">
+                  {formatDate(row.start_at, timeZone).replace(/,? \d{4}$/, "")}
+                </p>
+              ) : null}
             </div>
             <div className="min-w-0 flex-1">
               <p className="truncate font-semibold text-ink-900">{row.patient_name}</p>

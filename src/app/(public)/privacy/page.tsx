@@ -25,8 +25,13 @@ export default async function PrivacyPage() {
         <section>
           <h2>What we collect</h2>
           <ul>
-            <li>Your full name and mobile number, so the clinic can reach you about your appointment.</li>
-            <li>Your email address, age range and a short visit reason, only if you choose to provide them.</li>
+            <li>
+              Your full name and mobile number, so the clinic can reach you about your appointment.
+            </li>
+            <li>
+              Your email address, age range and a short visit reason, only if you choose to provide
+              them.
+            </li>
             <li>Your consent to be contacted about this appointment, and when you gave it.</li>
           </ul>
           <p className="mt-3">
@@ -37,16 +42,16 @@ export default async function PrivacyPage() {
         <section>
           <h2>Why we collect it</h2>
           <p>
-            To schedule your visit, to confirm, remind or reschedule it, and to let the clinic know who
-            to expect. We do not use your details for advertising and we do not sell them.
+            To schedule your visit, to confirm, remind or reschedule it, and to let the clinic know
+            who to expect. We do not use your details for advertising and we do not sell them.
           </p>
         </section>
         <section>
           <h2>Who can see it</h2>
           <p>
             Authorised clinic staff who sign in to the appointment dashboard. If the clinic enables
-            automated reminders, your name, mobile number and email are passed to the messaging service
-            the clinic has chosen, solely to send you appointment messages.
+            automated reminders, your name, mobile number and email are passed to the messaging
+            service the clinic has chosen, solely to send you appointment messages.
           </p>
         </section>
         <section>
@@ -61,7 +66,10 @@ export default async function PrivacyPage() {
           <h2>Questions or requests</h2>
           <p>
             To correct or delete your details, contact the clinic at{" "}
-            <a className="font-semibold text-teal-700 underline underline-offset-2" href={`mailto:${clinic.email}`}>
+            <a
+              className="font-semibold text-teal-700 underline underline-offset-2"
+              href={`mailto:${clinic.email}`}
+            >
               {clinic.email}
             </a>{" "}
             or {clinic.phone}.

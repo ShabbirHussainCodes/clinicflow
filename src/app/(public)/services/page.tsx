@@ -38,12 +38,16 @@ export default async function ServicesPage() {
 
       <div className="mt-14 flex flex-col items-start justify-between gap-5 rounded-lg bg-teal-50 p-7 sm:flex-row sm:items-center">
         <div>
-          <h2 className="font-sans text-xl font-semibold tracking-normal">Not sure which service to choose?</h2>
+          <h2 className="font-sans text-xl font-semibold tracking-normal">
+            Not sure which service to choose?
+          </h2>
           <p className="mt-1 text-ink-700">
             Pick General Consultation and the doctor will guide you from there.
           </p>
         </div>
-        <ButtonLink href="/book?service=general-consultation">Book a general consultation</ButtonLink>
+        <ButtonLink href="/book?service=general-consultation">
+          Book a general consultation
+        </ButtonLink>
       </div>
     </div>
   );

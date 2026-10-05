@@ -73,7 +73,8 @@ export default async function SchedulePage({
         <Card className="p-5 sm:p-7">
           <h2 className="font-sans text-xl font-semibold tracking-normal">Weekly working hours</h2>
           <p className="mb-5 mt-1 text-sm text-ink-500">
-            {schedule.doctor.full_name} · {schedule.doctor.specialization} · times in {clinic.timezone}
+            {schedule.doctor.full_name} · {schedule.doctor.specialization} · times in{" "}
+            {clinic.timezone}
           </p>
           <ScheduleEditor
             key={`${schedule.doctor.id}-${schedule.doctor.slot_minutes}-${schedule.windows.map((w) => w.id).join(",")}`}
@@ -87,13 +88,19 @@ export default async function SchedulePage({
         <div className="grid gap-6 xl:grid-cols-2">
           <Card className="p-5 sm:p-7">
             <h2 className="font-sans text-xl font-semibold tracking-normal">Breaks</h2>
-            <p className="mb-5 mt-1 text-sm text-ink-500">Recurring time off inside working hours, such as lunch.</p>
+            <p className="mb-5 mt-1 text-sm text-ink-500">
+              Recurring time off inside working hours, such as lunch.
+            </p>
             <BreaksPanel doctorId={schedule.doctor.id} breaks={schedule.breaks} />
           </Card>
 
           <Card className="p-5 sm:p-7">
-            <h2 className="font-sans text-xl font-semibold tracking-normal">Holidays &amp; unavailable dates</h2>
-            <p className="mb-5 mt-1 text-sm text-ink-500">Block whole days so patients cannot book them.</p>
+            <h2 className="font-sans text-xl font-semibold tracking-normal">
+              Holidays &amp; unavailable dates
+            </h2>
+            <p className="mb-5 mt-1 text-sm text-ink-500">
+              Block whole days so patients cannot book them.
+            </p>
             <BlockedPanel
               doctorId={schedule.doctor.id}
               doctorName={schedule.doctor.full_name}

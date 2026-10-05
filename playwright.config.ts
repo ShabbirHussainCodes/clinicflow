@@ -1,6 +1,8 @@
 import { config as loadEnv } from "dotenv";
 import { defineConfig, devices } from "@playwright/test";
 
+import { AUTOMATION_E2E } from "./e2e/automation-config";
+
 // Local Supabase connection details written by `npm run env:local`.
 loadEnv({ path: ".env.local", quiet: true });
 
@@ -33,7 +35,11 @@ export default defineConfig({
     launchOptions: chromiumPath ? { executablePath: chromiumPath } : {},
   },
   projects: [
-    { name: "desktop", use: { ...devices["Desktop Chrome"], viewport: { width: 1280, height: 900 } } },
+    {
+      name: "desktop",
+      use: { ...devices["Desktop Chrome"], viewport: { width: 1280, height: 900 } },
+      testIgnore: /.*\.mobile\.spec\.ts/,
+    },
     {
       name: "mobile",
       use: { ...devices["Pixel 7"] },
@@ -51,6 +57,11 @@ export default defineConfig({
       // Generous limit so repeated test bookings are not throttled.
       BOOKING_RATE_LIMIT_PER_HOUR: "1000",
       LOGIN_ATTEMPTS_PER_15_MIN: "1000",
+      // Automation dispatcher pointed at a local receiver started by e2e/automation.spec.ts.
+      CRON_SECRET: AUTOMATION_E2E.cronSecret,
+      N8N_WEBHOOK_SECRET: AUTOMATION_E2E.webhookSecret,
+      N8N_WEBHOOK_AUTH_TOKEN: AUTOMATION_E2E.authToken,
+      N8N_WEBHOOK_URL: `http://127.0.0.1:${AUTOMATION_E2E.receiverPort}${AUTOMATION_E2E.receiverPath}`,
       SHOW_DEMO_NOTICE: "true",
     },
   },

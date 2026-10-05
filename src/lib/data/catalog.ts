@@ -132,7 +132,9 @@ export const getCatalog = cache(async (): Promise<Catalog> => {
   };
 });
 
-export function formatClinicAddress(clinic: Pick<Clinic, "address_line1" | "address_line2" | "city" | "state" | "postal_code">): string[] {
+export function formatClinicAddress(
+  clinic: Pick<Clinic, "address_line1" | "address_line2" | "city" | "state" | "postal_code">,
+): string[] {
   return [
     clinic.address_line1,
     clinic.address_line2 ?? "",

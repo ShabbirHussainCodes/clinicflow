@@ -38,7 +38,9 @@ function NavList({ pathname, onNavigate }: { pathname: string; onNavigate?: () =
             aria-current={active ? "page" : undefined}
             className={cn(
               "flex items-center gap-3 rounded-sm px-3.5 py-2.5 text-[0.9375rem] font-semibold transition-colors",
-              active ? "bg-teal-700 text-white" : "text-teal-100 hover:bg-teal-800 hover:text-white",
+              active
+                ? "bg-teal-700 text-white"
+                : "text-teal-100 hover:bg-teal-800 hover:text-white",
             )}
           >
             <item.icon className="size-5" aria-hidden="true" />
@@ -110,7 +112,11 @@ export function AdminShell({
       <aside className="hidden bg-teal-900 lg:block">
         <div className="sticky top-0 flex h-dvh flex-col justify-between p-5">
           <div className="space-y-8">
-            <Link href="/admin" className="block rounded-sm px-1 pt-1" aria-label="ClinicFlow dashboard">
+            <Link
+              href="/admin"
+              className="block rounded-sm px-1 pt-1"
+              aria-label="ClinicFlow dashboard"
+            >
               <Wordmark tone="light" />
             </Link>
             <NavList pathname={pathname} />
@@ -162,7 +168,11 @@ export function AdminShell({
         </div>
       </dialog>
 
-      <main id="admin-main" tabIndex={-1} className="min-w-0 px-4 py-6 outline-none sm:px-8 sm:py-10">
+      <main
+        id="admin-main"
+        tabIndex={-1}
+        className="min-w-0 px-4 py-6 outline-none sm:px-8 sm:py-10"
+      >
         <div className="mx-auto max-w-6xl">{children}</div>
       </main>
     </div>

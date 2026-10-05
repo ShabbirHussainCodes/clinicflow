@@ -34,7 +34,13 @@ export interface WizardClinic {
 
 export type WizardStep = "service" | "doctor" | "datetime" | "details" | "review";
 
-export const STEP_ORDER: readonly WizardStep[] = ["service", "doctor", "datetime", "details", "review"];
+export const STEP_ORDER: readonly WizardStep[] = [
+  "service",
+  "doctor",
+  "datetime",
+  "details",
+  "review",
+];
 
 export const STEP_LABELS: Record<WizardStep, string> = {
   service: "Service",

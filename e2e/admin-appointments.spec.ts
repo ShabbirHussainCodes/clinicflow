@@ -17,7 +17,9 @@ test.describe("appointment management", () => {
     await page.getByLabel("Search").fill(unique.toLowerCase());
     await page.getByRole("button", { name: "Apply filters" }).click();
     await expect(page.getByTestId("result-count")).toContainText("1 appointment");
-    await expect(page.getByRole("link", { name: new RegExp(`Searchable ${unique}`) }).first()).toBeVisible();
+    await expect(
+      page.getByRole("link", { name: new RegExp(`Searchable ${unique}`) }).first(),
+    ).toBeVisible();
 
     await page.getByLabel("Search").fill(reference);
     await page.getByRole("button", { name: "Apply filters" }).click();
@@ -28,7 +30,9 @@ test.describe("appointment management", () => {
     await expect(page.getByText("No appointments match these filters")).toBeVisible();
   });
 
-  test("confirm an appointment, then cancel it with a confirmation step that releases the slot", async ({ page }) => {
+  test("confirm an appointment, then cancel it with a confirmation step that releases the slot", async ({
+    page,
+  }) => {
     const slot = await findFreeSlot("dr-meera-iyer", "general-consultation", 4);
     const { id, reference } = await bookViaRpc(slot, "Lifecycle Patient");
     expect(await slotIsOffered(slot)).toBe(false);
@@ -78,7 +82,9 @@ test.describe("appointment management", () => {
     ]);
   });
 
-  test("reschedule moves the appointment to a free slot and frees the old one", async ({ page }) => {
+  test("reschedule moves the appointment to a free slot and frees the old one", async ({
+    page,
+  }) => {
     const original = await findFreeSlot("dr-meera-iyer", "general-consultation", 5);
     const target = await findFreeSlot("dr-meera-iyer", "general-consultation", 6);
     const { id } = await bookViaRpc(original, "Reschedule Patient");

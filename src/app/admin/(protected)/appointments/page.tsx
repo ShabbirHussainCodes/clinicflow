@@ -7,9 +7,18 @@ import { AppointmentsTable } from "@/components/admin/appointments-table";
 import { PageHeader } from "@/components/admin/page-header";
 import { EmptyState } from "@/components/ui/feedback";
 import { requireAdmin } from "@/lib/auth";
-import { getClinicSettings, getFilterOptions, searchAppointments, searchFromFilters } from "@/lib/admin/queries";
+import {
+  getClinicSettings,
+  getFilterOptions,
+  searchAppointments,
+  searchFromFilters,
+} from "@/lib/admin/queries";
 import { todayInZone } from "@/lib/datetime";
-import { PAGE_SIZE, parseAppointmentFilters, type AppointmentFilters } from "@/lib/validation/admin";
+import {
+  PAGE_SIZE,
+  parseAppointmentFilters,
+  type AppointmentFilters,
+} from "@/lib/validation/admin";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = { title: "Appointments" };
@@ -45,16 +54,25 @@ export default async function AppointmentsPage({
   const pages = Math.max(1, Math.ceil(total / PAGE_SIZE));
   const first = total === 0 ? 0 : (filters.page - 1) * PAGE_SIZE + 1;
   const last = Math.min(total, filters.page * PAGE_SIZE);
-  const filtered = Boolean(filters.q || filters.status || filters.doctor || filters.service || filters.from || filters.to);
+  const filtered = Boolean(
+    filters.q || filters.status || filters.doctor || filters.service || filters.from || filters.to,
+  );
 
   return (
     <>
       <PageHeader title="Appointments" description="Search, filter and manage every booking." />
 
-      <AppointmentFiltersForm filters={filters} doctors={options.doctors} services={options.services} today={today} />
+      <AppointmentFiltersForm
+        filters={filters}
+        doctors={options.doctors}
+        services={options.services}
+        today={today}
+      />
 
       <p className="mb-3 mt-6 text-sm text-ink-500" aria-live="polite" data-testid="result-count">
-        {total === 0 ? "No appointments match" : `Showing ${first}–${last} of ${total} appointment${total === 1 ? "" : "s"}`}
+        {total === 0
+          ? "No appointments match"
+          : `Showing ${first}–${last} of ${total} appointment${total === 1 ? "" : "s"}`}
       </p>
 
       {rows.length === 0 ? (
@@ -63,13 +81,18 @@ export default async function AppointmentsPage({
           title={filtered ? "No appointments match these filters" : "No appointments yet"}
           action={
             filtered ? (
-              <Link href="/admin/appointments" className="font-semibold text-teal-700 underline underline-offset-2">
+              <Link
+                href="/admin/appointments"
+                className="font-semibold text-teal-700 underline underline-offset-2"
+              >
                 Clear all filters
               </Link>
             ) : undefined
           }
         >
-          {filtered ? "Try widening the date range or removing a filter." : "Bookings made on the website will appear here."}
+          {filtered
+            ? "Try widening the date range or removing a filter."
+            : "Bookings made on the website will appear here."}
         </EmptyState>
       ) : (
         <AppointmentsTable rows={rows} timeZone={clinic.timezone} />

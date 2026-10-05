@@ -3,7 +3,12 @@ import { timingSafeEqual } from "node:crypto";
 import { NextResponse } from "next/server";
 
 import { getEnv, isDispatcherConfigured } from "@/lib/env";
-import { createWebhookSender, dispatchBatch, type ClaimedEvent, type EventStore } from "@/lib/events/dispatcher";
+import {
+  createWebhookSender,
+  dispatchBatch,
+  type ClaimedEvent,
+  type EventStore,
+} from "@/lib/events/dispatcher";
 import { logger } from "@/lib/logger";
 import { createServiceClient } from "@/lib/supabase/clients";
 
@@ -29,7 +34,9 @@ function supabaseStore(): EventStore {
   const supabase = createServiceClient();
   return {
     async enqueueReminders(leadHours) {
-      const { data, error } = await supabase.rpc("enqueue_due_reminders", { p_lead_hours: leadHours });
+      const { data, error } = await supabase.rpc("enqueue_due_reminders", {
+        p_lead_hours: leadHours,
+      });
       if (error) throw error;
       return data ?? 0;
     },
@@ -41,6 +48,13 @@ function supabaseStore(): EventStore {
     async complete(id) {
       const { error } = await supabase.rpc("complete_automation_event", { p_event_id: id });
       if (error) throw error;
+    },
+    async purgeDelivered(olderThanDays) {
+      const { data, error } = await supabase.rpc("purge_delivered_automation_events", {
+        p_older_than_days: olderThanDays,
+      });
+      if (error) throw error;
+      return data ?? 0;
     },
     async fail(id, message, maxAttempts) {
       const { error } = await supabase.rpc("fail_automation_event", {
@@ -70,11 +84,16 @@ async function handle(request: Request) {
       send: createWebhookSender({
         url: env.N8N_WEBHOOK_URL as string,
         secret: env.N8N_WEBHOOK_SECRET ?? secret,
+        authToken: env.N8N_WEBHOOK_AUTH_TOKEN,
       }),
       reminderLeadHours: env.EVENT_REMINDER_LEAD_HOURS,
+      retentionDays: env.EVENT_RETENTION_DAYS,
     });
     logger.info("events.dispatched", { ...summary });
-    return NextResponse.json({ status: "ok", ...summary }, { headers: { "Cache-Control": "no-store" } });
+    return NextResponse.json(
+      { status: "ok", ...summary },
+      { headers: { "Cache-Control": "no-store" } },
+    );
   } catch (error) {
     logger.error("events.dispatch_failed", error);
     return NextResponse.json({ status: "error" }, { status: 500 });

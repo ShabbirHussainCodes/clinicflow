@@ -25,8 +25,7 @@ import { z } from "zod";
  */
 
 export type ActionResult =
-  | { ok: true; message: string }
-  | { ok: false; message: string; fieldErrors?: FieldErrors };
+  { ok: true; message: string } | { ok: false; message: string; fieldErrors?: FieldErrors };
 
 const ERROR_MESSAGES: Record<string, string> = {
   invalid_transition: "That change isn't allowed from the appointment's current status.",
@@ -41,7 +40,9 @@ const ERROR_MESSAGES: Record<string, string> = {
 };
 
 function messageFor(code: unknown): string {
-  return (typeof code === "string" && ERROR_MESSAGES[code]) || "Something went wrong. Please try again.";
+  return (
+    (typeof code === "string" && ERROR_MESSAGES[code]) || "Something went wrong. Please try again."
+  );
 }
 
 const rpcResultSchema = z.object({ ok: z.boolean(), error: z.string().optional() }).passthrough();
@@ -49,7 +50,9 @@ const rpcResultSchema = z.object({ ok: z.boolean(), error: z.string().optional()
 function fromRpc(data: unknown, success: string): ActionResult {
   const parsed = rpcResultSchema.safeParse(data);
   if (!parsed.success) return { ok: false, message: "Unexpected response from the server." };
-  return parsed.data.ok ? { ok: true, message: success } : { ok: false, message: messageFor(parsed.data.error) };
+  return parsed.data.ok
+    ? { ok: true, message: success }
+    : { ok: false, message: messageFor(parsed.data.error) };
 }
 
 /* ------------------------------------------------------------------ session */
@@ -65,7 +68,8 @@ export async function signOutAction(): Promise<void> {
 export async function changeStatusAction(input: unknown): Promise<ActionResult> {
   const { supabase } = await requireAdminClient();
   const parsed = statusChangeSchema.safeParse(input);
-  if (!parsed.success) return { ok: false, message: "Invalid request.", fieldErrors: toFieldErrors(parsed.error) };
+  if (!parsed.success)
+    return { ok: false, message: "Invalid request.", fieldErrors: toFieldErrors(parsed.error) };
 
   const { data, error } = await supabase.rpc("admin_set_appointment_status", {
     p_appointment_id: parsed.data.appointmentId,
@@ -89,7 +93,9 @@ export async function changeStatusAction(input: unknown): Promise<ActionResult> 
 export async function loadRescheduleSlotsAction(input: {
   appointmentId: string;
   date: string;
-}): Promise<{ ok: true; slots: { start: string; end: string }[] } | { ok: false; message: string }> {
+}): Promise<
+  { ok: true; slots: { start: string; end: string }[] } | { ok: false; message: string }
+> {
   const { supabase } = await requireAdminClient();
   const parsed = z
     .object({ appointmentId: z.uuid(), date: slotsQuerySchema.shape.date })
@@ -104,7 +110,10 @@ export async function loadRescheduleSlotsAction(input: {
     logger.error("admin.reschedule_slots_failed", error);
     return { ok: false, message: "Could not load times." };
   }
-  return { ok: true, slots: (data ?? []).map((row) => ({ start: row.slot_start, end: row.slot_end })) };
+  return {
+    ok: true,
+    slots: (data ?? []).map((row) => ({ start: row.slot_start, end: row.slot_end })),
+  };
 }
 
 export async function rescheduleAction(input: unknown): Promise<ActionResult> {
@@ -128,7 +137,12 @@ export async function rescheduleAction(input: unknown): Promise<ActionResult> {
 export async function saveNotesAction(input: unknown): Promise<ActionResult> {
   const { supabase } = await requireAdminClient();
   const parsed = notesSchema.safeParse(input);
-  if (!parsed.success) return { ok: false, message: "Please keep notes under 1000 characters.", fieldErrors: toFieldErrors(parsed.error) };
+  if (!parsed.success)
+    return {
+      ok: false,
+      message: "Please keep notes under 1000 characters.",
+      fieldErrors: toFieldErrors(parsed.error),
+    };
 
   const { data, error } = await supabase.rpc("admin_update_appointment_notes", {
     p_appointment_id: parsed.data.appointmentId,
@@ -172,7 +186,12 @@ export async function saveScheduleAction(input: unknown): Promise<ActionResult> 
 export async function addBreakAction(input: unknown): Promise<ActionResult> {
   const { supabase } = await requireAdminClient();
   const parsed = breakSchema.safeParse(input);
-  if (!parsed.success) return { ok: false, message: "Please check the break details.", fieldErrors: toFieldErrors(parsed.error) };
+  if (!parsed.success)
+    return {
+      ok: false,
+      message: "Please check the break details.",
+      fieldErrors: toFieldErrors(parsed.error),
+    };
 
   const { error } = await supabase.from("doctor_breaks").insert({
     doctor_id: parsed.data.doctorId,
@@ -205,7 +224,12 @@ export async function deleteBreakAction(input: { id: string }): Promise<ActionRe
 export async function addBlockedDateAction(input: unknown): Promise<ActionResult> {
   const { supabase, session } = await requireAdminClient();
   const parsed = blockedDateSchema.safeParse(input);
-  if (!parsed.success) return { ok: false, message: "Please check the dates.", fieldErrors: toFieldErrors(parsed.error) };
+  if (!parsed.success)
+    return {
+      ok: false,
+      message: "Please check the dates.",
+      fieldErrors: toFieldErrors(parsed.error),
+    };
   const value = parsed.data;
 
   const { error } = await supabase.from("blocked_dates").insert({
@@ -263,7 +287,9 @@ export async function retryEventAction(input: { id: string }): Promise<ActionRes
   const { supabase } = await requireAdminClient();
   const parsed = z.object({ id: z.uuid() }).safeParse(input);
   if (!parsed.success) return { ok: false, message: "Invalid request." };
-  const { data, error } = await supabase.rpc("admin_retry_automation_event", { p_event_id: parsed.data.id });
+  const { data, error } = await supabase.rpc("admin_retry_automation_event", {
+    p_event_id: parsed.data.id,
+  });
   if (error) {
     logger.error("admin.event_retry_failed", error);
     return { ok: false, message: "Something went wrong. Please try again." };

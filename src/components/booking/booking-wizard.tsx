@@ -6,11 +6,7 @@ import { ArrowLeft, ArrowRight, CalendarCheck } from "lucide-react";
 
 import { Alert } from "@/components/ui/feedback";
 import { Button } from "@/components/ui/button";
-import {
-  loadAvailableDates,
-  loadSlots,
-  submitBooking,
-} from "@/app/(public)/book/actions";
+import { loadAvailableDates, loadSlots, submitBooking } from "@/app/(public)/book/actions";
 import { patientDetailsSchema, toFieldErrors, type FieldErrors } from "@/lib/validation/booking";
 
 import { Stepper } from "./stepper";
@@ -30,11 +26,17 @@ import {
 } from "./types";
 
 const HEADINGS: Record<WizardStep, { title: string; hint: string }> = {
-  service: { title: "What would you like to book?", hint: "Choose the service that fits your visit." },
+  service: {
+    title: "What would you like to book?",
+    hint: "Choose the service that fits your visit.",
+  },
   doctor: { title: "Choose your doctor", hint: "These doctors offer the service you selected." },
   datetime: { title: "Pick a date and time", hint: "Highlighted dates have open times." },
   details: { title: "Your details", hint: "So the clinic can reach you about your visit." },
-  review: { title: "Review and confirm", hint: "Check everything below, then confirm your booking." },
+  review: {
+    title: "Review and confirm",
+    hint: "Check everything below, then confirm your booking.",
+  },
 };
 
 interface Props {
@@ -45,7 +47,13 @@ interface Props {
   initialDoctorId: string | null;
 }
 
-export function BookingWizard({ clinic, services, doctors, initialServiceId, initialDoctorId }: Props) {
+export function BookingWizard({
+  clinic,
+  services,
+  doctors,
+  initialServiceId,
+  initialDoctorId,
+}: Props) {
   const router = useRouter();
 
   // A deep link such as /book?service=x&doctor=y skips the steps that are already answered.
@@ -62,7 +70,9 @@ export function BookingWizard({ clinic, services, doctors, initialServiceId, ini
   const [serviceId, setServiceId] = useState<string | null>(initial.serviceId);
   const [doctorId, setDoctorId] = useState<string | null>(initial.doctorId);
 
-  const [datesStatus, setDatesStatus] = useState<LoadStatus>(initial.step === "datetime" ? "loading" : "idle");
+  const [datesStatus, setDatesStatus] = useState<LoadStatus>(
+    initial.step === "datetime" ? "loading" : "idle",
+  );
   const [availability, setAvailability] = useState<ReadonlyMap<string, number>>(new Map());
   const [date, setDate] = useState<string | null>(null);
   const [slots, setSlots] = useState<SlotDto[]>([]);
@@ -91,7 +101,12 @@ export function BookingWizard({ clinic, services, doctors, initialServiceId, ini
     [doctors, serviceId],
   );
   const servicesForDoctor = useMemo(
-    () => (initialDoctorId ? services.filter((item) => doctors.find((d) => d.id === initialDoctorId)?.serviceIds.includes(item.id)) : services),
+    () =>
+      initialDoctorId
+        ? services.filter((item) =>
+            doctors.find((d) => d.id === initialDoctorId)?.serviceIds.includes(item.id),
+          )
+        : services,
     [services, doctors, initialDoctorId],
   );
 
@@ -120,7 +135,11 @@ export function BookingWizard({ clinic, services, doctors, initialServiceId, ini
 
   async function fetchSlots(nextDoctorId: string, nextServiceId: string, nextDate: string) {
     const request = ++slotsRequest.current;
-    const result = await loadSlots({ doctorId: nextDoctorId, serviceId: nextServiceId, date: nextDate });
+    const result = await loadSlots({
+      doctorId: nextDoctorId,
+      serviceId: nextServiceId,
+      date: nextDate,
+    });
     if (request !== slotsRequest.current) return;
     if (result.ok) {
       setSlots(result.slots);
@@ -130,13 +149,25 @@ export function BookingWizard({ clinic, services, doctors, initialServiceId, ini
     }
   }
 
-  // Initial load when arriving via a deep link that already fixed service and doctor.
+  // Initial load when arriving via a deep link that already fixed service and doctor. The state is
+  // only set after the awaited request, never synchronously inside the effect.
   useEffect(() => {
-    if (initial.step === "datetime" && initial.doctorId && initial.serviceId) {
-      void fetchDates(initial.doctorId, initial.serviceId);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps -- run once on mount
-  }, []);
+    if (initial.step !== "datetime" || !initial.doctorId || !initial.serviceId) return;
+    const request = ++datesRequest.current;
+    void (async () => {
+      const result = await loadAvailableDates({
+        doctorId: initial.doctorId as string,
+        serviceId: initial.serviceId as string,
+      });
+      if (request !== datesRequest.current) return; // superseded by a newer request
+      if (result.ok) {
+        setAvailability(new Map(result.dates.map((item) => [item.date, item.count])));
+        setDatesStatus("ready");
+      } else {
+        setDatesStatus("error");
+      }
+    })();
+  }, [initial]);
 
   function resetAvailability() {
     datesRequest.current += 1;
@@ -154,7 +185,12 @@ export function BookingWizard({ clinic, services, doctors, initialServiceId, ini
     setStep(next);
     setFurthest((value) => Math.max(value, STEP_ORDER.indexOf(next)));
     setSubmitError(null);
-    if (next === "datetime" && serviceId && doctorId && (datesStatus === "idle" || datesStatus === "error")) {
+    if (
+      next === "datetime" &&
+      serviceId &&
+      doctorId &&
+      (datesStatus === "idle" || datesStatus === "error")
+    ) {
       setDatesStatus("loading");
       void fetchDates(doctorId, serviceId);
     }
@@ -259,7 +295,8 @@ export function BookingWizard({ clinic, services, doctors, initialServiceId, ini
       setSubmitError({ message: result.message, code: result.code });
     } catch {
       setSubmitError({
-        message: "We couldn't reach the server. Nothing has been booked. Please check your connection and try again.",
+        message:
+          "We couldn't reach the server. Nothing has been booked. Please check your connection and try again.",
         code: "network",
       });
     } finally {
@@ -312,10 +349,18 @@ export function BookingWizard({ clinic, services, doctors, initialServiceId, ini
 
           <div className="mt-6" data-testid={`step-${step}`}>
             {step === "service" && (
-              <StepService services={servicesForDoctor} selectedId={serviceId} onSelect={chooseService} />
+              <StepService
+                services={servicesForDoctor}
+                selectedId={serviceId}
+                onSelect={chooseService}
+              />
             )}
             {step === "doctor" && (
-              <StepDoctor doctors={doctorsForService} selectedId={doctorId} onSelect={chooseDoctor} />
+              <StepDoctor
+                doctors={doctorsForService}
+                selectedId={doctorId}
+                onSelect={chooseDoctor}
+              />
             )}
             {step === "datetime" && (
               <StepDateTime
@@ -358,7 +403,12 @@ export function BookingWizard({ clinic, services, doctors, initialServiceId, ini
                 service={service}
                 doctor={doctor}
                 date={date}
-                slot={slots.find((item) => item.start === slotStart) ?? { start: slotStart, end: slotStart }}
+                slot={
+                  slots.find((item) => item.start === slotStart) ?? {
+                    start: slotStart,
+                    end: slotStart,
+                  }
+                }
                 details={details}
                 normalizedMobile={parsed.data.mobile}
                 onEdit={goTo}
@@ -367,7 +417,13 @@ export function BookingWizard({ clinic, services, doctors, initialServiceId, ini
           </div>
 
           {submitError ? (
-            <Alert tone="danger" title="Your booking was not completed" className="mt-6" live="assertive" data-testid="submit-error">
+            <Alert
+              tone="danger"
+              title="Your booking was not completed"
+              className="mt-6"
+              live="assertive"
+              data-testid="submit-error"
+            >
               {submitError.message}
             </Alert>
           ) : null}
@@ -391,7 +447,11 @@ export function BookingWizard({ clinic, services, doctors, initialServiceId, ini
               disabled={!canContinue[step]}
               loading={submitting}
               data-testid="step-next"
-              icon={step === "review" && !submitting ? <CalendarCheck className="size-5" aria-hidden="true" /> : undefined}
+              icon={
+                step === "review" && !submitting ? (
+                  <CalendarCheck className="size-5" aria-hidden="true" />
+                ) : undefined
+              }
             >
               {step === "review" ? (submitting ? "Booking…" : "Confirm booking") : "Continue"}
               {step !== "review" ? <ArrowRight className="size-4" aria-hidden="true" /> : null}
@@ -400,7 +460,13 @@ export function BookingWizard({ clinic, services, doctors, initialServiceId, ini
         </section>
 
         <div className="lg:sticky lg:top-24">
-          <SummaryCard clinic={clinic} service={service} doctor={doctor} date={date} slotStart={slotStart} />
+          <SummaryCard
+            clinic={clinic}
+            service={service}
+            doctor={doctor}
+            date={date}
+            slotStart={slotStart}
+          />
         </div>
       </div>
     </div>

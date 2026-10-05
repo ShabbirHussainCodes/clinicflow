@@ -269,7 +269,13 @@ begin
   if v_q <> '' then
     -- Escape LIKE wildcards so user input is always matched literally.
     v_pattern := '%' || replace(replace(replace(v_q, '\', '\\'), '%', '\%'), '_', '\_') || '%';
-    v_digits := regexp_replace(v_q, '\D', '', 'g');
+    -- Only treat the text as a phone number when it looks like one (digits and phone punctuation).
+    -- Otherwise "Priya2" or a booking reference would match unrelated phone numbers.
+    if v_q ~ '^[+0-9\s().-]+$' then
+      v_digits := regexp_replace(v_q, '\D', '', 'g');
+    else
+      v_digits := '';
+    end if;
   end if;
 
   v_from := case when p_date_from is not null

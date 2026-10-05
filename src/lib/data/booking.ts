@@ -8,7 +8,6 @@ import { createPublicClient } from "@/lib/supabase/clients";
 const slotRowSchema = z.object({ slot_start: z.string(), slot_end: z.string() });
 const dateRowSchema = z.object({ slot_date: z.string(), slot_count: z.number() });
 
-
 export type { SlotDto };
 
 export async function fetchSlots(

@@ -31,7 +31,12 @@ export async function GET(
   }
 
   const { clinic, doctor, service } = confirmation;
-  const location = [clinic.name, clinic.address_line1, clinic.address_line2, `${clinic.city} ${clinic.postal_code}`]
+  const location = [
+    clinic.name,
+    clinic.address_line1,
+    clinic.address_line2,
+    `${clinic.city} ${clinic.postal_code}`,
+  ]
     .filter(Boolean)
     .join(", ");
   const body = buildIcs({

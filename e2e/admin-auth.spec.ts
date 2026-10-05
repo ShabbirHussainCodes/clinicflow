@@ -4,14 +4,18 @@ import { loginAsAdmin } from "./auth";
 import { readState } from "./support";
 
 test.describe("administrator authentication", () => {
-  test("anonymous visitors are redirected to the login page from every admin route", async ({ page }) => {
+  test("anonymous visitors are redirected to the login page from every admin route", async ({
+    page,
+  }) => {
     for (const path of ["/admin", "/admin/appointments", "/admin/schedule", "/admin/events"]) {
       await page.goto(path);
       await expect(page).toHaveURL(/\/admin\/login/);
     }
   });
 
-  test("login validates input and shows a generic error for wrong credentials", async ({ page }) => {
+  test("login validates input and shows a generic error for wrong credentials", async ({
+    page,
+  }) => {
     await page.goto("/admin/login");
     await page.getByRole("button", { name: "Sign in" }).click();
     await expect(page.getByText("Enter a valid email address.")).toBeVisible();
@@ -34,9 +38,13 @@ test.describe("administrator authentication", () => {
     await expect(page).toHaveURL(/\/admin\/login/);
   });
 
-  test("an administrator can sign in, see the dashboard and sign out securely", async ({ page }) => {
+  test("an administrator can sign in, see the dashboard and sign out securely", async ({
+    page,
+  }) => {
     await loginAsAdmin(page);
-    await expect(page.getByRole("heading", { level: 1 })).toContainText(/Good (morning|afternoon|evening)/);
+    await expect(page.getByRole("heading", { level: 1 })).toContainText(
+      /Good (morning|afternoon|evening)/,
+    );
     await expect(page.getByTestId("stat-today")).toBeVisible();
     await expect(page.getByRole("heading", { name: "Recent activity" })).toBeVisible();
 

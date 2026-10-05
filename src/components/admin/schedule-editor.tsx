@@ -22,7 +22,10 @@ type Week = Record<number, Window[]>;
 function toWeek(windows: { weekday: number; start_time: string; end_time: string }[]): Week {
   const week: Week = { 0: [], 1: [], 2: [], 3: [], 4: [], 5: [], 6: [] };
   for (const item of windows) {
-    week[item.weekday]?.push({ start: trimSeconds(item.start_time), end: trimSeconds(item.end_time) });
+    week[item.weekday]?.push({
+      start: trimSeconds(item.start_time),
+      end: trimSeconds(item.end_time),
+    });
   }
   return week;
 }
@@ -56,7 +59,9 @@ export function ScheduleEditor({
     ),
   };
   const validation = scheduleSchema.safeParse(payload);
-  const dirty = JSON.stringify(week) !== JSON.stringify(initialWeek) || Number(slotMinutes) !== initialSlotMinutes;
+  const dirty =
+    JSON.stringify(week) !== JSON.stringify(initialWeek) ||
+    Number(slotMinutes) !== initialSlotMinutes;
 
   // Per-window problems, keyed "weekday:index".
   const problems = new Map<string, string>();
@@ -65,7 +70,9 @@ export function ScheduleEditor({
       if (issue.path[0] === "windows" && typeof issue.path[1] === "number") {
         const window = payload.windows[issue.path[1]];
         if (window) {
-          const indexInDay = payload.windows.slice(0, issue.path[1]).filter((w) => w.weekday === window.weekday).length;
+          const indexInDay = payload.windows
+            .slice(0, issue.path[1])
+            .filter((w) => w.weekday === window.weekday).length;
           problems.set(`${window.weekday}:${indexInDay}`, issue.message);
         }
       }
@@ -79,7 +86,10 @@ export function ScheduleEditor({
 
   function save() {
     if (!validation.success) {
-      setFeedback({ ok: false, message: validation.error.issues[0]?.message ?? "Please check the working hours." });
+      setFeedback({
+        ok: false,
+        message: validation.error.issues[0]?.message ?? "Please check the working hours.",
+      });
       return;
     }
     setFeedback(null);
@@ -118,12 +128,17 @@ export function ScheduleEditor({
           const working = windows.length > 0;
           const name = WEEKDAY_NAMES[weekday];
           return (
-            <li key={weekday} className="flex flex-col gap-3 p-4 sm:flex-row sm:items-start sm:gap-6">
+            <li
+              key={weekday}
+              className="flex flex-col gap-3 p-4 sm:flex-row sm:items-start sm:gap-6"
+            >
               <label className="flex w-40 shrink-0 cursor-pointer items-center gap-3 sm:pt-2.5">
                 <input
                   type="checkbox"
                   checked={working}
-                  onChange={(event) => update(weekday, event.target.checked ? [{ start: "09:00", end: "13:00" }] : [])}
+                  onChange={(event) =>
+                    update(weekday, event.target.checked ? [{ start: "09:00", end: "13:00" }] : [])
+                  }
                   className="size-5 cursor-pointer rounded-xs accent-teal-700"
                   data-testid={`day-toggle-${weekday}`}
                 />
@@ -140,37 +155,64 @@ export function ScheduleEditor({
                       return (
                         <div key={index}>
                           <div className="flex flex-wrap items-center gap-2">
-                            <label className="sr-only" htmlFor={`start-${weekday}-${index}`}>{name} window {index + 1} start time</label>
+                            <label className="sr-only" htmlFor={`start-${weekday}-${index}`}>
+                              {name} window {index + 1} start time
+                            </label>
                             <input
                               id={`start-${weekday}-${index}`}
                               type="time"
                               step={300}
                               value={window.start}
                               aria-invalid={problem ? true : undefined}
-                              onChange={(event) => update(weekday, windows.map((w, i) => (i === index ? { ...w, start: event.target.value } : w)))}
+                              onChange={(event) =>
+                                update(
+                                  weekday,
+                                  windows.map((w, i) =>
+                                    i === index ? { ...w, start: event.target.value } : w,
+                                  ),
+                                )
+                              }
                               className={inputClass}
                             />
-                            <span aria-hidden="true" className="text-ink-500">to</span>
-                            <label className="sr-only" htmlFor={`end-${weekday}-${index}`}>{name} window {index + 1} end time</label>
+                            <span aria-hidden="true" className="text-ink-500">
+                              to
+                            </span>
+                            <label className="sr-only" htmlFor={`end-${weekday}-${index}`}>
+                              {name} window {index + 1} end time
+                            </label>
                             <input
                               id={`end-${weekday}-${index}`}
                               type="time"
                               step={300}
                               value={window.end}
                               aria-invalid={problem ? true : undefined}
-                              onChange={(event) => update(weekday, windows.map((w, i) => (i === index ? { ...w, end: event.target.value } : w)))}
+                              onChange={(event) =>
+                                update(
+                                  weekday,
+                                  windows.map((w, i) =>
+                                    i === index ? { ...w, end: event.target.value } : w,
+                                  ),
+                                )
+                              }
                               className={inputClass}
                             />
                             <button
                               type="button"
-                              onClick={() => update(weekday, windows.filter((_, i) => i !== index))}
+                              onClick={() =>
+                                update(
+                                  weekday,
+                                  windows.filter((_, i) => i !== index),
+                                )
+                              }
                               className="flex size-10 items-center justify-center rounded-sm text-ink-500 hover:bg-danger-50 hover:text-danger-700"
                               aria-label={`Remove ${name} window ${index + 1}`}
                             >
                               <Trash2 className="size-4" aria-hidden="true" />
                             </button>
                           </div>
-                          {problem ? <p className="mt-1 text-sm font-medium text-danger-700">{problem}</p> : null}
+                          {problem ? (
+                            <p className="mt-1 text-sm font-medium text-danger-700">{problem}</p>
+                          ) : null}
                         </div>
                       );
                     })}
@@ -179,9 +221,14 @@ export function ScheduleEditor({
                       onClick={() => {
                         const last = windows[windows.length - 1];
                         const start = last && last.end < "17:00" ? "17:00" : "14:00";
-                        update(weekday, [...windows, { start, end: start < "17:00" ? "17:00" : "19:00" }]);
+                        update(weekday, [
+                          ...windows,
+                          { start, end: start < "17:00" ? "17:00" : "19:00" },
+                        ]);
                       }}
-                      className={cn("inline-flex items-center gap-1.5 rounded-xs text-sm font-semibold text-teal-700 hover:text-teal-800")}
+                      className={cn(
+                        "inline-flex items-center gap-1.5 rounded-xs text-sm font-semibold text-teal-700 hover:text-teal-800",
+                      )}
                     >
                       <Plus className="size-4" aria-hidden="true" /> Add another time window
                     </button>
@@ -194,14 +241,24 @@ export function ScheduleEditor({
       </ul>
 
       <div className="mt-6 flex flex-wrap items-center gap-4">
-        <Button onClick={save} loading={pending} disabled={!dirty} icon={<Save className="size-4" aria-hidden="true" />} data-testid="save-schedule">
+        <Button
+          onClick={save}
+          loading={pending}
+          disabled={!dirty}
+          icon={<Save className="size-4" aria-hidden="true" />}
+          data-testid="save-schedule"
+        >
           Save weekly schedule
         </Button>
-        {dirty && !pending ? <span className="text-sm text-ink-500">You have unsaved changes for {doctorName}.</span> : null}
+        {dirty && !pending ? (
+          <span className="text-sm text-ink-500">You have unsaved changes for {doctorName}.</span>
+        ) : null}
       </div>
 
       <div aria-live="polite" className="mt-4 empty:hidden" data-testid="schedule-feedback">
-        {feedback ? <Alert tone={feedback.ok ? "success" : "danger"}>{feedback.message}</Alert> : null}
+        {feedback ? (
+          <Alert tone={feedback.ok ? "success" : "danger"}>{feedback.message}</Alert>
+        ) : null}
       </div>
     </div>
   );

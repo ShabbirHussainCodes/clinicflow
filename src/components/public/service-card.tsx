@@ -47,7 +47,10 @@ export function ServiceCard({
           className="inline-flex items-center gap-1.5 rounded-xs text-[0.9375rem] font-semibold text-teal-700 hover:text-teal-800"
         >
           Book this service
-          <ArrowRight className="size-4 transition-transform group-hover:translate-x-0.5" aria-hidden="true" />
+          <ArrowRight
+            className="size-4 transition-transform group-hover:translate-x-0.5"
+            aria-hidden="true"
+          />
         </Link>
       </div>
     </article>

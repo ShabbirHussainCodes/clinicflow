@@ -23,7 +23,10 @@ const STATUS_STYLE: Record<string, string> = {
 
 export default async function EventsPage() {
   await requireAdmin();
-  const [{ rows, counts }, clinic] = await Promise.all([getAutomationEvents(), getClinicSettings()]);
+  const [{ rows, counts }, clinic] = await Promise.all([
+    getAutomationEvents(),
+    getClinicSettings(),
+  ]);
   const configured = isDispatcherConfigured();
   const order = ["pending", "processing", "delivered", "failed", "dead"];
 
@@ -40,18 +43,27 @@ export default async function EventsPage() {
         className="mb-6"
       >
         {configured ? (
-          <span className="flex items-center gap-2"><PlugZap className="size-4" aria-hidden="true" /> Events are delivered whenever the dispatcher endpoint is called.</span>
+          <span className="flex items-center gap-2">
+            <PlugZap className="size-4" aria-hidden="true" /> Events are delivered whenever the
+            dispatcher endpoint is called.
+          </span>
         ) : (
           <span className="flex items-center gap-2">
-            <Plug className="size-4" aria-hidden="true" /> Events are safely queued. Connect a webhook later and they will be delivered. See docs/N8N_INTEGRATION.md.
+            <Plug className="size-4" aria-hidden="true" /> Events are safely queued. Connect a
+            webhook later and they will be delivered. See docs/N8N_INTEGRATION.md.
           </span>
         )}
       </Alert>
 
       <section aria-label="Event counts" className="mb-8 grid grid-cols-2 gap-3 sm:grid-cols-5">
         {order.map((status) => (
-          <div key={status} className="rounded-lg border border-sand-200 bg-surface p-4 shadow-card">
-            <p className="font-display text-3xl font-semibold leading-none">{counts[status] ?? 0}</p>
+          <div
+            key={status}
+            className="rounded-lg border border-sand-200 bg-surface p-4 shadow-card"
+          >
+            <p className="font-display text-3xl font-semibold leading-none">
+              {counts[status] ?? 0}
+            </p>
             <p className="mt-2 text-sm font-semibold capitalize text-ink-700">{status}</p>
           </div>
         ))}
@@ -61,8 +73,12 @@ export default async function EventsPage() {
         <h2 className="font-sans text-xl font-semibold tracking-normal">Latest 50 events</h2>
         {rows.length === 0 ? (
           <div className="mt-4">
-            <EmptyState icon={<Inbox className="size-6" aria-hidden="true" />} title="No events yet">
-              Events appear when appointments are created, confirmed, rescheduled, completed or cancelled.
+            <EmptyState
+              icon={<Inbox className="size-6" aria-hidden="true" />}
+              title="No events yet"
+            >
+              Events appear when appointments are created, confirmed, rescheduled, completed or
+              cancelled.
             </EmptyState>
           </div>
         ) : (
@@ -71,30 +87,58 @@ export default async function EventsPage() {
               <caption className="sr-only">Automation events</caption>
               <thead className="text-xs font-semibold uppercase tracking-wider text-ink-500">
                 <tr>
-                  <th scope="col" className="py-2 pr-3">Event</th>
-                  <th scope="col" className="px-3 py-2">Booking</th>
-                  <th scope="col" className="px-3 py-2">Status</th>
-                  <th scope="col" className="px-3 py-2">Created</th>
-                  <th scope="col" className="py-2 pl-3"><span className="sr-only">Actions</span></th>
+                  <th scope="col" className="py-2 pr-3">
+                    Event
+                  </th>
+                  <th scope="col" className="px-3 py-2">
+                    Booking
+                  </th>
+                  <th scope="col" className="px-3 py-2">
+                    Status
+                  </th>
+                  <th scope="col" className="px-3 py-2">
+                    Created
+                  </th>
+                  <th scope="col" className="py-2 pl-3">
+                    <span className="sr-only">Actions</span>
+                  </th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-sand-100">
                 {rows.map((row) => (
                   <tr key={row.id}>
                     <td className="py-3 pr-3 font-mono text-sm">{row.event_type}</td>
-                    <td className="px-3 py-3 font-mono text-sm text-ink-700">{row.reference ?? "—"}</td>
+                    <td className="px-3 py-3 font-mono text-sm text-ink-700">
+                      {row.reference ?? "—"}
+                    </td>
                     <td className="px-3 py-3">
-                      <span className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-semibold capitalize ${STATUS_STYLE[row.status] ?? ""}`}>
-                        {row.status === "delivered" ? <CircleCheck className="size-3.5" aria-hidden="true" /> : null}
-                        {row.status === "dead" || row.status === "failed" ? <CircleAlert className="size-3.5" aria-hidden="true" /> : null}
+                      <span
+                        className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-semibold capitalize ${STATUS_STYLE[row.status] ?? ""}`}
+                      >
+                        {row.status === "delivered" ? (
+                          <CircleCheck className="size-3.5" aria-hidden="true" />
+                        ) : null}
+                        {row.status === "dead" || row.status === "failed" ? (
+                          <CircleAlert className="size-3.5" aria-hidden="true" />
+                        ) : null}
                         {row.status}
                       </span>
-                      {row.attempts > 0 ? <span className="ml-2 text-xs text-ink-500">{row.attempts} attempt{row.attempts === 1 ? "" : "s"}</span> : null}
-                      {row.last_error ? <p className="mt-1 text-xs text-danger-700">{row.last_error}</p> : null}
+                      {row.attempts > 0 ? (
+                        <span className="ml-2 text-xs text-ink-500">
+                          {row.attempts} attempt{row.attempts === 1 ? "" : "s"}
+                        </span>
+                      ) : null}
+                      {row.last_error ? (
+                        <p className="mt-1 text-xs text-danger-700">{row.last_error}</p>
+                      ) : null}
                     </td>
-                    <td className="whitespace-nowrap px-3 py-3 text-sm text-ink-500">{formatDateTime(row.created_at, clinic.timezone)}</td>
+                    <td className="whitespace-nowrap px-3 py-3 text-sm text-ink-500">
+                      {formatDateTime(row.created_at, clinic.timezone)}
+                    </td>
                     <td className="py-3 pl-3 text-right">
-                      {row.status === "failed" || row.status === "dead" ? <RetryEventButton id={row.id} /> : null}
+                      {row.status === "failed" || row.status === "dead" ? (
+                        <RetryEventButton id={row.id} />
+                      ) : null}
                     </td>
                   </tr>
                 ))}

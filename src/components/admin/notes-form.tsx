@@ -8,7 +8,13 @@ import { Alert } from "@/components/ui/feedback";
 import { Button } from "@/components/ui/button";
 import { TextAreaField } from "@/components/ui/fields";
 
-export function NotesForm({ appointmentId, initialNotes }: { appointmentId: string; initialNotes: string }) {
+export function NotesForm({
+  appointmentId,
+  initialNotes,
+}: {
+  appointmentId: string;
+  initialNotes: string;
+}) {
   const router = useRouter();
   const [notes, setNotes] = useState(initialNotes);
   const [pending, startTransition] = useTransition();
@@ -34,9 +40,16 @@ export function NotesForm({ appointmentId, initialNotes }: { appointmentId: stri
         rows={4}
       />
       <div aria-live="polite" className="empty:hidden">
-        {feedback ? <Alert tone={feedback.ok ? "success" : "danger"}>{feedback.message}</Alert> : null}
+        {feedback ? (
+          <Alert tone={feedback.ok ? "success" : "danger"}>{feedback.message}</Alert>
+        ) : null}
       </div>
-      <Button variant="secondary" onClick={save} loading={pending} disabled={notes === initialNotes}>
+      <Button
+        variant="secondary"
+        onClick={save}
+        loading={pending}
+        disabled={notes === initialNotes}
+      >
         Save notes
       </Button>
     </div>

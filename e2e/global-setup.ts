@@ -17,11 +17,18 @@ export default async function globalSetup() {
 
   let userId: string;
   if (found) {
-    const { error } = await supabase.auth.admin.updateUserById(found.id, { password, email_confirm: true });
+    const { error } = await supabase.auth.admin.updateUserById(found.id, {
+      password,
+      email_confirm: true,
+    });
     if (error) throw error;
     userId = found.id;
   } else {
-    const { data, error } = await supabase.auth.admin.createUser({ email, password, email_confirm: true });
+    const { data, error } = await supabase.auth.admin.createUser({
+      email,
+      password,
+      email_confirm: true,
+    });
     if (error || !data.user) throw error ?? new Error("Could not create the e2e administrator");
     userId = data.user.id;
   }

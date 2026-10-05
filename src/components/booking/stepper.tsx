@@ -77,14 +77,20 @@ export function Stepper({
                   <span className="sr-only"> (go back to this step)</span>
                 </button>
               ) : (
-                <span className="flex items-center gap-2.5 py-1 pr-1" aria-current={active ? "step" : undefined}>
+                <span
+                  className="flex items-center gap-2.5 py-1 pr-1"
+                  aria-current={active ? "step" : undefined}
+                >
                   {content}
                 </span>
               )}
               {index < STEP_ORDER.length - 1 ? (
                 <span
                   aria-hidden="true"
-                  className={cn("mx-3 h-0.5 flex-1 rounded-full", index < currentIndex ? "bg-teal-600" : "bg-sand-200")}
+                  className={cn(
+                    "mx-3 h-0.5 flex-1 rounded-full",
+                    index < currentIndex ? "bg-teal-600" : "bg-sand-200",
+                  )}
                 />
               ) : null}
             </li>

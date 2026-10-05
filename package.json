@@ -23,7 +23,9 @@
     "db:reset": "supabase db reset",
     "db:types": "supabase gen types typescript --local > src/lib/supabase/database.types.ts && prettier --write src/lib/supabase/database.types.ts",
     "env:local": "tsx scripts/write-local-env.ts",
-    "admin:create": "tsx scripts/create-admin.ts"
+    "admin:create": "tsx scripts/create-admin.ts",
+    "screenshots": "tsx scripts/capture-screenshots.ts",
+    "webhook:receiver": "tsx scripts/webhook-receiver.ts"
   },
   "dependencies": {
     "@supabase/ssr": "^0.12.7",

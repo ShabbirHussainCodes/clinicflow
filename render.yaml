@@ -1,0 +1,34 @@
+# Render Blueprint for ClinicFlow (https://render.com/docs/blueprint-spec).
+# Create it with: Render dashboard -> New -> Blueprint -> select this repository.
+# Secret values are marked `sync: false`: Render asks for them in the dashboard and they are
+# never stored in this file.
+services:
+  - type: web
+    name: clinicflow
+    runtime: node
+    plan: free # free web services spin down when idle; the first request after a pause is slow
+    region: singapore # choose the region closest to your Supabase project (and your patients)
+    buildCommand: npm ci && npm run build
+    startCommand: npm run start
+    healthCheckPath: /api/health
+    autoDeploy: false # deploy deliberately after reviewing changes
+    envVars:
+      - key: NODE_VERSION
+        value: 22
+      - key: SUPABASE_URL
+        sync: false
+      - key: SUPABASE_ANON_KEY
+        sync: false
+      - key: SITE_URL
+        sync: false
+      - key: SHOW_DEMO_NOTICE
+        value: "true"
+      # Optional: automation. Leave unset to keep the integration disabled.
+      - key: SUPABASE_SERVICE_ROLE_KEY
+        sync: false
+      - key: CRON_SECRET
+        sync: false
+      - key: N8N_WEBHOOK_URL
+        sync: false
+      - key: N8N_WEBHOOK_SECRET
+        sync: false

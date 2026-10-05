@@ -21,9 +21,7 @@ export default function GlobalRouteError({
         This page could not be loaded. Please try again in a moment. If it keeps happening, call the
         clinic and we will book you in by phone.
       </p>
-      {error.digest ? (
-        <p className="mt-3 text-sm text-ink-500">Reference: {error.digest}</p>
-      ) : null}
+      {error.digest ? <p className="mt-3 text-sm text-ink-500">Reference: {error.digest}</p> : null}
       <div className="mt-8 flex flex-col gap-3 sm:flex-row">
         <Button size="lg" onClick={reset}>
           Try again

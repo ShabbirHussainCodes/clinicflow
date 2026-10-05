@@ -149,9 +149,14 @@ export function StepDetails({
         }}
         label={
           <>
-            I agree that {clinicName} may contact me about this appointment by phone, SMS, WhatsApp or
-            email.{" "}
-            <a href="/privacy" target="_blank" rel="noopener" className="font-semibold text-teal-700 underline underline-offset-2">
+            I agree that {clinicName} may contact me about this appointment by phone, SMS, WhatsApp
+            or email.{" "}
+            <a
+              href="/privacy"
+              target="_blank"
+              rel="noopener"
+              className="font-semibold text-teal-700 underline underline-offset-2"
+            >
               Privacy notice
             </a>
           </>

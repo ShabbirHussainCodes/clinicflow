@@ -31,14 +31,25 @@ export async function GET(request: Request) {
         ? Boolean((data as { clinic_configured: unknown }).clinic_configured)
         : false;
     return NextResponse.json(
-      { status: clinicConfigured ? "ok" : "degraded", database: "ok", clinicConfigured, time: new Date().toISOString() },
+      {
+        status: clinicConfigured ? "ok" : "degraded",
+        database: "ok",
+        clinicConfigured,
+        time: new Date().toISOString(),
+      },
       { status: clinicConfigured ? 200 : 503, headers },
     );
   } catch (error) {
     if (error instanceof ConfigError) {
-      return NextResponse.json({ status: "error", database: "not_configured" }, { status: 503, headers });
+      return NextResponse.json(
+        { status: "error", database: "not_configured" },
+        { status: 503, headers },
+      );
     }
     logger.error("health.database_unreachable", error);
-    return NextResponse.json({ status: "error", database: "unreachable" }, { status: 503, headers });
+    return NextResponse.json(
+      { status: "error", database: "unreachable" },
+      { status: 503, headers },
+    );
   }
 }

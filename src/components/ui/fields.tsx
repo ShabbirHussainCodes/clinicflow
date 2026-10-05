@@ -50,7 +50,10 @@ function FieldShell({
       ) : null}
       {children}
       {error ? (
-        <p id={`${id}-error`} className="flex items-start gap-1.5 text-sm font-medium text-danger-700">
+        <p
+          id={`${id}-error`}
+          className="flex items-start gap-1.5 text-sm font-medium text-danger-700"
+        >
           <svg
             className="mt-0.5 size-4 shrink-0"
             viewBox="0 0 16 16"
@@ -58,7 +61,12 @@ function FieldShell({
             aria-hidden="true"
           >
             <circle cx="8" cy="8" r="7" stroke="currentColor" strokeWidth="1.5" />
-            <path d="M8 4.5v4.2M8 10.9v.1" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+            <path
+              d="M8 4.5v4.2M8 10.9v.1"
+              stroke="currentColor"
+              strokeWidth="1.6"
+              strokeLinecap="round"
+            />
           </svg>
           <span>{error}</span>
         </p>
@@ -69,7 +77,7 @@ function FieldShell({
 
 const controlBase =
   "block w-full rounded-sm border bg-surface px-3.5 text-base text-ink-900 shadow-[0_1px_2px_rgb(16_48_46/0.04)_inset] " +
-  "placeholder:text-ink-400 transition-[border-color,box-shadow] duration-150 " +
+  "placeholder:text-ink-500 transition-[border-color,box-shadow] duration-150 " +
   "hover:border-ink-500 focus:border-teal-600 focus:outline-none focus:ring-4 focus:ring-teal-500/20 " +
   "disabled:cursor-not-allowed disabled:bg-sand-50 disabled:text-ink-500";
 

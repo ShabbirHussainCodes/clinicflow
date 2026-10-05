@@ -60,7 +60,8 @@ export async function proxy(request: NextRequest) {
             for (const { name, value, options } of cookiesToSet) {
               response.cookies.set(name, value, options);
             }
-            for (const [header, value] of Object.entries(headers)) response.headers.set(header, value);
+            for (const [header, value] of Object.entries(headers))
+              response.headers.set(header, value);
           },
         },
       });
