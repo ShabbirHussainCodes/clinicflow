@@ -32,7 +32,7 @@ insufficient contrast on a few text colours; invalid `<dl>` markup; test-induced
 
 - **Not re-run after the last small edits**: the complete Playwright suite was last run in full (33/33) before the automation spec, the cookie hardening, the `getSiteUrl` fix and the confirmation wording tweak were added. Cookie hardening and the build were verified by a manual production probe, but please run `npm run test:e2e` once.
 - **Fresh-machine startup was not re-verified**: that `supabase start` on an empty volume applies migrations/seed by itself was not tested; use `npm run db:reset` (verified) after the first start.
-- **No hosted Supabase or Render deployment was performed** (no access); `render.yaml` and `docs/DEPLOYMENT.md` follow documented commands (CLI flags checked with `--help`) but are untested end to end.
+- **No hosted Supabase or Render deployment was performed** (no access); `render.yaml` and `docs/DEPLOYMENT.md` follow documented commands (CLI flags checked with `--help`) but are untested end to end. A review of those files produced `docs/DEPLOYMENT_DRY_RUN.md` (checklist and known gaps, documentation only); the run itself still needs your accounts.
 - **No manual accessibility/screen-reader review, no real-device (iOS) test, tablet width not reviewed.** Automated axe checks pass.
 - n8n itself was never connected (by design); n8n Code-node `crypto` availability is unverified (noted in the doc).
 - Placeholder phone numbers are fictional but follow real-looking formats.
