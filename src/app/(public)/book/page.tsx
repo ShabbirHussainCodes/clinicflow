@@ -51,7 +51,8 @@ export default async function BookPage({
     qualification: doctor.qualification,
     specialization: doctor.specialization,
     experienceYears: doctor.experience_years,
-    avatarTheme: doctor.avatar_theme,
+    tone: doctor.avatar_theme,
+    photoUrl: doctor.photoUrl,
     serviceIds: doctor.serviceIds,
     availability: doctor.availability,
   }));
@@ -74,10 +75,10 @@ export default async function BookPage({
   return (
     <div className="container-page py-10 sm:py-14">
       <header className="mb-8 max-w-2xl">
-        <p className="eyebrow mb-3">Book online</p>
+        <p className="eyebrow eyebrow-rule mb-5">Book online</p>
         <h1 className="text-4xl sm:text-5xl">Book an appointment</h1>
         <p className="mt-4 flex items-start gap-2 text-ink-700">
-          <ShieldCheck className="mt-1 size-5 shrink-0 text-teal-600" aria-hidden="true" />
+          <ShieldCheck className="mt-1 size-5 shrink-0 text-brand-600" aria-hidden="true" />
           It takes about a minute. We only ask for your name and mobile number.
         </p>
       </header>

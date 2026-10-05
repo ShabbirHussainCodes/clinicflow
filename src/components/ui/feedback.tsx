@@ -7,8 +7,8 @@ type AlertTone = "info" | "success" | "warning" | "danger";
 
 const tones: Record<AlertTone, { box: string; icon: ReactNode }> = {
   info: {
-    box: "border-teal-200 bg-teal-50 text-teal-900",
-    icon: <Info className="size-5 text-teal-600" aria-hidden="true" />,
+    box: "border-brand-200 bg-brand-50 text-brand-900",
+    icon: <Info className="size-5 text-brand-600" aria-hidden="true" />,
   },
   success: {
     box: "border-sage-300 bg-sage-50 text-ink-900",
@@ -92,7 +92,7 @@ export function EmptyState({
   return (
     <div className="flex flex-col items-center rounded-lg border border-dashed border-sand-300 bg-surface/60 px-6 py-12 text-center">
       {icon ? (
-        <span className="mb-4 flex size-12 items-center justify-center rounded-full bg-teal-50 text-teal-700">
+        <span className="mb-4 flex size-12 items-center justify-center rounded-full bg-brand-50 text-brand-700">
           {icon}
         </span>
       ) : null}

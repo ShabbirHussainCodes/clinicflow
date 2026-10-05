@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 
 import {
   computeClinicHours,
+  describeRanges,
   describeWeekdays,
   summarizeClinicHours,
   summarizeDoctorAvailability,
@@ -53,16 +54,37 @@ describe("summarizeDoctorAvailability", () => {
 });
 
 describe("clinic hours", () => {
-  it("spans the earliest start to the latest end across doctors and marks closed days", () => {
+  it("merges overlapping and back-to-back windows but keeps a real gap", () => {
     const rows = computeClinicHours([
-      w(1, "10:00", "14:00"),
-      w(1, "09:00", "13:00"),
-      w(1, "17:00", "19:40"),
-      w(0, "10:00", "13:00"),
+      w(1, "10:00:00", "14:00:00"),
+      w(1, "09:00:00", "13:00:00"),
+      w(1, "17:00:00", "19:40:00"),
+      w(1, "14:00:00", "15:00:00"),
+      w(0, "10:00:00", "13:00:00"),
     ]);
-    const monday = rows.find((row) => row.weekday === 1);
-    expect(monday).toEqual({ weekday: 1, open: "09:00", close: "19:40" });
-    expect(rows.find((row) => row.weekday === 2)).toEqual({ weekday: 2, open: null, close: null });
+    expect(rows.find((row) => row.weekday === 1)).toEqual({
+      weekday: 1,
+      ranges: [
+        { start: "09:00", end: "15:00" },
+        { start: "17:00", end: "19:40" },
+      ],
+    });
+    expect(rows.find((row) => row.weekday === 2)).toEqual({ weekday: 2, ranges: [] });
+  });
+
+  it("lists days Monday first", () => {
+    const rows = computeClinicHours([]);
+    expect(rows.map((row) => row.weekday)).toEqual([1, 2, 3, 4, 5, 6, 0]);
+  });
+
+  it("describes ranges for display", () => {
+    expect(
+      describeRanges([
+        { start: "09:00", end: "14:00" },
+        { start: "17:00", end: "19:40" },
+      ]),
+    ).toBe("9:00 AM – 2:00 PM, 5:00 PM – 7:40 PM");
+    expect(describeRanges([])).toBe("Closed");
   });
 
   it("groups consecutive identical days", () => {

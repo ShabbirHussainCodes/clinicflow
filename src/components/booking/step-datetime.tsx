@@ -149,10 +149,10 @@ export function StepDateTime({
                                 key={slot.start}
                                 className={cn(
                                   "flex min-h-11 cursor-pointer items-center justify-center rounded-sm border text-sm font-semibold transition-colors",
-                                  "has-[:focus-visible]:outline-3 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-teal-500",
+                                  "has-[:focus-visible]:outline-3 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-brand-500",
                                   checked
-                                    ? "border-teal-700 bg-teal-700 text-white"
-                                    : "border-sand-300 bg-surface text-ink-900 hover:border-teal-600 hover:bg-teal-50",
+                                    ? "border-brand-700 bg-brand-700 text-white"
+                                    : "border-sand-300 bg-surface text-ink-900 hover:border-brand-600 hover:bg-brand-50",
                                 )}
                               >
                                 <input

@@ -104,7 +104,7 @@ export function AppointmentFiltersForm({
           <Link
             key={item.label}
             href={`/admin/appointments?from=${item.from}&to=${item.to}`}
-            className="rounded-full border border-sand-300 px-3.5 py-1.5 text-sm font-semibold text-ink-700 hover:border-teal-600 hover:bg-teal-50 hover:text-teal-800"
+            className="rounded-full border border-sand-300 px-3.5 py-1.5 text-sm font-semibold text-ink-700 hover:border-brand-600 hover:bg-brand-50 hover:text-brand-800"
           >
             {item.label}
           </Link>

@@ -100,7 +100,7 @@ export default async function AppointmentDetailPage({
             <dl className="mt-4 grid gap-5 sm:grid-cols-2">
               <div>
                 <dt className="text-xs font-semibold uppercase tracking-wider text-ink-500 flex items-center gap-2">
-                  <CalendarDays className="size-4 shrink-0 text-teal-600" aria-hidden="true" />
+                  <CalendarDays className="size-4 shrink-0 text-brand-600" aria-hidden="true" />
                   Date
                 </dt>
                 <dd className="font-semibold" data-testid="detail-date">
@@ -109,7 +109,7 @@ export default async function AppointmentDetailPage({
               </div>
               <div>
                 <dt className="text-xs font-semibold uppercase tracking-wider text-ink-500 flex items-center gap-2">
-                  <Clock className="size-4 shrink-0 text-teal-600" aria-hidden="true" />
+                  <Clock className="size-4 shrink-0 text-brand-600" aria-hidden="true" />
                   Time
                 </dt>
                 <dd className="font-semibold" data-testid="detail-time">
@@ -118,7 +118,7 @@ export default async function AppointmentDetailPage({
               </div>
               <div>
                 <dt className="text-xs font-semibold uppercase tracking-wider text-ink-500 flex items-center gap-2">
-                  <UserRound className="size-4 shrink-0 text-teal-600" aria-hidden="true" />
+                  <UserRound className="size-4 shrink-0 text-brand-600" aria-hidden="true" />
                   Doctor
                 </dt>
                 <dd className="font-semibold">{appointment.doctor.full_name}</dd>
@@ -126,7 +126,7 @@ export default async function AppointmentDetailPage({
               </div>
               <div>
                 <dt className="text-xs font-semibold uppercase tracking-wider text-ink-500 flex items-center gap-2">
-                  <Stethoscope className="size-4 shrink-0 text-teal-600" aria-hidden="true" />
+                  <Stethoscope className="size-4 shrink-0 text-brand-600" aria-hidden="true" />
                   Service
                 </dt>
                 <dd className="font-semibold">{appointment.service.name}</dd>
@@ -148,12 +148,12 @@ export default async function AppointmentDetailPage({
             <dl className="mt-4 grid gap-5 sm:grid-cols-2">
               <div>
                 <dt className="text-xs font-semibold uppercase tracking-wider text-ink-500 flex items-center gap-2">
-                  <Phone className="size-4 shrink-0 text-teal-600" aria-hidden="true" />
+                  <Phone className="size-4 shrink-0 text-brand-600" aria-hidden="true" />
                   Mobile
                 </dt>
                 <dd>
                   <a
-                    className="font-semibold text-teal-800 underline-offset-2 hover:underline"
+                    className="font-semibold text-brand-800 underline-offset-2 hover:underline"
                     href={`tel:${appointment.patient_phone}`}
                   >
                     {formatIndianMobile(appointment.patient_phone)}
@@ -162,13 +162,13 @@ export default async function AppointmentDetailPage({
               </div>
               <div className="min-w-0">
                 <dt className="text-xs font-semibold uppercase tracking-wider text-ink-500 flex items-center gap-2">
-                  <Mail className="size-4 shrink-0 text-teal-600" aria-hidden="true" />
+                  <Mail className="size-4 shrink-0 text-brand-600" aria-hidden="true" />
                   Email
                 </dt>
                 <dd className="break-all">
                   {appointment.patient_email ? (
                     <a
-                      className="font-semibold text-teal-800 underline-offset-2 hover:underline"
+                      className="font-semibold text-brand-800 underline-offset-2 hover:underline"
                       href={`mailto:${appointment.patient_email}`}
                     >
                       {appointment.patient_email}
@@ -210,8 +210,8 @@ export default async function AppointmentDetailPage({
                 </dd>
               </div>
             </dl>
-            <p className="mt-5 flex items-start gap-2 rounded-md bg-teal-50 p-3 text-sm text-teal-900">
-              <ShieldCheck className="mt-0.5 size-4 shrink-0 text-teal-600" aria-hidden="true" />
+            <p className="mt-5 flex items-start gap-2 rounded-md bg-brand-50 p-3 text-sm text-brand-900">
+              <ShieldCheck className="mt-0.5 size-4 shrink-0 text-brand-600" aria-hidden="true" />
               Patient consented to be contacted about this appointment on{" "}
               {formatDateTime(appointment.consent_at, tz)}.
             </p>
@@ -223,7 +223,7 @@ export default async function AppointmentDetailPage({
               {appointment.history.map((item) => (
                 <li key={item.id} className="relative">
                   <span
-                    className="absolute -left-[1.9rem] top-1.5 size-3 rounded-full border-2 border-surface bg-teal-600 ring-2 ring-teal-100"
+                    className="absolute -left-[1.9rem] top-1.5 size-3 rounded-full border-2 border-surface bg-brand-600 ring-2 ring-brand-100"
                     aria-hidden="true"
                   />
                   <p className="font-semibold text-ink-900">{historyLabel(item, tz)}</p>

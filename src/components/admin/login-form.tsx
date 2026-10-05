@@ -53,7 +53,7 @@ export function LoginForm({ next }: { next: string }) {
           type="button"
           onClick={() => setVisible((value) => !value)}
           aria-pressed={visible}
-          className="inline-flex items-center gap-1.5 rounded-xs text-sm font-semibold text-teal-700 hover:text-teal-800"
+          className="inline-flex items-center gap-1.5 rounded-xs text-sm font-semibold text-brand-700 hover:text-brand-800"
         >
           {visible ? (
             <EyeOff className="size-4" aria-hidden="true" />

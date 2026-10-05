@@ -70,7 +70,7 @@ export function DailyBarChart({ days, today }: { days: DayPoint[]; today: string
                 width={barWidth}
                 height={activeHeight}
                 rx="4"
-                fill={isFuture ? "#4a9d95" : "#0f6b66"}
+                className={isFuture ? "fill-brand-400" : "fill-brand-600"}
                 opacity={isFuture ? 0.8 : 1}
               />
               {cancelledHeight > 0 ? (
@@ -89,7 +89,7 @@ export function DailyBarChart({ days, today }: { days: DayPoint[]; today: string
                 textAnchor="middle"
                 fontSize="11"
                 fontWeight={isToday ? 700 : 500}
-                fill={isToday ? "#0b5753" : "#566e6b"}
+                className={isToday ? "fill-brand-700" : "fill-ink-500"}
               >
                 {formatCalendarDate(day.date, "weekday-short").slice(0, 3)}
               </text>
@@ -99,7 +99,7 @@ export function DailyBarChart({ days, today }: { days: DayPoint[]; today: string
                 textAnchor="middle"
                 fontSize="11"
                 fontWeight={isToday ? 700 : 400}
-                fill={isToday ? "#0b5753" : "#70847f"}
+                className={isToday ? "fill-brand-700" : "fill-ink-500"}
               >
                 {Number(day.date.slice(8))}
               </text>
@@ -110,7 +110,7 @@ export function DailyBarChart({ days, today }: { days: DayPoint[]; today: string
                   width={barWidth + 6}
                   height={2.5}
                   rx="1"
-                  fill="#0b5753"
+                  className="fill-brand-700"
                 />
               ) : null}
             </g>
@@ -119,10 +119,10 @@ export function DailyBarChart({ days, today }: { days: DayPoint[]; today: string
       </svg>
       <figcaption className="mt-2 flex flex-wrap gap-x-5 gap-y-1 text-xs text-ink-500">
         <span className="inline-flex items-center gap-1.5">
-          <span className="size-3 rounded-xs bg-teal-600" aria-hidden="true" /> Visits (past)
+          <span className="size-3 rounded-xs bg-brand-600" aria-hidden="true" /> Visits (past)
         </span>
         <span className="inline-flex items-center gap-1.5">
-          <span className="size-3 rounded-xs bg-teal-400" aria-hidden="true" /> Booked (upcoming)
+          <span className="size-3 rounded-xs bg-brand-400" aria-hidden="true" /> Booked (upcoming)
         </span>
         <span className="inline-flex items-center gap-1.5">
           <span
@@ -174,7 +174,7 @@ export function HorizontalBars({
           </div>
           <div className="mt-1.5 h-2 overflow-hidden rounded-full bg-sand-100" aria-hidden="true">
             <div
-              className="h-full rounded-full bg-teal-500"
+              className="h-full rounded-full bg-brand-500"
               style={{ width: `${(item.total / max) * 100}%` }}
             />
           </div>

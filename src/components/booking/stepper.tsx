@@ -32,7 +32,7 @@ export function Stepper({
           aria-label="Booking progress"
         >
           <div
-            className="h-full rounded-full bg-teal-600 transition-[width] duration-300"
+            className="h-full rounded-full bg-brand-600 transition-[width] duration-300"
             style={{ width: `${((currentIndex + 1) / STEP_ORDER.length) * 100}%` }}
           />
         </div>
@@ -48,8 +48,8 @@ export function Stepper({
               <span
                 className={cn(
                   "flex size-8 shrink-0 items-center justify-center rounded-full text-sm font-bold transition-colors",
-                  done && "bg-teal-700 text-white",
-                  active && "bg-teal-700 text-white ring-4 ring-teal-100",
+                  done && "bg-brand-700 text-white",
+                  active && "bg-brand-700 text-white ring-4 ring-brand-100",
                   !done && !active && "bg-sand-100 text-ink-500 ring-1 ring-inset ring-sand-300",
                 )}
               >
@@ -89,7 +89,7 @@ export function Stepper({
                   aria-hidden="true"
                   className={cn(
                     "mx-3 h-0.5 flex-1 rounded-full",
-                    index < currentIndex ? "bg-teal-600" : "bg-sand-200",
+                    index < currentIndex ? "bg-brand-600" : "bg-sand-200",
                   )}
                 />
               ) : null}

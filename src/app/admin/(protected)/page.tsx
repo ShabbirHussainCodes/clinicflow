@@ -63,7 +63,7 @@ export default async function DashboardPage() {
       sub: `${counts.today_remaining} still to come`,
       href: `/admin/appointments?from=${today}&to=${today}`,
       icon: Sun,
-      tone: "text-teal-700 bg-teal-50",
+      tone: "text-brand-700 bg-brand-50",
     },
     {
       label: "Upcoming 7 days",
@@ -71,7 +71,7 @@ export default async function DashboardPage() {
       sub: "Pending or confirmed",
       href: `/admin/appointments?from=${addDays(today, 1)}&to=${addDays(today, 7)}`,
       icon: CalendarCheck,
-      tone: "text-teal-700 bg-teal-50",
+      tone: "text-brand-700 bg-brand-50",
     },
     {
       label: "Pending",
@@ -153,7 +153,7 @@ export default async function DashboardPage() {
               </h2>
               <Link
                 href={`/admin/appointments?from=${today}&to=${today}`}
-                className="inline-flex items-center gap-1 text-sm font-semibold text-teal-700 hover:text-teal-800"
+                className="inline-flex items-center gap-1 text-sm font-semibold text-brand-700 hover:text-brand-800"
               >
                 View all <ArrowRight className="size-4" aria-hidden="true" />
               </Link>
@@ -179,7 +179,7 @@ export default async function DashboardPage() {
                     <p className="px-3 pb-2 text-sm text-ink-500">
                       and {stillToCome.length - 12} more later today.{" "}
                       <Link
-                        className="font-semibold text-teal-700 underline underline-offset-2"
+                        className="font-semibold text-brand-700 underline underline-offset-2"
                         href={`/admin/appointments?from=${today}&to=${today}`}
                       >
                         See the full day
@@ -211,7 +211,7 @@ export default async function DashboardPage() {
               </div>
               <Link
                 href="/admin/appointments?status=pending"
-                className="inline-flex items-center gap-1 text-sm font-semibold text-teal-700 hover:text-teal-800"
+                className="inline-flex items-center gap-1 text-sm font-semibold text-brand-700 hover:text-brand-800"
               >
                 View all {counts.pending} <ArrowRight className="size-4" aria-hidden="true" />
               </Link>

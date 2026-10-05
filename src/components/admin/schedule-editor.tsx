@@ -31,7 +31,7 @@ function toWeek(windows: { weekday: number; start_time: string; end_time: string
 }
 
 const inputClass =
-  "min-h-11 w-[9.5rem] rounded-sm border border-ink-400 bg-surface px-2.5 text-base text-ink-900 hover:border-ink-500 focus:border-teal-600 focus:outline-none focus:ring-4 focus:ring-teal-500/20 aria-[invalid=true]:border-danger-600";
+  "min-h-11 w-[9.5rem] rounded-sm border border-ink-400 bg-surface px-2.5 text-base text-ink-900 hover:border-ink-500 focus:border-brand-600 focus:outline-none focus:ring-4 focus:ring-brand-500/20 aria-[invalid=true]:border-danger-600";
 
 export function ScheduleEditor({
   doctorId,
@@ -139,7 +139,7 @@ export function ScheduleEditor({
                   onChange={(event) =>
                     update(weekday, event.target.checked ? [{ start: "09:00", end: "13:00" }] : [])
                   }
-                  className="size-5 cursor-pointer rounded-xs accent-teal-700"
+                  className="size-5 cursor-pointer rounded-xs accent-brand-700"
                   data-testid={`day-toggle-${weekday}`}
                 />
                 <span className="font-semibold text-ink-900">{name}</span>
@@ -227,7 +227,7 @@ export function ScheduleEditor({
                         ]);
                       }}
                       className={cn(
-                        "inline-flex items-center gap-1.5 rounded-xs text-sm font-semibold text-teal-700 hover:text-teal-800",
+                        "inline-flex items-center gap-1.5 rounded-xs text-sm font-semibold text-brand-700 hover:text-brand-800",
                       )}
                     >
                       <Plus className="size-4" aria-hidden="true" /> Add another time window

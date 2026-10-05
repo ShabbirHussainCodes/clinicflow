@@ -1,22 +1,32 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Menu, Phone, X } from "lucide-react";
 
-import { Wordmark } from "@/components/brand/logo";
 import { ButtonLink } from "@/components/ui/button";
 import { cn } from "@/lib/cn";
 
-const NAV = [
-  { href: "/", label: "Home" },
-  { href: "/services", label: "Services" },
-  { href: "/doctors", label: "Doctors" },
-  { href: "/#contact", label: "Contact" },
-];
+export interface NavItem {
+  href: string;
+  label: string;
+}
 
-export function SiteHeader({ clinicName, phone }: { clinicName: string; phone: string }) {
+export function SiteHeader({
+  brand,
+  clinicName,
+  phone,
+  phoneHref,
+  nav,
+}: {
+  /** The clinic's logo or name, rendered on the server. */
+  brand: ReactNode;
+  clinicName: string;
+  phone: string;
+  phoneHref: string;
+  nav: NavItem[];
+}) {
   const pathname = usePathname();
   // The menu is "open for" the page it was opened on, so navigating closes it without an effect.
   const [openFor, setOpenFor] = useState<string | null>(null);
@@ -37,21 +47,23 @@ export function SiteHeader({ clinicName, phone }: { clinicName: string; phone: s
   };
 
   return (
-    <header className="sticky top-0 z-40 border-b border-sand-200/80 bg-paper/95 backdrop-blur-sm supports-[backdrop-filter]:bg-paper/85">
-      <div className="container-page flex h-16 items-center justify-between gap-4 sm:h-[4.5rem]">
-        <Link href="/" className="rounded-sm" aria-label={`ClinicFlow, ${clinicName} home`}>
-          <Wordmark />
+    <header className="sticky top-0 z-40 border-b border-sand-200 bg-paper/95 backdrop-blur-sm supports-[backdrop-filter]:bg-paper/90">
+      <div className="container-page flex h-16 items-center justify-between gap-6 sm:h-[4.5rem]">
+        <Link href="/" className="rounded-sm" aria-label={`${clinicName}, home page`}>
+          {brand}
         </Link>
 
-        <nav aria-label="Main" className="hidden items-center gap-1 lg:flex">
-          {NAV.map((item) => (
+        <nav aria-label="Main" className="hidden items-center gap-8 lg:flex">
+          {nav.map((item) => (
             <Link
               key={item.href}
               href={item.href}
               aria-current={isCurrent(item.href) ? "page" : undefined}
               className={cn(
-                "rounded-sm px-3.5 py-2 text-[0.9375rem] font-medium text-ink-700 transition-colors hover:bg-sand-100 hover:text-ink-900",
-                isCurrent(item.href) && "bg-sand-100 text-ink-900",
+                "border-b-2 py-1.5 text-[0.9375rem] font-medium transition-colors hover:text-ink-900",
+                isCurrent(item.href)
+                  ? "border-brand-700 text-ink-900"
+                  : "border-transparent text-ink-700 hover:border-sand-300",
               )}
             >
               {item.label}
@@ -59,14 +71,7 @@ export function SiteHeader({ clinicName, phone }: { clinicName: string; phone: s
           ))}
         </nav>
 
-        <div className="flex items-center gap-2">
-          <a
-            href={`tel:${phone.replace(/\s/g, "")}`}
-            className="hidden items-center gap-2 rounded-sm px-3 py-2 text-sm font-semibold text-ink-700 hover:bg-sand-100 xl:inline-flex"
-          >
-            <Phone className="size-4 text-teal-600" aria-hidden="true" />
-            {phone}
-          </a>
+        <div className="flex items-center gap-3">
           <ButtonLink href="/book" size="md" className="max-sm:hidden">
             Book appointment
           </ButtonLink>
@@ -88,26 +93,28 @@ export function SiteHeader({ clinicName, phone }: { clinicName: string; phone: s
       </div>
 
       <div id="mobile-menu" hidden={!open} className="border-t border-sand-200 bg-paper lg:hidden">
-        <nav aria-label="Mobile" className="container-page flex flex-col gap-1 py-4">
-          {NAV.map((item) => (
+        <nav aria-label="Mobile" className="container-page flex flex-col py-2">
+          {nav.map((item) => (
             <Link
               key={item.href}
               href={item.href}
               aria-current={isCurrent(item.href) ? "page" : undefined}
-              className="rounded-sm px-3 py-3 text-lg font-medium text-ink-900 hover:bg-sand-100"
+              className="border-b border-sand-100 px-1 py-3.5 font-display text-xl text-ink-900"
             >
               {item.label}
             </Link>
           ))}
-          <ButtonLink href="/book" size="lg" className="mt-3">
-            Book appointment
-          </ButtonLink>
-          <a
-            href={`tel:${phone.replace(/\s/g, "")}`}
-            className="mt-1 flex items-center justify-center gap-2 rounded-sm px-3 py-3 text-base font-semibold text-teal-700"
-          >
-            <Phone className="size-4" aria-hidden="true" /> Call {phone}
-          </a>
+          <div className="flex flex-col gap-3 py-5">
+            <ButtonLink href="/book" size="lg">
+              Book appointment
+            </ButtonLink>
+            <a
+              href={phoneHref}
+              className="flex min-h-12 items-center justify-center gap-2 rounded-sm border border-sand-300 text-base font-semibold tabular-nums text-ink-900"
+            >
+              <Phone className="size-4" aria-hidden="true" /> Call {phone}
+            </a>
+          </div>
         </nav>
       </div>
     </header>

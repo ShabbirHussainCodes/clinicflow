@@ -78,7 +78,7 @@ function FieldShell({
 const controlBase =
   "block w-full rounded-sm border bg-surface px-3.5 text-base text-ink-900 shadow-[0_1px_2px_rgb(16_48_46/0.04)_inset] " +
   "placeholder:text-ink-500 transition-[border-color,box-shadow] duration-150 " +
-  "hover:border-ink-500 focus:border-teal-600 focus:outline-none focus:ring-4 focus:ring-teal-500/20 " +
+  "hover:border-ink-500 focus:border-brand-600 focus:outline-none focus:ring-4 focus:ring-brand-500/20 " +
   "disabled:cursor-not-allowed disabled:bg-sand-50 disabled:text-ink-500";
 
 function controlClass(error: string | undefined, extra?: string) {
@@ -227,7 +227,7 @@ export function CheckboxField({
           type="checkbox"
           aria-invalid={error ? true : undefined}
           aria-describedby={error ? `${id}-error` : undefined}
-          className="mt-0.5 size-5 shrink-0 cursor-pointer rounded-xs border-ink-400 accent-teal-700"
+          className="mt-0.5 size-5 shrink-0 cursor-pointer rounded-xs border-ink-400 accent-brand-700"
           {...props}
         />
         <label htmlFor={id} className="cursor-pointer text-[0.9375rem] leading-snug text-ink-900">

@@ -47,8 +47,8 @@ export function StepDetails({
 }) {
   return (
     <div className="space-y-5">
-      <p className="flex items-start gap-2.5 rounded-md bg-teal-50 p-3.5 text-sm text-teal-900">
-        <Lock className="mt-0.5 size-4 shrink-0 text-teal-600" aria-hidden="true" />
+      <p className="flex items-start gap-2.5 rounded-md bg-brand-50 p-3.5 text-sm text-brand-900">
+        <Lock className="mt-0.5 size-4 shrink-0 text-brand-600" aria-hidden="true" />
         We only ask for what the clinic needs to reach you. No account or password is required.
       </p>
 
@@ -155,7 +155,7 @@ export function StepDetails({
               href="/privacy"
               target="_blank"
               rel="noopener"
-              className="font-semibold text-teal-700 underline underline-offset-2"
+              className="font-semibold text-brand-700 underline underline-offset-2"
             >
               Privacy notice
             </a>

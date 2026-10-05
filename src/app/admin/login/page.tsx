@@ -5,7 +5,6 @@ import { ArrowLeft, ShieldCheck } from "lucide-react";
 
 import { LoginForm } from "@/components/admin/login-form";
 import { Wordmark } from "@/components/brand/logo";
-import { DoctorFigure } from "@/components/illustrations/doctor-avatar";
 import { getAdminSession } from "@/lib/auth";
 
 export const dynamic = "force-dynamic";
@@ -30,22 +29,18 @@ export default async function AdminLoginPage({
     <div className="grid min-h-dvh lg:grid-cols-[1fr_1.05fr]">
       <aside
         aria-hidden="true"
-        className="relative hidden overflow-hidden bg-teal-900 lg:flex lg:flex-col lg:justify-between lg:p-12"
+        className="hidden bg-brand-900 lg:flex lg:flex-col lg:justify-between lg:p-12"
       >
         <Wordmark tone="light" />
-        <div className="relative mx-auto w-full max-w-sm">
-          <svg viewBox="0 0 400 420" className="block h-auto w-full" focusable="false">
-            <path d="M20 420V190a180 180 0 0 1 360 0v230Z" fill="#0b5753" />
-            <path d="M44 420V194a156 156 0 0 1 312 0v226Z" fill="#0f6b66" opacity="0.75" />
-            <g transform="translate(86 150) scale(1.14)">
-              <DoctorFigure theme="teal" />
-            </g>
-            <rect x="0" y="408" width="400" height="12" rx="6" fill="#094643" />
-          </svg>
+        <div>
+          <p className="max-w-md font-display text-[2rem] font-medium leading-tight text-paper">
+            Today&rsquo;s appointments, doctors&rsquo; schedules and holidays in one place.
+          </p>
+          <p className="mt-5 max-w-md text-brand-100/85">
+            For clinic staff only. Ask the clinic administrator if you need an account.
+          </p>
         </div>
-        <p className="max-w-sm font-display text-2xl leading-snug text-teal-50">
-          Everything the front desk needs for today, in one calm place.
-        </p>
+        <p className="text-sm text-brand-100/70">Staff area</p>
       </aside>
 
       <main className="flex flex-col justify-center px-6 py-12 sm:px-12">

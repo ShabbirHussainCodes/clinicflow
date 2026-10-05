@@ -65,33 +65,56 @@ export function summarizeDoctorAvailability(windows: readonly WeeklyWindow[]): S
     .map(([hours, entry]) => ({ days: describeWeekdays([...entry.weekdays]), hours }));
 }
 
-export interface ClinicHoursRow {
-  weekday: number;
-  /** null when no doctor works that day. */
-  open: string | null;
-  close: string | null;
+export interface TimeRange {
+  /** 24-hour "HH:MM". */
+  start: string;
+  end: string;
 }
 
-/** The clinic is "open" from the earliest start to the latest end across all doctors that day. */
+export interface ClinicHoursRow {
+  weekday: number;
+  /** Merged working ranges, earliest first. Empty when no doctor works that day. */
+  ranges: TimeRange[];
+}
+
+const hhmm = (clock: string) => clock.slice(0, 5);
+
+/**
+ * The clinic is "open" whenever at least one doctor is in. Overlapping or back-to-back doctor
+ * windows become one range, but a real gap (for example a mid-afternoon break in which nobody is
+ * in clinic) stays visible, so the published hours never promise more than the doctors' schedules.
+ */
 export function computeClinicHours(windows: readonly WeeklyWindow[]): ClinicHoursRow[] {
   return WEEKDAY_DISPLAY_ORDER.map((weekday) => {
-    const today = windows.filter((window) => window.weekday === weekday);
-    if (today.length === 0) return { weekday, open: null, close: null };
-    const open = today.map((w) => w.start_time).sort()[0] ?? null;
-    const close =
-      today
-        .map((w) => w.end_time)
-        .sort()
-        .reverse()[0] ?? null;
-    return { weekday, open, close };
+    const sorted = windows
+      .filter((window) => window.weekday === weekday)
+      .map((window) => ({ start: hhmm(window.start_time), end: hhmm(window.end_time) }))
+      .sort((a, b) => a.start.localeCompare(b.start) || a.end.localeCompare(b.end));
+    const ranges: TimeRange[] = [];
+    for (const range of sorted) {
+      const last = ranges[ranges.length - 1];
+      if (last && range.start <= last.end) {
+        if (range.end > last.end) last.end = range.end;
+      } else {
+        ranges.push({ ...range });
+      }
+    }
+    return { weekday, ranges };
   });
+}
+
+/** "9:00 AM – 2:00 PM, 5:00 PM – 7:40 PM", or "Closed" when there are no ranges. */
+export function describeRanges(ranges: readonly TimeRange[]): string {
+  return ranges.length === 0
+    ? "Closed"
+    : ranges.map((range) => hoursLabel(range.start, range.end)).join(", ");
 }
 
 /** Groups consecutive identical days: "Mon – Fri  9:00 AM – 7:40 PM", "Sun  Closed". */
 export function summarizeClinicHours(rows: readonly ClinicHoursRow[]): SummaryLine[] {
   const groups: { weekdays: number[]; hours: string }[] = [];
   for (const row of rows) {
-    const hours = row.open && row.close ? hoursLabel(row.open, row.close) : "Closed";
+    const hours = describeRanges(row.ranges);
     const last = groups[groups.length - 1];
     if (last && last.hours === hours) last.weekdays.push(row.weekday);
     else groups.push({ weekdays: [row.weekday], hours });

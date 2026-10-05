@@ -1,14 +1,20 @@
 @import "tailwindcss";
 
 /*
- * ClinicFlow design tokens.
- * Warm paper background, deep teal primary, soft sage support, restrained clay accent.
+ * Design tokens.
+ *
+ * To re-brand the site for a clinic, change the `--color-brand-*` ramp below (700 must stay dark
+ * enough for white text: aim for a contrast ratio of at least 4.5) and, if wanted, the two font
+ * variables. Everything else follows. See docs/CUSTOMIZE.md.
+ *
+ * Warm paper background, deep brand primary, soft sage support, restrained clay accent.
  * Every text/background pairing used by components has been checked for WCAG AA contrast
  * (see docs/DESIGN.md).
  */
 @theme {
-  --font-sans: var(--font-figtree), ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
-  --font-display: var(--font-fraunces), ui-serif, Georgia, "Times New Roman", serif;
+  --font-sans:
+    var(--font-source-sans), ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-display: var(--font-source-serif), ui-serif, Georgia, "Times New Roman", serif;
 
   --color-paper: #fbf9f5;
   --color-surface: #ffffff;
@@ -23,15 +29,15 @@
   --color-ink-500: #566e6b;
   --color-ink-400: #70847f;
 
-  --color-teal-50: #eaf4f2;
-  --color-teal-100: #d3e8e4;
-  --color-teal-200: #a9d0c9;
-  --color-teal-400: #4a9d95;
-  --color-teal-500: #1f7f78;
-  --color-teal-600: #0f6b66;
-  --color-teal-700: #0b5753;
-  --color-teal-800: #094643;
-  --color-teal-900: #07322f;
+  --color-brand-50: #eaf4f2;
+  --color-brand-100: #d3e8e4;
+  --color-brand-200: #a9d0c9;
+  --color-brand-400: #4a9d95;
+  --color-brand-500: #1f7f78;
+  --color-brand-600: #0f6b66;
+  --color-brand-700: #0b5753;
+  --color-brand-800: #094643;
+  --color-brand-900: #07322f;
 
   --color-sage-50: #eef5ec;
   --color-sage-100: #dcebd7;
@@ -57,13 +63,14 @@
   --color-violet-50: #eeebf3;
   --color-violet-700: #4a4558;
 
-  --radius-xs: 6px;
-  --radius-sm: 10px;
-  --radius-md: 14px;
-  --radius-lg: 20px;
+  /* Small, precise corners and almost no shadow: the look of printed stationery, not an app. */
+  --radius-xs: 3px;
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
 
-  --shadow-card: 0 1px 2px rgb(16 48 46 / 0.05), 0 6px 20px -8px rgb(16 48 46 / 0.1);
-  --shadow-raised: 0 2px 4px rgb(16 48 46 / 0.06), 0 14px 34px -12px rgb(16 48 46 / 0.2);
+  --shadow-card: 0 1px 1px rgb(16 48 46 / 0.04);
+  --shadow-raised: 0 1px 2px rgb(16 48 46 / 0.06), 0 10px 24px -14px rgb(16 48 46 / 0.22);
 
   --animate-fade-up: fade-up 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
   --animate-fade-in: fade-in 0.25s ease-out both;
@@ -102,8 +109,8 @@
     background-color: var(--color-paper);
     color: var(--color-ink-900);
     font-family: var(--font-sans);
-    font-size: 1rem;
-    line-height: 1.6;
+    font-size: 1.0625rem;
+    line-height: 1.65;
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
   }
@@ -112,9 +119,9 @@
   h2,
   h3 {
     font-family: var(--font-display);
-    font-weight: 600;
-    letter-spacing: -0.015em;
-    line-height: 1.15;
+    font-weight: 560;
+    letter-spacing: -0.012em;
+    line-height: 1.14;
     text-wrap: balance;
   }
 
@@ -123,13 +130,13 @@
   }
 
   :focus-visible {
-    outline: 3px solid var(--color-teal-500);
+    outline: 3px solid var(--color-brand-500);
     outline-offset: 2px;
     border-radius: 4px;
   }
 
   ::selection {
-    background: var(--color-teal-200);
+    background: var(--color-brand-200);
     color: var(--color-ink-900);
   }
 
@@ -163,11 +170,25 @@
   }
 
   .eyebrow {
-    font-size: 0.8125rem;
-    font-weight: 700;
-    letter-spacing: 0.12em;
+    font-size: 0.78rem;
+    font-weight: 650;
+    letter-spacing: 0.14em;
     text-transform: uppercase;
-    color: var(--color-teal-700);
+    color: var(--color-brand-700);
+  }
+
+  /* A short rule before the label, the way printed journals mark a section. */
+  .eyebrow-rule {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  .eyebrow-rule::before {
+    content: "";
+    width: 1.75rem;
+    height: 1px;
+    background: currentColor;
+    opacity: 0.55;
   }
 }
 

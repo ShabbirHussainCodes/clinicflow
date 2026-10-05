@@ -94,7 +94,7 @@ SUPABASE_URL=https://PROJECT-REF.supabase.co SUPABASE_SERVICE_ROLE_KEY=SECRET np
 ```
 
 5. Forgot password later: same command as step 3 with `--reset-password` instead of `--name`. There is no self-service reset screen yet.
-6. Replace the demo clinic data, set `SHOW_DEMO_NOTICE=false`, and get the privacy page reviewed.
+6. Replace the demo clinic data, words, photographs and colours with the client's own ([CUSTOMIZE.md](CUSTOMIZE.md)), set `SHOW_DEMO_NOTICE=false`, and get the privacy page reviewed.
 7. Never send passwords or keys by chat or email in plain text; use a password manager.
 
 ## Danger zone
@@ -104,11 +104,12 @@ SUPABASE_URL=https://PROJECT-REF.supabase.co SUPABASE_SERVICE_ROLE_KEY=SECRET np
 
 ## Read more
 
-| Need                               | File                                     |
-| ---------------------------------- | ---------------------------------------- |
-| What is built, how to run and test | [../README.md](../README.md)             |
-| Going live (Supabase and Render)   | [DEPLOYMENT.md](DEPLOYMENT.md)           |
-| What to build next                 | [NEXT_STEPS.md](NEXT_STEPS.md)           |
-| What was verified and what was not | [BUILD_REPORT.md](BUILD_REPORT.md)       |
-| Connecting n8n later               | [N8N_INTEGRATION.md](N8N_INTEGRATION.md) |
-| Security notes                     | [SECURITY.md](SECURITY.md)               |
+| Need                                        | File                                     |
+| ------------------------------------------- | ---------------------------------------- |
+| What is built, how to run and test          | [../README.md](../README.md)             |
+| Changing clinic data, text, photos, colours | [CUSTOMIZE.md](CUSTOMIZE.md)             |
+| Going live (Supabase and Render)            | [DEPLOYMENT.md](DEPLOYMENT.md)           |
+| What to build next                          | [NEXT_STEPS.md](NEXT_STEPS.md)           |
+| What was verified and what was not          | [BUILD_REPORT.md](BUILD_REPORT.md)       |
+| Connecting n8n later                        | [N8N_INTEGRATION.md](N8N_INTEGRATION.md) |
+| Security notes                              | [SECURITY.md](SECURITY.md)               |

@@ -28,7 +28,7 @@ export function StepService({
             testId={`service-${service.slug}`}
           >
             <div className="flex items-start gap-3.5">
-              <span className="flex size-11 shrink-0 items-center justify-center rounded-md bg-teal-50 text-teal-700">
+              <span className="flex size-11 shrink-0 items-center justify-center rounded-md bg-brand-50 text-brand-700">
                 <ServiceIcon name={service.icon} className="size-5" />
               </span>
               <div className="min-w-0">

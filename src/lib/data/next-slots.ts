@@ -5,60 +5,75 @@ import { getCatalog } from "@/lib/data/catalog";
 import { fetchAvailableDates, fetchSlots } from "@/lib/data/booking";
 import { addDays, formatCalendarDate, formatTime, todayInZone } from "@/lib/datetime";
 
-export interface NextAvailable {
-  serviceSlug: string;
+export interface DoctorNextAvailable {
   doctorSlug: string;
   doctorName: string;
+  specialization: string;
+  /** The service the times are for: the first service this doctor offers. */
+  serviceSlug: string;
+  serviceName: string;
   /** "Today", "Tomorrow" or a short date such as "Wed, 7 Oct". */
   dayLabel: string;
   date: string;
   slots: { start: string; label: string }[];
 }
 
+const MAX_DOCTORS = 4;
+const SLOTS_PER_DOCTOR = 3;
+const LOOK_AHEAD_DAYS = 14;
+
 /**
- * The next few genuinely free times for the clinic's first service, used by the home page hero.
- * It asks the same database functions as the booking flow, so what the hero shows is what the
- * patient can actually book. Returns null when nothing is free soon (the hero then falls back to a
- * plain "Book now" card) or when the database cannot be reached.
+ * The next few genuinely free times for each doctor, shown at the top of the home page. It asks the
+ * same database functions as the booking flow, so what the page shows is what a patient can
+ * actually book. Doctors with nothing free soon are left out, and any failure yields an empty list
+ * (the page then shows a plain "Book online" panel instead of an error).
  */
-export const getNextAvailable = cache(async (): Promise<NextAvailable | null> => {
+export const getNextAvailability = cache(async (): Promise<DoctorNextAvailable[]> => {
   try {
-    const { clinic, services, doctorsForService } = await getCatalog();
-    const service = services[0];
-    if (!service) return null;
-
+    const { clinic, services, doctors } = await getCatalog();
     const today = todayInZone(clinic.timezone);
-    const lastLookAhead = addDays(today, Math.min(clinic.booking_window_days, 14));
+    const lastDay = addDays(today, Math.min(clinic.booking_window_days, LOOK_AHEAD_DAYS));
 
-    for (const doctor of doctorsForService(service.id).slice(0, 3)) {
-      const dates = await fetchAvailableDates(doctor.id, service.id, today, lastLookAhead);
-      const firstDate = dates.ok ? dates.dates[0]?.date : undefined;
-      if (!firstDate) continue;
+    const perDoctor = await Promise.all(
+      doctors.slice(0, MAX_DOCTORS).map(async (doctor): Promise<DoctorNextAvailable | null> => {
+        try {
+          const service = services.find((item) => doctor.serviceIds.includes(item.id));
+          if (!service) return null;
 
-      const slots = await fetchSlots(doctor.id, service.id, firstDate);
-      if (!slots.ok || slots.slots.length === 0) continue;
+          const dates = await fetchAvailableDates(doctor.id, service.id, today, lastDay);
+          const firstDate = dates.ok ? dates.dates[0]?.date : undefined;
+          if (!firstDate) return null;
 
-      const dayLabel =
-        firstDate === today
-          ? "Today"
-          : firstDate === addDays(today, 1)
-            ? "Tomorrow"
-            : formatCalendarDate(firstDate, "short").replace(/,? \d{4}$/, "");
+          const slots = await fetchSlots(doctor.id, service.id, firstDate);
+          if (!slots.ok || slots.slots.length === 0) return null;
 
-      return {
-        serviceSlug: service.slug,
-        doctorSlug: doctor.slug,
-        doctorName: doctor.full_name,
-        dayLabel,
-        date: firstDate,
-        slots: slots.slots.slice(0, 4).map((slot) => ({
-          start: slot.start,
-          label: formatTime(slot.start, clinic.timezone),
-        })),
-      };
-    }
-    return null;
+          const dayLabel =
+            firstDate === today
+              ? "Today"
+              : firstDate === addDays(today, 1)
+                ? "Tomorrow"
+                : formatCalendarDate(firstDate, "short").replace(/,? \d{4}$/, "");
+
+          return {
+            doctorSlug: doctor.slug,
+            doctorName: doctor.full_name,
+            specialization: doctor.specialization,
+            serviceSlug: service.slug,
+            serviceName: service.name,
+            dayLabel,
+            date: firstDate,
+            slots: slots.slots.slice(0, SLOTS_PER_DOCTOR).map((slot) => ({
+              start: slot.start,
+              label: formatTime(slot.start, clinic.timezone),
+            })),
+          };
+        } catch {
+          return null;
+        }
+      }),
+    );
+    return perDoctor.filter((item): item is DoctorNextAvailable => item !== null);
   } catch {
-    return null;
+    return [];
   }
 });

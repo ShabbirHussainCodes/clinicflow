@@ -58,8 +58,8 @@ export default async function SchedulePage({
               className={cn(
                 "rounded-full border px-4 py-2 text-sm font-semibold transition-colors",
                 active
-                  ? "border-teal-700 bg-teal-700 text-white"
-                  : "border-sand-300 bg-surface text-ink-700 hover:border-teal-600 hover:bg-teal-50",
+                  ? "border-brand-700 bg-brand-700 text-white"
+                  : "border-sand-300 bg-surface text-ink-700 hover:border-brand-600 hover:bg-brand-50",
               )}
             >
               {doctor.full_name}

@@ -20,13 +20,16 @@ More: [services](docs/screenshots/services-desktop.png) · [doctors](docs/screen
 [automation events](docs/screenshots/admin-events.png).
 
 > **New to the project, or handing it to a client?** Read [docs/HANDOVER.md](docs/HANDOVER.md): a one-page guide for
-> starting everything locally, working with Git, and handing over admin access.
+> starting everything locally, working with Git, and handing over admin access. To turn the demo into a real clinic's site
+> (data, words, photographs, colours), follow [docs/CUSTOMIZE.md](docs/CUSTOMIZE.md).
 
 ## Features
 
 **Patients**
 
-- Home, services and doctors pages with clinic hours, location and (fictional) testimonials
+- Home, services and doctors pages in the clinic's own identity: live "next available" times for each doctor, open or
+  closed now, opening hours day by day, about, FAQ, location and (fictional) testimonials
+- Photographs and logo are picked up by file name (`public/`), and all wording lives in one file (`src/config/site.ts`)
 - Multistep booking: service → doctor → date and time → details → review → confirmation
 - Only real, open slots are shown (doctor hours, breaks, holidays, existing bookings, minimum notice)
 - Field-level validation, clear messages, and recovery if a slot is taken while reviewing
@@ -69,7 +72,7 @@ security: [docs/SECURITY.md](docs/SECURITY.md).
 
 Next.js 16 (App Router, Turbopack) · React 19 · TypeScript (strict) · Tailwind CSS 4 · Zod 4 ·
 Supabase (PostgreSQL 17, Auth) via `@supabase/supabase-js` and `@supabase/ssr` · Vitest · Playwright +
-axe-core · locally bundled fonts (Fraunces, Figtree, SIL OFL) and SVG art. Everything runs on free tiers.
+axe-core · locally bundled fonts (Source Serif 4, Source Sans 3, SIL OFL). Everything runs on free tiers.
 
 ## Local setup
 
@@ -183,12 +186,13 @@ local receiver to try it without n8n (`npm run webhook:receiver`).
 ## Project structure
 
 ```
-src/app/(public)/      public site and booking flow          src/app/admin/      staff area
-src/app/api/           health check and dispatcher            src/proxy.ts        CSP nonce + admin gate
-src/components/        ui kit, booking wizard, admin UI       src/lib/            data access, validation, events
-supabase/migrations/   schema, functions, RLS (versioned)     supabase/seed.sql   fictional demo data
-tests/unit, tests/db   Vitest suites                          e2e/                Playwright suites
-docs/                  architecture, database, deployment, n8n, security, testing, decisions, handoff
+src/app/(public)/      public site and booking flow           src/app/admin/     staff area
+src/app/api/           health check and dispatcher            src/proxy.ts       CSP nonce + admin gate
+src/components/        ui kit, public sections, booking       src/lib/           data access, validation
+src/config/site.ts     the clinic's website wording           public/            photographs and logo
+supabase/migrations/   schema, functions, RLS (versioned)     supabase/seed.sql  fictional demo data
+tests/unit, tests/db   Vitest suites                          e2e/               Playwright suites
+docs/                  architecture, database, deployment, n8n, security, testing, customizing, decisions
 ```
 
 ## Demo limitations
@@ -204,7 +208,7 @@ docs/                  architecture, database, deployment, n8n, security, testin
 
 ## Documentation index
 
-**[HANDOVER (start here)](docs/HANDOVER.md)** · [ARCHITECTURE](docs/ARCHITECTURE.md) · [DATABASE](docs/DATABASE.md) · [DEPLOYMENT](docs/DEPLOYMENT.md) ·
+**[HANDOVER (start here)](docs/HANDOVER.md)** · [CUSTOMIZE](docs/CUSTOMIZE.md) · [ARCHITECTURE](docs/ARCHITECTURE.md) · [DATABASE](docs/DATABASE.md) · [DEPLOYMENT](docs/DEPLOYMENT.md) ·
 [N8N_INTEGRATION](docs/N8N_INTEGRATION.md) · [SECURITY](docs/SECURITY.md) · [TESTING](docs/TESTING.md) ·
 [ACCESSIBILITY](docs/ACCESSIBILITY.md) · [DESIGN](docs/DESIGN.md) · [DECISIONS](docs/DECISIONS.md) ·
 [BUILD_REPORT](docs/BUILD_REPORT.md) · [NEXT_STEPS](docs/NEXT_STEPS.md) · [PROJECT_BRIEF](docs/PROJECT_BRIEF.md)
